@@ -122,8 +122,14 @@ def main():
         n_train = set_trainable(clf, mode)
         lr = 5e-5 if mode != "all" else 2e-5
         opt = torch.optim.AdamW([q for q in clf.parameters() if q.requires_grad], lr=lr, weight_decay=0.1)
-        with Timer() as t:
-            hist = train_classifier(clf, loaders["train"], loaders["val"], opt, device, num_epochs=epochs)
+        try:
+            with Timer() as t:
+                hist = train_classifier(clf, loaders["train"], loaders["val"], opt, device, num_epochs=epochs)
+        except torch.OutOfMemoryError:
+            print(f"  {name}: out of GPU memory - skipped (try --batch-size 4)")
+            del clf, gpt, opt
+            torch.cuda.empty_cache()
+            continue
         logits, _ = predict_logits_loader(clf, loaders["test"], device)
         pred = logits.argmax(1)
         preds[name] = pred

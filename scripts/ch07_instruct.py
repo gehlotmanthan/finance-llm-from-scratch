@@ -78,7 +78,8 @@ def main():
     p.add_argument("--n-sentiment", type=int, default=2000)
     p.add_argument("--max-tokens", type=int, default=256)
     p.add_argument("--epochs", type=int, default=2)
-    p.add_argument("--batch-size", type=int, default=8)
+    p.add_argument("--batch-size", type=int, default=4)
+    p.add_argument("--grad-accum", type=int, default=2, help="effective batch = batch-size x grad-accum")
     p.add_argument("--lr", type=float, default=None, help="default 1e-4 with LoRA, 5e-5 full fine-tune")
     p.add_argument("--mask-prompt", action="store_true", help="Exercise 7.2: no loss on prompt tokens")
     p.add_argument("--n-sample-responses", type=int, default=25)
@@ -136,12 +137,12 @@ def main():
     lr = args.lr or (1e-4 if args.lora_rank > 0 else 5e-5)
     opt = torch.optim.AdamW([q for q in model.parameters() if q.requires_grad], lr=lr, weight_decay=0.1)
     epochs = 1 if args.smoke else args.epochs
-    steps = len(train_dl) * epochs
+    steps = len(train_dl) * epochs // args.grad_accum
     model.train()
     with Timer() as t:
         hist = train_lm(model, train_dl, val_dl, opt, device, num_epochs=epochs,
                         eval_freq=max(steps // 12, 1), eval_iter=10, max_lr=lr,
-                        warmup_steps=max(steps // 20, 1), min_lr=lr / 10, grad_clip=1.0, amp=True)
+                        warmup_steps=max(steps // 20, 1), min_lr=lr / 10, grad_clip=1.0, grad_accum=args.grad_accum, amp=True)
     peak_gb = torch.cuda.max_memory_allocated() / 1024 ** 3 if device.type == "cuda" else None
 
     print("sentiment eval after instruction tuning ...")
@@ -171,7 +172,8 @@ def main():
                checkpoint_path("instruct.pth", args.smoke))
     save_json({"model": args.model, "responses": responses}, out_dir / "ch07_responses.json")
     result = {"chapter": 7, "smoke": args.smoke, "device": device_name(device), "model": args.model,
-              "lora": lora_info, "lr": lr, "epochs": epochs, "mask_prompt": args.mask_prompt,
+              "lora": lora_info, "lr": lr, "epochs": epochs,
+              "batch_size": args.batch_size, "grad_accum": args.grad_accum, "mask_prompt": args.mask_prompt,
               "data": {"train": len(train_data), "train_alpaca": len(a_train), "train_sentiment": len(s_train),
                        "val": len(val_data), "max_tokens": max_tokens},
               "train_seconds": t.seconds, "peak_gpu_gb": peak_gb, "base_val_loss": base_val_loss,
