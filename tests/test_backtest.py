@@ -119,3 +119,28 @@ def test_clean_news_and_periods():
     per = calendar_periods(df["date"])
     assert per["start"] < per["pretrain_end"] < per["is_end"] < per["end"]
     assert headlines_corpus(df, per["pretrain_end"], 1000) == ["Apple beats"]
+
+
+def test_download_prices_caches_and_retries_on_empty(tmp_path, monkeypatch):
+    import sys
+    import types
+    from finllm.backtest.prices import download_prices, load_price_panel
+    calls = {"n": 0}
+
+    def fake_download(syms, **kw):
+        calls["n"] += 1
+        if calls["n"] == 1:                       # first call: rate-limited, nothing back
+            return pd.DataFrame()
+        idx = pd.bdate_range("2020-01-01", periods=30)
+        frames = {s: pd.DataFrame({"Open": 10.0, "Close": 10.5, "Volume": 1e6}, index=idx)
+                  for s in syms if s != "DEAD"}
+        return pd.concat(frames, axis=1)
+
+    monkeypatch.setitem(sys.modules, "yfinance", types.SimpleNamespace(download=fake_download))
+    log = lambda *a: None
+    info = download_prices(["AAA", "BRK.B", "DEAD"], "2020-01-01", "2020-02-15", tmp_path, pause=0, log=log)
+    assert info["missing"] == [] and not list(tmp_path.glob("*.parquet"))   # nothing marked dead after a blank
+    info = download_prices(["AAA", "BRK.B", "DEAD"], "2020-01-01", "2020-02-15", tmp_path, pause=0, log=log)
+    assert info["missing"] == ["DEAD"]
+    panel = load_price_panel(["AAA", "BRK.B", "DEAD"], tmp_path)
+    assert list(panel["open"].columns) == ["AAA", "BRK.B"] and len(panel["close"]) == 30

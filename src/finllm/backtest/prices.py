@@ -44,15 +44,24 @@ def download_prices(tickers, start, end, prices_dir: Path = PRICES_DIR, chunk: i
         except Exception as e:  # network hiccup: skip this chunk, it will be retried next run
             log(f"  chunk {i // chunk}: {e}")
             continue
+        got, empty = {}, []
         for sym, t in syms.items():
             try:
                 sub = df[sym] if isinstance(df.columns, pd.MultiIndex) else df
                 sub = sub[["Open", "Close", "Volume"]].dropna(subset=["Open", "Close"])
             except KeyError:
                 sub = pd.DataFrame()
-            if len(sub) < 20:
-                known_missing.add(t)
-                continue
+            if len(sub) >= 20:
+                got[t] = sub
+            else:
+                empty.append(t)
+        if not got:
+            # Nothing came back at all: most likely rate-limiting, not delisting. Retry next run.
+            log(f"  chunk {i // chunk}: no data returned (rate limit?) - will retry on the next run")
+            time.sleep(pause * 10)
+            continue
+        known_missing.update(empty)
+        for t, sub in got.items():
             sub.index = pd.to_datetime(sub.index).tz_localize(None).normalize()
             sub.to_parquet(_cache_file(prices_dir, t))
         log(f"  downloaded {min(i + chunk, len(todo))}/{len(todo)}")

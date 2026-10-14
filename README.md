@@ -39,7 +39,7 @@ Details: [reports/METHODOLOGY.md](reports/METHODOLOGY.md).
 ## Engineering notes
 
 - **Model code is my own implementation** (`src/finllm/`), with no `transformers` dependency. OpenAI's released GPT-2 weights are mapped into it (`gpt2_weights.py`), and a test round-trips the mapping.
-- **47 unit tests**, all running on CPU in about 15 s. They cover the causal mask, explicit vs fused attention equivalence, exact GPT-2 parameter counts, the weight mapping, LoRA starting as an identity, prompt masking, dynamic padding matching unpadded inference, the look-ahead check, and the portfolio arithmetic.
+- **48 unit tests**, all running on CPU in about 15 s. They cover the causal mask, explicit vs fused attention equivalence, exact GPT-2 parameter counts, the weight mapping, LoRA starting as an identity, prompt masking, dynamic padding matching unpadded inference, the look-ahead check, and the portfolio arithmetic.
 - **`--smoke` mode** runs the whole pipeline end to end on synthetic data in about 2 minutes on a CPU, with no downloads. The synthetic news contains a planted "oracle" signal that the backtest must recover.
 - **Fits an 8 GB GPU:** fused scaled-dot-product attention, bf16 autocast, gradient accumulation, and LoRA (rank 16, about 2% of GPT-2 medium's weights trainable) for instruction tuning.
 - **Reproducible:** fixed seeds, and every result file records the git commit, device, library versions and CLI arguments.

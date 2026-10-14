@@ -82,4 +82,9 @@ def news_and_periods(smoke: bool):
 
 
 setup_plots()
-os.environ.setdefault("PYTHONIOENCODING", "utf-8")
+# Windows consoles default to cp1252; model samples can contain any Unicode character.
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):
+        pass
