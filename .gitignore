@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+.venv/
+venv/
+
+# Large / licensed data: downloaded by the scripts, never committed
+data/raw/
+data/processed/
+data/prices/
+data/models/
+!data/samples/
+
+# Model weights
+checkpoints/*
+!checkpoints/.gitkeep
+
+# Smoke-test outputs (synthetic data, not real results)
+results/smoke/
+
+# Private drafts
+linkedin/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
