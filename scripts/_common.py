@@ -35,7 +35,7 @@ def setup_plots():
         "axes.edgecolor": INK_3, "axes.labelcolor": INK_2, "axes.titlecolor": INK,
         "axes.titleweight": "bold", "axes.titlesize": 12, "axes.titlelocation": "left",
         "xtick.color": INK_2, "ytick.color": INK_2, "text.color": INK,
-        "axes.grid": True, "grid.color": GRID, "grid.linewidth": 0.8,
+        "axes.grid": True, "axes.axisbelow": True, "grid.color": GRID, "grid.linewidth": 0.8,
         "axes.spines.top": False, "axes.spines.right": False,
         "axes.prop_cycle": matplotlib.cycler(color=SERIES),
         "lines.linewidth": 2.0, "font.size": 10, "legend.frameon": False,
