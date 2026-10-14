@@ -67,7 +67,8 @@ def load_base_gpt2(model_name: str, device, smoke: bool, **cfg_overrides):
     from finllm.model import GPTModel
     if smoke:
         torch.manual_seed(0)
-        cfg = dict(TINY_CONFIG, **{k: v for k, v in cfg_overrides.items() if k != "context_length"})
+        cfg = dict(TINY_CONFIG, context_length=256,
+                   **{k: v for k, v in cfg_overrides.items() if k != "context_length"})
         return GPTModel(cfg).to(device).eval(), cfg
     return load_pretrained_gpt2(model_name, device=device, **cfg_overrides)
 
