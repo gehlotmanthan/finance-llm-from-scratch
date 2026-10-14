@@ -59,5 +59,26 @@ def rel(path: Path) -> str:
         return str(path)
 
 
+def load_base_gpt2(model_name: str, device, smoke: bool, **cfg_overrides):
+    """OpenAI GPT-2 weights in our GPTModel, or a tiny random model for --smoke."""
+    import torch
+    from finllm.config import TINY_CONFIG
+    from finllm.gpt2_weights import load_pretrained_gpt2
+    from finllm.model import GPTModel
+    if smoke:
+        torch.manual_seed(0)
+        cfg = dict(TINY_CONFIG, **{k: v for k, v in cfg_overrides.items() if k != "context_length"})
+        return GPTModel(cfg).to(device).eval(), cfg
+    return load_pretrained_gpt2(model_name, device=device, **cfg_overrides)
+
+
+def news_and_periods(smoke: bool):
+    """Cleaned news + the three calendar windows (pretrain / in-sample / out-of-sample)."""
+    from finllm import data_sources as ds
+    from finllm import synthetic
+    news = synthetic.news_like(400) if smoke else ds.load_news_cached()
+    return news, ds.calendar_periods(news["date"])
+
+
 setup_plots()
 os.environ.setdefault("PYTHONIOENCODING", "utf-8")

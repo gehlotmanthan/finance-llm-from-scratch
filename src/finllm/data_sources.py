@@ -142,6 +142,17 @@ def load_news(raw_dir: Path = RAW_DIR) -> pd.DataFrame:
     return clean_news(pd.read_parquet(path))
 
 
+def load_news_cached(raw_dir: Path = RAW_DIR, processed_dir: Path = PROCESSED_DIR) -> pd.DataFrame:
+    """Cleaned news, cached as parquet after the first (slower) clean."""
+    cache = Path(processed_dir) / "news_clean.parquet"
+    if cache.exists():
+        return pd.read_parquet(cache)
+    df = load_news(raw_dir)
+    cache.parent.mkdir(parents=True, exist_ok=True)
+    df.to_parquet(cache, index=False)
+    return df
+
+
 def calendar_periods(dates: pd.Series, pretrain_frac: float = 0.4, is_frac: float = 0.3) -> dict:
     """Split the news calendar (not the row count) into three consecutive windows:
 
