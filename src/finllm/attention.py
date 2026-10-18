@@ -11,7 +11,7 @@ Additions over the book, both switchable and covered by tests:
 
 * ``use_sdpa`` — call ``torch.nn.functional.scaled_dot_product_attention``
   (fused / flash kernels). Mathematically identical, never materialises the
-  T x T matrix, so long contexts fit on an 8 GB GPU.
+  T x T matrix, so long contexts fit on a small (6-8 GB) GPU.
 * ``store_attn`` — keep the last attention weights for plotting
   (scripts/ch05_gpt2_domain.py shows what GPT-2 attends to in a headline).
 """

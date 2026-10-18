@@ -1,0 +1,71 @@
+{
+  "all_ok": true,
+  "checks": {
+    "torch": {
+      "ok": true,
+      "version": "2.11.0+cu128",
+      "device": "NVIDIA GeForce RTX 3060 Laptop GPU (6.0 GB)",
+      "bf16": true
+    },
+    "tiktoken": {
+      "ok": true,
+      "hello_ids": [
+        15496,
+        11,
+        995
+      ]
+    },
+    "phrasebank": {
+      "ok": true,
+      "sentences": 4836,
+      "labels": {
+        "neutral": 2871,
+        "positive": 1361,
+        "negative": 604
+      },
+      "conflicting_dropped": 2,
+      "by_agreement": {
+        "50": 627,
+        "66": 761,
+        "75": 1189,
+        "100": 2259
+      }
+    },
+    "news": {
+      "ok": true,
+      "headlines": 1822460,
+      "tickers": 6552,
+      "periods": {
+        "start": "1969-12-31",
+        "pretrain_end": "1990-03-03",
+        "is_end": "2005-04-18",
+        "end": "2020-06-04"
+      },
+      "headlines_per_window": {
+        "pretrain": 1,
+        "in_sample": 0,
+        "out_of_sample": 1822459
+      }
+    },
+    "finance_alpaca": {
+      "ok": true,
+      "examples": 68911
+    },
+    "gpt2_weights": {
+      "ok": true,
+      "verdict_perplexity": 41.9
+    },
+    "yahoo_prices": {
+      "ok": true,
+      "rows": 23
+    }
+  },
+  "meta": {
+    "timestamp_utc": "2026-10-15 17:11:28",
+    "git_commit": "2c0c7bb",
+    "python": "3.12.10",
+    "torch": "2.11.0+cu128",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "device": "NVIDIA GeForce RTX 3060 Laptop GPU (6.0 GB)"
+  }
+}

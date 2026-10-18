@@ -12,7 +12,7 @@ Evaluation
     and for the optional Ollama judge, scripts/ch07_ollama_judge.py)
 
 Default model: GPT-2 medium (355M) with LoRA rank 16 (Appendix E) so it fits on
-an 8 GB GPU; ``--lora-rank 0`` does full fine-tuning (book setting).
+a 6 GB laptop GPU; ``--lora-rank 0`` does full fine-tuning (book setting).
 
 Output: results/ch07_instruct.json, results/ch07_responses.json, figure, checkpoint
 """

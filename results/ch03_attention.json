@@ -1,0 +1,55 @@
+{
+  "chapter": 3,
+  "smoke": false,
+  "device": "NVIDIA GeForce RTX 3060 Laptop GPU (6.0 GB)",
+  "config": {
+    "d_model": 768,
+    "heads": 12,
+    "batch": 8
+  },
+  "max_abs_diff_explicit_vs_fused": 3.5762786865234375e-07,
+  "causal_leak_max_abs_change": 0.0,
+  "future_outputs_changed_by": 0.06936770677566528,
+  "scaling": [
+    {
+      "T": 128,
+      "explicit_ms": 2.7337899897247553,
+      "explicit_peak_mb": 133.17578125,
+      "fused_sdpa_ms": 2.290440001524985,
+      "fused_sdpa_peak_mb": 134.9384765625
+    },
+    {
+      "T": 256,
+      "explicit_ms": 5.860829981975257,
+      "explicit_peak_mb": 213.3486328125,
+      "fused_sdpa_ms": 4.447149997577071,
+      "fused_sdpa_peak_mb": 162.8291015625
+    },
+    {
+      "T": 512,
+      "explicit_ms": 16.243030014447868,
+      "explicit_peak_mb": 528.1611328125,
+      "fused_sdpa_ms": 10.510379984043539,
+      "fused_sdpa_peak_mb": 225.4853515625
+    },
+    {
+      "T": 1024,
+      "explicit_ms": 50.86930000688881,
+      "explicit_peak_mb": 1734.0361328125,
+      "fused_sdpa_ms": 27.520280005410314,
+      "fused_sdpa_peak_mb": 351.1728515625
+    }
+  ],
+  "figures": [
+    "results/figures/ch03_attention_scaling.png"
+  ],
+  "meta": {
+    "timestamp_utc": "2026-10-15 17:11:47",
+    "git_commit": "2c0c7bb",
+    "python": "3.12.10",
+    "torch": "2.11.0+cu128",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "device": "NVIDIA GeForce RTX 3060 Laptop GPU (6.0 GB)",
+    "seed": 123
+  }
+}

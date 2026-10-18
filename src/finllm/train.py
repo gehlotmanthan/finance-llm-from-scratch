@@ -10,7 +10,7 @@ all off by default so the plain book loop is still what runs:
 
 * linear warm-up then cosine decay of the learning rate
 * gradient clipping
-* gradient accumulation (bigger effective batch on an 8 GB GPU)
+* gradient accumulation (bigger effective batch on a 6-8 GB GPU)
 * bfloat16 autocast on GPUs that support it
 """
 

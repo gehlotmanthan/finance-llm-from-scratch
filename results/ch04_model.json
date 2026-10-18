@@ -1,0 +1,437 @@
+{
+  "chapter": 4,
+  "smoke": false,
+  "device": "NVIDIA GeForce RTX 3060 Laptop GPU (6.0 GB)",
+  "sizes": [
+    {
+      "model": "gpt2-small (124M)",
+      "params_untied": 163037184,
+      "params_tied": 124439808,
+      "fp32_weights_gb": 0.4635744094848633,
+      "adamw_train_state_gb": 1.8542976379394531,
+      "train_gflops_per_token": 0.566959104
+    },
+    {
+      "model": "gpt2-medium (355M)",
+      "params_untied": 406286336,
+      "params_tied": 354823168,
+      "fp32_weights_gb": 1.3218193054199219,
+      "adamw_train_state_gb": 5.2872772216796875,
+      "train_gflops_per_token": 1.964863488
+    },
+    {
+      "model": "gpt2-large (774M)",
+      "params_untied": 838359040,
+      "params_tied": 774030080,
+      "fp32_weights_gb": 2.883486747741699,
+      "adamw_train_state_gb": 11.533946990966797,
+      "train_gflops_per_token": 4.53345792
+    },
+    {
+      "model": "gpt2-xl (1558M)",
+      "params_untied": 1638022400,
+      "params_tied": 1557611200,
+      "fp32_weights_gb": 5.80255389213562,
+      "adamw_train_state_gb": 23.21021556854248,
+      "train_gflops_per_token": 9.3252288
+    }
+  ],
+  "train_step_probes": [
+    {
+      "peak_gb": 3.121403217315674,
+      "tokens_per_s": 2613.147945721908,
+      "status": "ok",
+      "model": "gpt2-small (124M)",
+      "batch": 1,
+      "seq": 256,
+      "sdpa": false,
+      "bf16": false
+    },
+    {
+      "peak_gb": 3.1325135231018066,
+      "tokens_per_s": 4097.751654129377,
+      "status": "ok",
+      "model": "gpt2-small (124M)",
+      "batch": 2,
+      "seq": 256,
+      "sdpa": false,
+      "bf16": false
+    },
+    {
+      "peak_gb": 3.7996177673339844,
+      "tokens_per_s": 5107.030694103469,
+      "status": "ok",
+      "model": "gpt2-small (124M)",
+      "batch": 4,
+      "seq": 256,
+      "sdpa": false,
+      "bf16": false
+    },
+    {
+      "peak_gb": 5.609448432922363,
+      "tokens_per_s": 2791.895668610575,
+      "status": "ok",
+      "model": "gpt2-small (124M)",
+      "batch": 8,
+      "seq": 256,
+      "sdpa": false,
+      "bf16": false
+    },
+    {
+      "peak_gb": 9.353405952453613,
+      "tokens_per_s": 701.7892862530502,
+      "status": "ok",
+      "model": "gpt2-small (124M)",
+      "batch": 16,
+      "seq": 256,
+      "sdpa": false,
+      "bf16": false
+    },
+    {
+      "peak_gb": 3.128971576690674,
+      "tokens_per_s": 2965.8189375168927,
+      "status": "ok",
+      "model": "gpt2-small (124M)",
+      "batch": 1,
+      "seq": 256,
+      "sdpa": false,
+      "bf16": true
+    },
+    {
+      "peak_gb": 3.1306824684143066,
+      "tokens_per_s": 4632.310364393917,
+      "status": "ok",
+      "model": "gpt2-small (124M)",
+      "batch": 2,
+      "seq": 256,
+      "sdpa": false,
+      "bf16": true
+    },
+    {
+      "peak_gb": 3.8221750259399414,
+      "tokens_per_s": 7190.363228393933,
+      "status": "ok",
+      "model": "gpt2-small (124M)",
+      "batch": 4,
+      "seq": 256,
+      "sdpa": false,
+      "bf16": true
+    },
+    {
+      "peak_gb": 5.418362617492676,
+      "tokens_per_s": 8877.21955857714,
+      "status": "ok",
+      "model": "gpt2-small (124M)",
+      "batch": 8,
+      "seq": 256,
+      "sdpa": false,
+      "bf16": true
+    },
+    {
+      "peak_gb": 8.615233421325684,
+      "tokens_per_s": 1778.3141535593943,
+      "status": "ok",
+      "model": "gpt2-small (124M)",
+      "batch": 16,
+      "seq": 256,
+      "sdpa": false,
+      "bf16": true
+    },
+    {
+      "peak_gb": 3.119083881378174,
+      "tokens_per_s": 2989.4377085176457,
+      "status": "ok",
+      "model": "gpt2-small (124M)",
+      "batch": 1,
+      "seq": 256,
+      "sdpa": true,
+      "bf16": false
+    },
+    {
+      "peak_gb": 3.1227478981018066,
+      "tokens_per_s": 4336.536704437131,
+      "status": "ok",
+      "model": "gpt2-small (124M)",
+      "batch": 2,
+      "seq": 256,
+      "sdpa": true,
+      "bf16": false
+    },
+    {
+      "peak_gb": 3.6400108337402344,
+      "tokens_per_s": 5337.295535013103,
+      "status": "ok",
+      "model": "gpt2-small (124M)",
+      "batch": 4,
+      "seq": 256,
+      "sdpa": true,
+      "bf16": false
+    },
+    {
+      "peak_gb": 5.316845893859863,
+      "tokens_per_s": 6115.591852843892,
+      "status": "ok",
+      "model": "gpt2-small (124M)",
+      "batch": 8,
+      "seq": 256,
+      "sdpa": true,
+      "bf16": false
+    },
+    {
+      "peak_gb": 8.782849311828613,
+      "tokens_per_s": 804.6710736798275,
+      "status": "ok",
+      "model": "gpt2-small (124M)",
+      "batch": 16,
+      "seq": 256,
+      "sdpa": true,
+      "bf16": false
+    },
+    {
+      "peak_gb": 3.123722553253174,
+      "tokens_per_s": 3165.3460570204966,
+      "status": "ok",
+      "model": "gpt2-small (124M)",
+      "batch": 1,
+      "seq": 256,
+      "sdpa": true,
+      "bf16": true
+    },
+    {
+      "peak_gb": 3.1222596168518066,
+      "tokens_per_s": 5102.010312452832,
+      "status": "ok",
+      "model": "gpt2-small (124M)",
+      "batch": 2,
+      "seq": 256,
+      "sdpa": true,
+      "bf16": true
+    },
+    {
+      "peak_gb": 3.5749216079711914,
+      "tokens_per_s": 7855.198418687765,
+      "status": "ok",
+      "model": "gpt2-small (124M)",
+      "batch": 4,
+      "seq": 256,
+      "sdpa": true,
+      "bf16": true
+    },
+    {
+      "peak_gb": 4.982327461242676,
+      "tokens_per_s": 9868.60650980516,
+      "status": "ok",
+      "model": "gpt2-small (124M)",
+      "batch": 8,
+      "seq": 256,
+      "sdpa": true,
+      "bf16": true
+    },
+    {
+      "peak_gb": 7.79567813873291,
+      "tokens_per_s": 1722.4519338845653,
+      "status": "ok",
+      "model": "gpt2-small (124M)",
+      "batch": 16,
+      "seq": 256,
+      "sdpa": true,
+      "bf16": true
+    },
+    {
+      "peak_gb": 7.6782708168029785,
+      "tokens_per_s": 214.79804718277018,
+      "status": "ok",
+      "model": "gpt2-medium (355M)",
+      "batch": 1,
+      "seq": 256,
+      "sdpa": false,
+      "bf16": false
+    },
+    {
+      "peak_gb": 7.678272724151611,
+      "tokens_per_s": 279.27308778572905,
+      "status": "ok",
+      "model": "gpt2-medium (355M)",
+      "batch": 2,
+      "seq": 256,
+      "sdpa": false,
+      "bf16": false
+    },
+    {
+      "peak_gb": 8.640604972839355,
+      "tokens_per_s": 184.47713208706782,
+      "status": "ok",
+      "model": "gpt2-medium (355M)",
+      "batch": 4,
+      "seq": 256,
+      "sdpa": false,
+      "bf16": false
+    },
+    {
+      "peak_gb": null,
+      "tokens_per_s": null,
+      "status": "OOM",
+      "model": "gpt2-medium (355M)",
+      "batch": 8,
+      "seq": 256,
+      "sdpa": false,
+      "bf16": false
+    },
+    {
+      "peak_gb": 7.6782708168029785,
+      "tokens_per_s": 202.3910553035757,
+      "status": "ok",
+      "model": "gpt2-medium (355M)",
+      "batch": 1,
+      "seq": 256,
+      "sdpa": false,
+      "bf16": true
+    },
+    {
+      "peak_gb": 7.678272724151611,
+      "tokens_per_s": 379.3966101945276,
+      "status": "ok",
+      "model": "gpt2-medium (355M)",
+      "batch": 2,
+      "seq": 256,
+      "sdpa": false,
+      "bf16": true
+    },
+    {
+      "peak_gb": 8.826152324676514,
+      "tokens_per_s": 265.29097406652573,
+      "status": "ok",
+      "model": "gpt2-medium (355M)",
+      "batch": 4,
+      "seq": 256,
+      "sdpa": false,
+      "bf16": true
+    },
+    {
+      "peak_gb": null,
+      "tokens_per_s": null,
+      "status": "OOM",
+      "model": "gpt2-medium (355M)",
+      "batch": 8,
+      "seq": 256,
+      "sdpa": false,
+      "bf16": true
+    },
+    {
+      "peak_gb": 7.6782708168029785,
+      "tokens_per_s": 230.71210734106558,
+      "status": "ok",
+      "model": "gpt2-medium (355M)",
+      "batch": 1,
+      "seq": 256,
+      "sdpa": true,
+      "bf16": false
+    },
+    {
+      "peak_gb": 7.678272724151611,
+      "tokens_per_s": 314.6136311141343,
+      "status": "ok",
+      "model": "gpt2-medium (355M)",
+      "batch": 2,
+      "seq": 256,
+      "sdpa": true,
+      "bf16": false
+    },
+    {
+      "peak_gb": 8.243632316589355,
+      "tokens_per_s": 201.32313865814797,
+      "status": "ok",
+      "model": "gpt2-medium (355M)",
+      "batch": 4,
+      "seq": 256,
+      "sdpa": true,
+      "bf16": false
+    },
+    {
+      "peak_gb": 11.83606243133545,
+      "tokens_per_s": 187.46986682784228,
+      "status": "ok",
+      "model": "gpt2-medium (355M)",
+      "batch": 8,
+      "seq": 256,
+      "sdpa": true,
+      "bf16": false
+    },
+    {
+      "peak_gb": null,
+      "tokens_per_s": null,
+      "status": "OOM",
+      "model": "gpt2-medium (355M)",
+      "batch": 16,
+      "seq": 256,
+      "sdpa": true,
+      "bf16": false
+    },
+    {
+      "peak_gb": 7.6782708168029785,
+      "tokens_per_s": 199.19755546939322,
+      "status": "ok",
+      "model": "gpt2-medium (355M)",
+      "batch": 1,
+      "seq": 256,
+      "sdpa": true,
+      "bf16": true
+    },
+    {
+      "peak_gb": 7.678272724151611,
+      "tokens_per_s": 386.95564460913056,
+      "status": "ok",
+      "model": "gpt2-medium (355M)",
+      "batch": 2,
+      "seq": 256,
+      "sdpa": true,
+      "bf16": true
+    },
+    {
+      "peak_gb": 8.241679668426514,
+      "tokens_per_s": 281.85876607515434,
+      "status": "ok",
+      "model": "gpt2-medium (355M)",
+      "batch": 4,
+      "seq": 256,
+      "sdpa": true,
+      "bf16": true
+    },
+    {
+      "peak_gb": 11.17379903793335,
+      "tokens_per_s": 279.48864877016695,
+      "status": "ok",
+      "model": "gpt2-medium (355M)",
+      "batch": 8,
+      "seq": 256,
+      "sdpa": true,
+      "bf16": true
+    },
+    {
+      "peak_gb": null,
+      "tokens_per_s": null,
+      "status": "OOM",
+      "model": "gpt2-medium (355M)",
+      "batch": 16,
+      "seq": 256,
+      "sdpa": true,
+      "bf16": true
+    }
+  ],
+  "untrained_generation": {
+    "prompt": "Apple shares rose after",
+    "output": "Apple shares rose afterginiman ByeswickattributeometerDT Dennis Redux Gel"
+  },
+  "figures": [
+    "results/figures/ch04_memory_fit.png"
+  ],
+  "meta": {
+    "timestamp_utc": "2026-10-15 17:17:35",
+    "git_commit": "2c0c7bb",
+    "python": "3.12.10",
+    "torch": "2.11.0+cu128",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "device": "NVIDIA GeForce RTX 3060 Laptop GPU (6.0 GB)",
+    "seed": 123
+  }
+}

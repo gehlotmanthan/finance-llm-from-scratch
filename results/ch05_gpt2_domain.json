@@ -1,0 +1,264 @@
+{
+  "chapter": 5,
+  "part": "gpt2_domain_gap",
+  "smoke": false,
+  "device": "NVIDIA GeForce RTX 3060 Laptop GPU (6.0 GB)",
+  "eval_window_tokens": 256,
+  "perplexity": {
+    "gpt2-small (124M)": {
+      "General English (The Verdict)": {
+        "loss": 3.7354912757873535,
+        "perplexity": 41.908609191547065,
+        "tokens": 5120
+      },
+      "Financial PhraseBank (test)": {
+        "loss": 4.932537789930377,
+        "perplexity": 138.73113645830492,
+        "tokens": 29184
+      },
+      "News headlines (out-of-sample window)": {
+        "loss": 6.4037517738342284,
+        "perplexity": 604.1072653668359,
+        "tokens": 102400
+      }
+    },
+    "gpt2-medium (355M)": {
+      "General English (The Verdict)": {
+        "loss": 3.4890920639038088,
+        "perplexity": 32.75619367028715,
+        "tokens": 5120
+      },
+      "Financial PhraseBank (test)": {
+        "loss": 4.705948946768777,
+        "perplexity": 110.60319170552044,
+        "tokens": 29184
+      },
+      "News headlines (out-of-sample window)": {
+        "loss": 5.959097290039063,
+        "perplexity": 387.2603825990543,
+        "tokens": 102400
+      }
+    }
+  },
+  "samples": {
+    "gpt2-small (124M)": [
+      {
+        "prompt": "Shares of Apple rose after",
+        "greedy": "Shares of Apple rose after the company announced it would be selling its shares in the company.\n\nThe company said it would sell its shares in the",
+        "temp0.8_top40": "Shares of Apple rose after the news, but the company is already making some changes to its customer service.\n\nApple's new product launches include a"
+      },
+      {
+        "prompt": "The Federal Reserve said on Wednesday that",
+        "greedy": "The Federal Reserve said on Wednesday that it would raise interest rates to keep the economy growing, but that it would not raise rates for the first time since the financial",
+        "temp0.8_top40": "The Federal Reserve said on Wednesday that as much as $6 trillion in purchases would be needed to make up the shortfall.\n\nThe amount spent on bank accounts"
+      },
+      {
+        "prompt": "Quarterly earnings per share came in",
+        "greedy": "Quarterly earnings per share came in at $1.04, down from $1.04 in the same period last year.\n\nThe company's stock",
+        "temp0.8_top40": "Quarterly earnings per share came in as $1,639, down $1.2 million from $1,719.\n\n\"In general"
+      }
+    ],
+    "gpt2-medium (355M)": [
+      {
+        "prompt": "Shares of Apple rose after",
+        "greedy": "Shares of Apple rose after the company reported a quarterly profit of $1.6 billion, beating Wall Street expectations.\n\nApple's stock rose more",
+        "temp0.8_top40": "Shares of Apple rose after the news, but were still down about 1%.\n\n'Fantastic opportunity'\n\nMr Brown said he was"
+      },
+      {
+        "prompt": "The Federal Reserve said on Wednesday that",
+        "greedy": "The Federal Reserve said on Wednesday that it would begin raising interest rates in December, but it has not yet set a date for when it will begin to raise rates",
+        "temp0.8_top40": "The Federal Reserve said on Wednesday that as much as $4 trillion in long-term bond holdings remained untapped.\n\nThe central bank said it had raised"
+      },
+      {
+        "prompt": "Quarterly earnings per share came in",
+        "greedy": "Quarterly earnings per share came in at $1.10, up from $1.03 a year earlier.\n\nThe company's stock has risen more",
+        "temp0.8_top40": "Quarterly earnings per share came in as $1.47.\n\nThe stock closed higher at $10.15 on Thursday after closing at $8."
+      }
+    ]
+  },
+  "attention": {
+    "model": "gpt2-small (124M)",
+    "headline": "Tesla shares fall after the company misses quarterly delivery estimates",
+    "tokens": [
+      "Tesla",
+      " shares",
+      " fall",
+      " after",
+      " the",
+      " company",
+      " misses",
+      " quarterly",
+      " delivery",
+      " estimates"
+    ],
+    "sink_share_by_layer": [
+      0.25596708059310913,
+      0.35959774255752563,
+      0.4624306261539459,
+      0.5853572487831116,
+      0.5947964787483215,
+      0.764240026473999,
+      0.7817731499671936,
+      0.8167186379432678,
+      0.7655582427978516,
+      0.8106944561004639,
+      0.845976710319519,
+      0.6896041035652161
+    ],
+    "head_shown": {
+      "layer": 2,
+      "head": 8
+    },
+    "head_matrix": [
+      [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.8708999752998352,
+        0.1290999948978424,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.5493999719619751,
+        0.3001999855041504,
+        0.15039999783039093,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.26840001344680786,
+        0.05290000140666962,
+        0.5878000259399414,
+        0.09099999815225601,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0997999981045723,
+        0.12300000339746475,
+        0.2847000062465668,
+        0.43560001254081726,
+        0.05689999833703041,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.16680000722408295,
+        0.13529999554157257,
+        0.09130000323057175,
+        0.3391000032424927,
+        0.23999999463558197,
+        0.02759999968111515,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.16750000417232513,
+        0.02419999986886978,
+        0.10819999873638153,
+        0.27880001068115234,
+        0.21480000019073486,
+        0.06870000064373016,
+        0.13770000636577606,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.048900000751018524,
+        0.01590000092983246,
+        0.00800000037997961,
+        0.10509999841451645,
+        0.046799998730421066,
+        0.008200000040233135,
+        0.7376999855041504,
+        0.029500000178813934,
+        0.0,
+        0.0
+      ],
+      [
+        0.06530000269412994,
+        0.0035000001080334187,
+        0.0026000000070780516,
+        0.059300001710653305,
+        0.025200000032782555,
+        0.003800000064074993,
+        0.7506999969482422,
+        0.050200000405311584,
+        0.039500001817941666,
+        0.0
+      ],
+      [
+        0.12559999525547028,
+        0.009800000116229057,
+        0.01549999974668026,
+        0.05849999934434891,
+        0.03530000150203705,
+        0.004100000020116568,
+        0.3952000141143799,
+        0.08139999955892563,
+        0.21979999542236328,
+        0.05480000004172325
+      ]
+    ]
+  },
+  "periods": {
+    "start": "2010-02-03",
+    "pretrain_end": "2014-03-23",
+    "is_end": "2017-04-28",
+    "end": "2020-06-04"
+  },
+  "figures": [
+    "results/figures/ch05_domain_perplexity.png",
+    "results/figures/ch05_attention.png"
+  ],
+  "meta": {
+    "timestamp_utc": "2026-10-15 17:34:58",
+    "git_commit": "2c0c7bb",
+    "python": "3.12.10",
+    "torch": "2.11.0+cu128",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "device": "NVIDIA GeForce RTX 3060 Laptop GPU (6.0 GB)",
+    "seed": 123,
+    "args": {
+      "smoke": false,
+      "seed": 123,
+      "device": null,
+      "models": [
+        "gpt2-small (124M)",
+        "gpt2-medium (355M)"
+      ],
+      "max_windows": 400
+    }
+  }
+}

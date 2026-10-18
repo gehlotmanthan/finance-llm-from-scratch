@@ -1,0 +1,323 @@
+{
+  "chapter": 7,
+  "smoke": false,
+  "device": "NVIDIA GeForce RTX 3060 Laptop GPU (6.0 GB)",
+  "model": "gpt2-medium (355M)",
+  "lora": {
+    "rank": 16,
+    "alpha": 16,
+    "trainable_params": 7077888,
+    "total_params": 413364224,
+    "trainable_share": 0.01712264291164201
+  },
+  "lr": 0.0001,
+  "epochs": 2,
+  "batch_size": 4,
+  "grad_accum": 2,
+  "mask_prompt": false,
+  "data": {
+    "train": 8000,
+    "train_alpaca": 6000,
+    "train_sentiment": 2000,
+    "val": 600,
+    "max_tokens": 256
+  },
+  "train_seconds": 800.168049100088,
+  "peak_gpu_gb": 5.130529403686523,
+  "base_val_loss": 3.841651873588562,
+  "history": {
+    "step": [
+      166,
+      332,
+      498,
+      664,
+      830,
+      996,
+      1162,
+      1328,
+      1494,
+      1660,
+      1826,
+      1992,
+      2000
+    ],
+    "tokens_seen": [
+      208028,
+      414444,
+      623140,
+      827264,
+      1032004,
+      1237908,
+      1443428,
+      1652140,
+      1864936,
+      2071688,
+      2282560,
+      2491488,
+      2501732
+    ],
+    "train_loss": [
+      1.6657521367073058,
+      1.3861923456192016,
+      1.3300171613693237,
+      1.6345542669296265,
+      1.3197670936584474,
+      1.316085821390152,
+      0.9621446013450623,
+      1.3148014545440674,
+      1.1254825472831727,
+      1.0745124578475953,
+      1.0598405480384827,
+      1.0211362063884735,
+      1.0666864156723022
+    ],
+    "val_loss": [
+      1.74635488986969,
+      1.7256913542747498,
+      1.7130723595619202,
+      1.702102291584015,
+      1.7013336300849915,
+      1.69690043926239,
+      1.7600094079971313,
+      1.748539388179779,
+      1.7375715494155883,
+      1.7336816191673279,
+      1.7212823390960694,
+      1.7253448724746705,
+      1.7268398523330688
+    ],
+    "lr": [
+      9.97403527720602e-05,
+      9.675725527028083e-05,
+      9.06479890662557e-05,
+      8.186992609875545e-05,
+      7.108023852954509e-05,
+      5.9086699363999373e-05,
+      4.678720829705282e-05,
+      3.510257019909654e-05,
+      2.4907558799449323e-05,
+      1.6965426504197825e-05,
+      1.1870763289378629e-05,
+      1.00049825545929e-05,
+      1.0000061514140841e-05
+    ],
+    "samples": [],
+    "total_steps": 2000,
+    "total_tokens": 2501732
+  },
+  "sentiment_before": {
+    "accuracy": 0.0010330578512396695,
+    "macro_f1": 0.0007861635220125786,
+    "per_class": {
+      "negative": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 121
+      },
+      "neutral": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 575
+      },
+      "positive": {
+        "precision": 0.001736111111111111,
+        "recall": 0.003676470588235294,
+        "f1": 0.0023584905660377358,
+        "support": 272
+      }
+    },
+    "confusion_matrix": [
+      [
+        0,
+        121,
+        0
+      ],
+      [
+        0,
+        0,
+        575
+      ],
+      [
+        271,
+        0,
+        1
+      ]
+    ],
+    "n": 968,
+    "accuracy_ci": [
+      0.0,
+      0.0030991735537190084
+    ],
+    "macro_f1_ci": [
+      0.0,
+      0.0023781920616046653
+    ],
+    "invalid_rate": 0.996900826446281,
+    "examples": [
+      {
+        "sentence": "As a result of the cancellation , the maximum increase of Citycon 's share capital on the basis of the convertible bonds decreased from EUR 23,383,927.80 to EUR 22,901,784.75 .",
+        "label": "neutral",
+        "response": "The maximum increase"
+      },
+      {
+        "sentence": "Precedex is approved for IV sedation of initially intubated and mechanically ventilated patients in intensive care .",
+        "label": "positive",
+        "response": "The patient is"
+      },
+      {
+        "sentence": "Currently more than 100 of Global Fortune 500 companies are using SSH security solutions .",
+        "label": "neutral",
+        "response": ""
+      },
+      {
+        "sentence": "Myllykoski , with one paper plant in Finland , one in the US and three in Germany , had revenues of EUR286m in the first half of 2010 and an operating loss of EUR12m , Reuters said .",
+        "label": "negative",
+        "response": "The sentiment of"
+      },
+      {
+        "sentence": "The fair value of the company 's investment properties grew to EUR 2.803 billion at the end of March 2009 from EUR 2.691 million a year ago .",
+        "label": "positive",
+        "response": "The fair value"
+      },
+      {
+        "sentence": "`` P&O Ferries now has a very efficient and powerful vessel for its Dover to Calais route , '' head of the shipbuilder 's Rauma yard , Timo Suistio , said .",
+        "label": "positive",
+        "response": "`` The ship"
+      },
+      {
+        "sentence": "In complying with the European Water Framework Directive requirements , the pre-treatment unit will be fully renovated , including hydraulics of waste water inception , degridding , sand and grease removal and treatment and deodorization of the unit .",
+        "label": "positive",
+        "response": "The pre-"
+      },
+      {
+        "sentence": "The invention carries International Patent Publication No. .",
+        "label": "neutral",
+        "response": "The invention carries"
+      }
+    ]
+  },
+  "sentiment_after": {
+    "accuracy": 0.8398760330578512,
+    "macro_f1": 0.8264471124998373,
+    "per_class": {
+      "negative": {
+        "precision": 0.781021897810219,
+        "recall": 0.8842975206611571,
+        "f1": 0.8294573643410854,
+        "support": 121
+      },
+      "neutral": {
+        "precision": 0.8913043478260869,
+        "recall": 0.8556521739130435,
+        "f1": 0.8731144631765749,
+        "support": 575
+      },
+      "positive": {
+        "precision": 0.7670250896057348,
+        "recall": 0.7867647058823529,
+        "f1": 0.7767695099818511,
+        "support": 272
+      }
+    },
+    "confusion_matrix": [
+      [
+        107,
+        8,
+        6
+      ],
+      [
+        24,
+        492,
+        59
+      ],
+      [
+        6,
+        52,
+        214
+      ]
+    ],
+    "n": 968,
+    "accuracy_ci": [
+      0.8171487603305785,
+      0.8615702479338843
+    ],
+    "macro_f1_ci": [
+      0.7997801485788028,
+      0.8513230570251061
+    ],
+    "invalid_rate": 0.0,
+    "examples": [
+      {
+        "sentence": "As a result of the cancellation , the maximum increase of Citycon 's share capital on the basis of the convertible bonds decreased from EUR 23,383,927.80 to EUR 22,901,784.75 .",
+        "label": "neutral",
+        "response": "negative"
+      },
+      {
+        "sentence": "Precedex is approved for IV sedation of initially intubated and mechanically ventilated patients in intensive care .",
+        "label": "positive",
+        "response": "neutral"
+      },
+      {
+        "sentence": "Currently more than 100 of Global Fortune 500 companies are using SSH security solutions .",
+        "label": "neutral",
+        "response": "neutral"
+      },
+      {
+        "sentence": "Myllykoski , with one paper plant in Finland , one in the US and three in Germany , had revenues of EUR286m in the first half of 2010 and an operating loss of EUR12m , Reuters said .",
+        "label": "negative",
+        "response": "neutral"
+      },
+      {
+        "sentence": "The fair value of the company 's investment properties grew to EUR 2.803 billion at the end of March 2009 from EUR 2.691 million a year ago .",
+        "label": "positive",
+        "response": "positive"
+      },
+      {
+        "sentence": "`` P&O Ferries now has a very efficient and powerful vessel for its Dover to Calais route , '' head of the shipbuilder 's Rauma yard , Timo Suistio , said .",
+        "label": "positive",
+        "response": "positive"
+      },
+      {
+        "sentence": "In complying with the European Water Framework Directive requirements , the pre-treatment unit will be fully renovated , including hydraulics of waste water inception , degridding , sand and grease removal and treatment and deodorization of the unit .",
+        "label": "positive",
+        "response": "neutral"
+      },
+      {
+        "sentence": "The invention carries International Patent Publication No. .",
+        "label": "neutral",
+        "response": "neutral"
+      }
+    ]
+  },
+  "figures": [
+    "results/figures/ch07_loss.png"
+  ],
+  "meta": {
+    "timestamp_utc": "2026-10-15 18:31:47",
+    "git_commit": "2c0c7bb",
+    "python": "3.12.10",
+    "torch": "2.11.0+cu128",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "device": "NVIDIA GeForce RTX 3060 Laptop GPU (6.0 GB)",
+    "seed": 123,
+    "args": {
+      "smoke": false,
+      "seed": 123,
+      "device": null,
+      "model": "gpt2-medium (355M)",
+      "lora_rank": 16,
+      "lora_alpha": 16,
+      "n_alpaca": 6000,
+      "n_sentiment": 2000,
+      "max_tokens": 256,
+      "epochs": 2,
+      "batch_size": 4,
+      "grad_accum": 2,
+      "lr": null,
+      "mask_prompt": false,
+      "n_sample_responses": 25
+    }
+  }
+}

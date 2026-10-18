@@ -1,0 +1,155 @@
+{
+  "model": "gpt2-medium (355M)",
+  "responses": [
+    {
+      "instruction": "What are the marks of poor investment advice?",
+      "input": "",
+      "reference": "I would also consider unnecessarily complex investment strategies a big warning sign as they can easily hide poor investment advice or a bad strategy. This is especially the case when it comes to retail investment as complex strategies can have so many moving parts that you, as someone with a day job, can't spend enough time on it to keep an eye on everything and you only spot issues when it's too late. Other bugbears:",
+      "model_response": "I think the main thing to keep in mind is that the advice is not always 100% accurate.  Some of the advice is just plain wrong, and some of it is just plain wrong.  Some of the advice is just plain wrong, but some of it is just plain wrong.  Some of the advice is just plain wrong, but some of it is just plain wrong.  Some of the advice is just plain wrong, but some of it is just plain wrong.  Some of the advice is just plain wrong, but some of it is just plain wrong.  Some of the advice"
+    },
+    {
+      "instruction": "Summarize the main idea behind Winston Churchill's Iron Curtain speech.",
+      "input": "",
+      "reference": "Winston Churchill's Iron Curtain speech, given in 1946, focused on the political divide in Europe following World War II, warning the world of the potential consequences of a divided Europe. He proposed that the United States and the United Kingdom had a responsibility to help defend the democracy and freedom of countries in Eastern Europe, lest the area fall to communism and potentially threaten the democracies of the West. He stressed the urgency of the situation, asserting that the UK and US needed to come to the aid of Eastern Europe before it was too late.",
+      "model_response": "Winston Churchill's speech on the subject of the dangers of nuclear weapons was a powerful statement of the necessity of developing a more peaceful and secure nuclear deterrent. He argued that nuclear weapons were a grave threat to the world and that the best way to protect the world was to develop a more peaceful and secure nuclear deterrent. He also argued that the use of nuclear weapons was a form of aggression and that the world should take steps to reduce the use of nuclear weapons."
+    },
+    {
+      "instruction": "Take the existing sentence and rephrase it",
+      "input": "We should avoid sugary snacks",
+      "reference": "We should resist eating sugary snacks.",
+      "model_response": "We should avoid sugary snacks."
+    },
+    {
+      "instruction": "What are the best software tools for personal finance?",
+      "input": "",
+      "reference": "Emergency Account Vault (Windows) I use it to store info about all of my accounts/assets in an encrypted document. It's more for keeping track of everything that is in your name than managing money. Good for situations when you need to quickly look up info about a specific account you own.",
+      "model_response": "The best software tools for personal finance include: \n1. Personal Finance Suite: \n- Excel\n- Calc\n- Personal Finance Suite: \n- Calc\n- MyFitnessPal\n- MyFitnessPal \n- MyFinance.com \n- MyFinance.com \n- MyFinance.com \n- MyFinance.com \n- MyFinance.com \n- MyFinance.com \n- MyFinance.com \n- MyFinance.com \n- MyFinance.com"
+    },
+    {
+      "instruction": "Generate a script for a commercial that promotes an animal adoption center.",
+      "input": "",
+      "reference": "Scene 1: We open on a young couple entering an animal adoption center, full of excited children and barking dogs. \n\nVoice-over: At the animal adoption center, you\u2019ll find your furry best friend! \n\nScene 2: We see the couple walking around with a few small dogs, laughing and talking.\n\nVoice-over: Choose from a wonderful selection of cats, dogs, and other animals, perfect for every family. \n\nScene 3: We see the couple leaving with their new pup and waving goodbye to the staff at the center.\n\nVoice-over: When you adopt, you save a life! Adopt today!",
+      "model_response": "Script for commercial promoting animal adoption center: \n\n1. Introduce yourself to the community.\n2. Introduce yourself to the community by introducing yourself to the community by introducing yourself to the community by introducing yourself to the community by introducing yourself to the community by introducing yourself to the community by introducing yourself to the community by introducing yourself to the community by introducing yourself to the community by introducing yourself to the community by introducing yourself to the community by introducing yourself to the community by introducing yourself to the community by introducing yourself to the community by introducing yourself to the community by introducing yourself to the community by"
+    },
+    {
+      "instruction": "How does the addition of water affect the boiling point of a substance?",
+      "input": "",
+      "reference": "The addition of water to a substance can have a significant effect on its boiling point. Generally, adding water to a substance increases its boiling point, as the water molecules get in the way of the other molecules trying to escape as vapor. However, there are also solvents, such as methanol, which show the opposite behavior and decrease their boiling point when water is added.",
+      "model_response": "The addition of water to a substance will increase its boiling point. This is due to the fact that water molecules are arranged in a lattice structure, which is a structure that is similar to a lattice. When water molecules are added, they are arranged in a lattice structure, which is a structure that is similar to a lattice. This means that the addition of water will increase the boiling point of the substance by a factor of 10."
+    },
+    {
+      "instruction": "Create a how-to guide for setting up a home Wi-fi network.",
+      "input": "",
+      "reference": "Setting up a home Wi-Fi network requires purchasing a router, connecting the router to an Internet provider, setting the router's administrative username and password, configuring the network's settings, such as security and the network name, and connecting devices to the network. First, purchase a router. Then, connect the router to your Internet provider and configure the connection. Next, set up your network's administrative username and password. After that, configure the network settings such as the default SSID, Wi-Fi security type, channel and broadcast settings. Finally, connect your devices to the network, such as phones, tablets, and computers, using the network name and password.",
+      "model_response": "Setting up a home Wi-fi network involves setting up a router, setting up a router-to-box connection, and setting up a wireless network. First, make sure that the router is set to allow wireless connections. Then, set up a wireless network by following the instructions on the router's website. Once the network is set up, you can start using it."
+    },
+    {
+      "instruction": "Is it worth trying to find a better minimum down payment for a first time home buyer?",
+      "input": "",
+      "reference": "It's worthwhile to try and find a better minimum down-payment.  When I bought my home, I got an FHA loan, which drastically reduced the minimum down-payment required (I think the minimum is 3% under FHA).  Be aware that any down-payment percentage under 20% means that you'll have to pay for private mortgage insurance (PMI) as part of your monthly mortgage.  Here's a good definition of it. Part of the challenge you're experiencing may be that banks are only now exercising the due diligence with borrowers for mortgages that they should have been all along.  I hope you're successful in finding the right payment.  Getting a mortgage to reduce your spending on housing relative to rent is a wise move.  In addition to fixing your monthly costs at a consistent level (unlike rent, which can rise for reasons you don't control), the mortgage interest deduction makes for a rather helpful tax benefit.",
+      "model_response": "I think it's worth trying.  The reason is that if you have a mortgage, you're going to be paying interest on it.  If you don't, you're going to be paying interest on the house.  If you're buying a house with a mortgage, you're paying interest on the mortgage.  If you're buying a house with a mortgage, you're paying interest on the house.  If you're buying a house with a mortgage, you're paying interest on the mortgage.  If you're buying a house with a mortgage, you're paying interest on the mortgage"
+    },
+    {
+      "instruction": "Design an algorithm to find a way out of a maze.",
+      "input": "",
+      "reference": "A possible algorithm for finding a way out of a maze is to choose a direction to start from and explore that direction first. As you explore the maze, keep track of your movements, so you know where you\u2019ve been. If you hit a dead-end, turn around and choose another direction. Once you\u2019ve explored all the sides of the hallway, backtrack until you find a way out.",
+      "model_response": "The algorithm should start by finding a path that leads from the center of the maze to the exit. The algorithm should then check to see if the path is straight or curved, and if it is, it should use the curved path to find a way out. If the path is straight, it should use the curved path to find a way back. If the path is curved, it should use the curved path to find a way back. If the path is not straight, it should use the straight path to find a way out. If the path is not curved, it should use the curved path"
+    },
+    {
+      "instruction": "Group these words as related topics",
+      "input": "Baseball, basketball, football, tennis",
+      "reference": "Sports: Baseball, basketball, football, tennis.",
+      "model_response": "Baseball, basketball, football, tennis"
+    },
+    {
+      "instruction": "Estimate the total cost of a particular item.",
+      "input": "A cordless drill",
+      "reference": "The total cost of a cordless drill, including the battery and charger, is typically around $100-$200.",
+      "model_response": "The total cost of a cordless drill is approximately $200."
+    },
+    {
+      "instruction": "Find the median of the following set of numbers: 8, 4, 3, 6, 7, 9",
+      "input": "",
+      "reference": "The median of the given set of numbers is 6.",
+      "model_response": "The median of the set is 6."
+    },
+    {
+      "instruction": "Generate an example of how to use the phrase \u201cvoice of reason\"",
+      "input": "",
+      "reference": "My mom has always been the voice of reason when it comes to difficult decisions.",
+      "model_response": "A person who is willing to listen to others' opinions and to their points of view is a voice of reason."
+    },
+    {
+      "instruction": "Is it ever a good idea to close credit cards?",
+      "input": "",
+      "reference": "You mentioned you have a bunch of credit cards with no balance, while others have fairly high balances I would not recommend you to close the 0 balance credit cards if they have lower APR. You can transfer the balance to those cards with lower APR. Now, if those 0 balance cards do not have lower APR, closing them will reduce my overall balance and hurt my credit rating and that is true, assume that you mean overall credit line instead of overall balance. But to my understanding, if you keep the payments good and on time, that effect is only temporary, and therefore you can definitely close them.  Don't forget, paying off your balance can also lower your utilization rate and therefore increase your credit ratings, and you can focus more on that instead. Also larger number of accounts with amounts owed can indicate higher risk of over-extension, therefore you should pay off your low balance accounts first, and do not open new credit accounts until you have paid off the current balance.",
+      "model_response": "I think it's a good idea to close your credit cards.  If you have a lot of credit cards, you're going to run into trouble.  If you have a few, you're probably better off with a few.  If you have a few, you're probably better off with a few.  If you have a few, you're probably better off with a few.  If you have a few, you're probably better off with a few.  If you have a few, you're probably better off with a few.  If you have a few, you're"
+    },
+    {
+      "instruction": "Describe the 4 stages of mitosis.",
+      "input": "",
+      "reference": "The four stages of mitosis are prophase, metaphase, anaphase, and telophase. In prophase, the chromosomes condense and spindle fibers start to grow. Then, during metaphase, the chromosomes line up along the equatorial plate. In anaphase, the centromeres divide, the chromosomes move towards the poles, and sister chromatids become separate chromosomes. Then, in telophase, a nuclear membrane forms around the chromosomes, cytokinesis begins, and a new nucleus is formed.",
+      "model_response": "The 4 stages of mitosis are:\n1. Mitosis is the process of splitting the DNA molecule into two identical copies.\n2. Mitosis is the process of removing the DNA molecule from the cell.\n3. Mitosis is the process of removing the DNA molecule from the cell.\n4. Mitosis is the process of creating a new copy of the DNA molecule."
+    },
+    {
+      "instruction": "Find an acceptable substitute for the ingredient in the recipe.",
+      "input": "This recipe calls for green tea leaves.",
+      "reference": "You can use green tea powder as a substitute for green tea leaves in this recipe.",
+      "model_response": "Green tea leaves are an acceptable substitute for the ingredient in the recipe."
+    },
+    {
+      "instruction": "Replace the italicized word with a more appropriate word. \nThe event will require vigorous effort.",
+      "input": "",
+      "reference": "The event will require strenuous effort.",
+      "model_response": "The event will require vigorous effort."
+    },
+    {
+      "instruction": "Find the person who wrote this book.",
+      "input": "The book titled \"Introduction to Quantum Mechanics\"",
+      "reference": "The book was written by David J. Griffiths.",
+      "model_response": "The person who wrote The Introduction to Quantum Mechanics is Dr. Robert L. Smith. He is a professor of physics at the University of Chicago and a member of the American Physical Society. He is the author of several books on quantum mechanics, including \"The Quantum Mechanics of Matter\" and \"The Quantum Mechanics of Matter\"."
+    },
+    {
+      "instruction": "Write a sentence expressing the following sentiment: \u201cIt is necessary to think critically about the decisions we make.\u201d",
+      "input": "",
+      "reference": "It is important to think critically about the choices we make.",
+      "model_response": "It is necessary to think critically about the decisions we make."
+    },
+    {
+      "instruction": "Describe the advantages of using a GPT-3 driven chatbot instead of a traditional customer service representative.",
+      "input": "",
+      "reference": "GPT-3 driven chatbots have a number of advantages over traditional customer service representatives. First, GPT-3 provides more accurate and consistent answers to customer inquiries, which reduces the need for manual customer service agents and helps businesses save time and money. Second, GPT-3 can generate personalized responses to customers, leading to higher customer loyalty and satisfaction. Third, GPT-3 can help businesses anticipate customer needs before they arise, providing a better customer experience. Finally, GPT-3 gives customers accurate and relevant information in a speedy manner, making customer support more efficient. These advantages make GPT-3 a powerful and cost-efficient tool for businesses to use in providing a better customer experience.",
+      "model_response": "GPT-3 is a chatbot that can be used to answer customer inquiries and provide personalized services. GPT-3 is faster and more efficient than traditional customer service representatives, as it can respond to questions quickly and accurately. GPT-3 can also be used to answer other customer inquiries, such as scheduling appointments and providing customer service. GPT-3 is also more efficient than traditional customer service representatives, as it can process more requests in a shorter amount of time."
+    },
+    {
+      "instruction": "Is selling put options an advisable strategy for a retiree to generate stable income?",
+      "input": "",
+      "reference": "Selling options is a great idea, but tweak it a bit and sell credit spreads on both sides of the market, i.e. sell OTM bear call spreads and OTM bull put spreads. This is also known as an iron condor, and limits risk, and allows for much more flexibility.",
+      "model_response": "I think it's a good question.  If you're a stock trader, you're probably doing it wrong.  You're trading a stock that's going to go up or down, and you're trading it with a put option.  You're trading a stock that's going to go up or down, and you're trading it with a put option.  You're trading a stock that's going to go up or down, and you're trading it with a put option.  You're trading a stock that's going to go up or down, and you're trading it with a"
+    },
+    {
+      "instruction": "Explain why science fiction is a genre of literature that is relevant today.",
+      "input": "",
+      "reference": "Science fiction is a genre of literature that is relevant today because it often explores contemporary issues, such as environmental destruction and overpopulation, in imaginative and speculative ways. Through metaphors, science fiction allows us to examine political, social, and ethical questions by presenting them in story form, making them easier to think about and discuss. By speculating on the potential outcomes of current problems, science fiction allows us to explore possible solutions and plan for the future. It is an important genre of literature that shows us both the dangers of our present and helps us to imagine and create a better future.",
+      "model_response": "Science fiction is a genre of literature that is relevant today because it is a genre of literature that is relevant to a wide range of audiences. It is a genre of literature that explores the possibilities and possibilities of science and technology, and it is a genre that is often used to explore the themes of morality, technology, and the future. Science fiction is also a genre of literature that is often used to explore the themes of technology, morality, and the future."
+    },
+    {
+      "instruction": "What is the difference between an artificial neural network and an artificial perceptron?",
+      "input": "",
+      "reference": "An artificial neural network (ANN) is a type of machine learning algorithm that consists of layers of interconnected nodes (neurons) that process information. They are designed to approximate the behavior of neurons in the human brain, allowing ANNs to learn from data. An artificial perceptron is a type of ANN that consists of a single layer of nodes, which accept input and then produce an output. The output is determined by the weights assigned to the inputs, and the perceptron can learn by adjusting these weights. This type of algorithm is primarily used for binary classification.",
+      "model_response": "The main difference between an artificial neural network and an artificial perceptron is that an artificial neural network is a type of artificial neural network that uses a large number of neurons to process data, while an artificial perceptron is a type of perceptron that uses a small number of neurons to process data."
+    },
+    {
+      "instruction": "Create a new word to describe a person who likes being around people.",
+      "input": "",
+      "reference": "The word \"sociatopulous\" could be used to describe a person who likes being around people.",
+      "model_response": "Friendly."
+    },
+    {
+      "instruction": "What is the word for \u201ca large group of people gathered together in one place\u201d?",
+      "input": "",
+      "reference": "The word for \u201ca large group of people gathered together in one place\u201d is a \"crowd.\"",
+      "model_response": "The word for \u201ca large group of people gathered together in one place\u201d is a gathering."
+    }
+  ]
+}

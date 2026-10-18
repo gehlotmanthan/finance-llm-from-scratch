@@ -5,7 +5,7 @@
 2. Measured peak GPU memory and throughput of one full training step
    (forward + backward + AdamW) for GPT-2 small/medium at several batch sizes,
    fp32 vs bf16-autocast, explicit vs fused attention. This decides the batch
-   sizes used in Ch 5-7 on an 8 GB card.
+   sizes used in Ch 5-7 on a 6 GB laptop GPU.
 3. Text from an untrained model (gibberish -- the reason for Ch 5).
 
 Output: results/ch04_model.json + figure.

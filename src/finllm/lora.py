@@ -8,7 +8,7 @@ update ΔW = A·B with A (d_in x r) and B (r x d_out), r << d:
 B starts at zero, so the model is unchanged at step 0. Only A and B train:
 for GPT-2 medium with r = 16 that is roughly 2% of the parameters, so the
 optimizer state is tiny -- the reason a 355M model can be instruction-tuned
-on an 8 GB GPU.
+on a 6 GB laptop GPU.
 """
 
 import math

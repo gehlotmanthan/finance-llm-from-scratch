@@ -144,3 +144,14 @@ def test_download_prices_caches_and_retries_on_empty(tmp_path, monkeypatch):
     assert info["missing"] == ["DEAD"]
     panel = load_price_panel(["AAA", "BRK.B", "DEAD"], tmp_path)
     assert list(panel["open"].columns) == ["AAA", "BRK.B"] and len(panel["close"]) == 30
+
+
+def test_clean_news_drops_placeholder_dates_and_periods_guard():
+    raw = pd.DataFrame({"date": ["1969-12-31 00:00:00"] + ["2015-01-02 00:00:00"] * 3 + ["2018-01-02 00:00:00"],
+                        "stock": ["A", "B", "C", "D", "E"], "headline": ["zero time", "b up", "c up", "d up", "e up"],
+                        "publisher": ["p"] * 5})
+    df = clean_news(raw)
+    assert df["date"].min() == pd.Timestamp("2015-01-02") and df.attrs["n_bad_dates_dropped"] == 1
+    lopsided = pd.Series([pd.Timestamp("1990-01-01")] + [pd.Timestamp("2018-01-01")] * 2000)
+    with pytest.raises(ValueError):
+        calendar_periods(lopsided)

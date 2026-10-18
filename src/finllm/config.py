@@ -10,7 +10,7 @@ A GPT model is fully described by one small dictionary:
     drop_rate       dropout probability
     qkv_bias        bias on the query/key/value projections (True for OpenAI weights)
     use_sdpa        use PyTorch's fused scaled_dot_product_attention (same maths,
-                    less memory -- matters on an 8 GB GPU)
+                    less memory -- matters on a 6-8 GB GPU)
 """
 
 import copy

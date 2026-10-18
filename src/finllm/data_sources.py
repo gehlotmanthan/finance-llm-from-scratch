@@ -31,6 +31,9 @@ NEWS_URL = ("https://huggingface.co/datasets/ashraq/financial-news/resolve/main/
             "train-00000-of-00001-8ec327f23bbe0948.parquet")
 FINANCE_ALPACA_URL = "https://huggingface.co/datasets/gbharti/finance-alpaca/resolve/main/Cleaned_date.json"
 
+MIN_NEWS_DATE = pd.Timestamp("2000-01-01")
+NEWS_CACHE_VERSION = "v2"   # bump whenever clean_news changes so stale caches are ignored
+
 LABELS = ["negative", "neutral", "positive"]          # label_id 0, 1, 2
 LABEL2ID = {l: i for i, l in enumerate(LABELS)}
 # File name in the zip -> minimum share of the 16 annotators who agreed.
@@ -131,10 +134,17 @@ def clean_news(df: pd.DataFrame) -> pd.DataFrame:
     df["ticker"] = df["ticker"].astype(str).str.strip().str.upper()
     df["headline"] = df["headline"].astype(str).str.split().str.join(" ")
     df = df.dropna(subset=["date"])
+    # Placeholder timestamps (e.g. 1970-01-01 / 1969-12-31 = "time zero") and future dates are
+    # data errors; one such row would stretch the calendar windows by decades.
+    bad_date = (df["date"] < MIN_NEWS_DATE) | (df["date"] > pd.Timestamp.now().normalize())
+    n_bad = int(bad_date.sum())
+    df = df[~bad_date]
     df = df[(df["headline"].str.len() > 3) & (df["ticker"].str.len() > 0)]
     key = df["headline"].str.lower()
     df = df.loc[~pd.DataFrame({"t": df["ticker"], "d": df["date"], "h": key}).duplicated()]
-    return df.sort_values(["date", "ticker"]).reset_index(drop=True)
+    df = df.sort_values(["date", "ticker"]).reset_index(drop=True)
+    df.attrs["n_bad_dates_dropped"] = n_bad
+    return df
 
 
 def load_news(raw_dir: Path = RAW_DIR) -> pd.DataFrame:
@@ -144,7 +154,7 @@ def load_news(raw_dir: Path = RAW_DIR) -> pd.DataFrame:
 
 def load_news_cached(raw_dir: Path = RAW_DIR, processed_dir: Path = PROCESSED_DIR) -> pd.DataFrame:
     """Cleaned news, cached as parquet after the first (slower) clean."""
-    cache = Path(processed_dir) / "news_clean.parquet"
+    cache = Path(processed_dir) / f"news_clean_{NEWS_CACHE_VERSION}.parquet"
     if cache.exists():
         return pd.read_parquet(cache)
     df = load_news(raw_dir)
@@ -164,6 +174,14 @@ def calendar_periods(dates: pd.Series, pretrain_frac: float = 0.4, is_frac: floa
     span = end - start
     pretrain_end = (start + span * pretrain_frac).normalize()
     is_end = (start + span * (pretrain_frac + is_frac)).normalize()
+    # Guard against outlier dates silently emptying a window.
+    n = len(dates)
+    counts = {"pretrain": int((dates <= pretrain_end).sum()),
+              "in_sample": int(((dates > pretrain_end) & (dates <= is_end)).sum()),
+              "out_of_sample": int((dates > is_end).sum())}
+    if n >= 1000 and min(counts.values()) < 0.01 * n:
+        raise ValueError(f"A calendar window holds <1% of headlines {counts} for dates "
+                         f"{start.date()}..{end.date()} - check for outlier dates in the news file")
     return {"start": start, "pretrain_end": pretrain_end, "is_end": is_end, "end": end}
 
 

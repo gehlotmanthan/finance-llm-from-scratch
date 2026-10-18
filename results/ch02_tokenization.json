@@ -1,0 +1,314 @@
+{
+  "chapter": 2,
+  "smoke": false,
+  "bpe_stats": {
+    "General English (The Verdict)": {
+      "n_texts": 1,
+      "n_words": 3634,
+      "n_tokens": 5145,
+      "tokens_per_word": 1.3706659328563566,
+      "chars_per_token": 3.980369290573372,
+      "share_words_split": 0.2506879471656577
+    },
+    "PhraseBank sentences": {
+      "n_texts": 4836,
+      "n_words": 111648,
+      "n_tokens": 137913,
+      "tokens_per_word": 1.2256198051017484,
+      "chars_per_token": 4.4895912640577755,
+      "share_words_split": 0.1358555460017197
+    },
+    "News headlines": {
+      "n_texts": 20000,
+      "n_words": 183756,
+      "n_tokens": 288596,
+      "tokens_per_word": 1.545908705021877,
+      "chars_per_token": 3.974448710307835,
+      "share_words_split": 0.3576753956333399
+    }
+  },
+  "finance_terms": {
+    "EBITDA": [
+      " E",
+      "BIT",
+      "DA"
+    ],
+    "EPS": [
+      " EPS"
+    ],
+    "y/y": [
+      " y",
+      "/",
+      "y"
+    ],
+    "bps": [
+      " b",
+      "ps"
+    ],
+    "guidance": [
+      " guidance"
+    ],
+    "dividend": [
+      " dividend"
+    ],
+    "buyback": [
+      " buy",
+      "back"
+    ],
+    "downgrade": [
+      " downgrade"
+    ],
+    "AAPL": [
+      " AAP",
+      "L"
+    ],
+    "NVDA": [
+      " NV",
+      "DA"
+    ],
+    "BRK.B": [
+      " BR",
+      "K",
+      ".",
+      "B"
+    ],
+    "Q3": [
+      " Q",
+      "3"
+    ],
+    "10-K": [
+      " 10",
+      "-",
+      "K"
+    ],
+    "FY2026": [
+      " FY",
+      "20",
+      "26"
+    ],
+    "$1.2bn": [
+      " $",
+      "1",
+      ".",
+      "2",
+      "bn"
+    ],
+    "+3.5%": [
+      " +",
+      "3",
+      ".",
+      "5",
+      "%"
+    ],
+    "FOMC": [
+      " F",
+      "OM",
+      "C"
+    ],
+    "hawkish": [
+      " haw",
+      "kish"
+    ],
+    "SOFR": [
+      " SO",
+      "FR"
+    ],
+    "ETF": [
+      " ETF"
+    ]
+  },
+  "most_fragmented_headline_words": [
+    {
+      "word": "Dividend",
+      "count": 757,
+      "tokens": 3,
+      "pieces": [
+        " D",
+        "ivid",
+        "end"
+      ]
+    },
+    {
+      "word": "Revenues",
+      "count": 214,
+      "tokens": 3,
+      "pieces": [
+        " Re",
+        "ven",
+        "ues"
+      ]
+    },
+    {
+      "word": "REITs",
+      "count": 124,
+      "tokens": 3,
+      "pieces": [
+        " RE",
+        "IT",
+        "s"
+      ]
+    },
+    {
+      "word": "Yields",
+      "count": 66,
+      "tokens": 3,
+      "pieces": [
+        " Y",
+        "ield",
+        "s"
+      ]
+    },
+    {
+      "word": "Premarket",
+      "count": 62,
+      "tokens": 3,
+      "pieces": [
+        " Prem",
+        "ark",
+        "et"
+      ]
+    },
+    {
+      "word": "MSCI",
+      "count": 61,
+      "tokens": 3,
+      "pieces": [
+        " M",
+        "SC",
+        "I"
+      ]
+    },
+    {
+      "word": "Reminds",
+      "count": 58,
+      "tokens": 3,
+      "pieces": [
+        " Rem",
+        "ind",
+        "s"
+      ]
+    },
+    {
+      "word": "Bancorp",
+      "count": 52,
+      "tokens": 3,
+      "pieces": [
+        " B",
+        "anc",
+        "orp"
+      ]
+    },
+    {
+      "word": "Therapeutics",
+      "count": 49,
+      "tokens": 3,
+      "pieces": [
+        " Ther",
+        "ape",
+        "utics"
+      ]
+    },
+    {
+      "word": "SHAREHOLDER",
+      "count": 47,
+      "tokens": 5,
+      "pieces": [
+        " SH",
+        "ARE",
+        "H",
+        "OL",
+        "DER"
+      ]
+    },
+    {
+      "word": "Dividends",
+      "count": 47,
+      "tokens": 3,
+      "pieces": [
+        " D",
+        "ivid",
+        "ends"
+      ]
+    },
+    {
+      "word": "Commodities",
+      "count": 43,
+      "tokens": 3,
+      "pieces": [
+        " Comm",
+        "od",
+        "ities"
+      ]
+    },
+    {
+      "word": "Invesco",
+      "count": 36,
+      "tokens": 3,
+      "pieces": [
+        " In",
+        "ves",
+        "co"
+      ]
+    },
+    {
+      "word": "Outperform",
+      "count": 32,
+      "tokens": 3,
+      "pieces": [
+        " Out",
+        "per",
+        "form"
+      ]
+    },
+    {
+      "word": "Coronavirus",
+      "count": 32,
+      "tokens": 4,
+      "pieces": [
+        " Cor",
+        "on",
+        "av",
+        "irus"
+      ]
+    }
+  ],
+  "word_level_oov": {
+    "vocab_from_verdict_on_phrasebank": {
+      "vocab_size": 1132,
+      "test_tokens": 118469,
+      "unk_tokens": 63777,
+      "oov_rate": 0.5383433640868075
+    },
+    "vocab_from_phrasebank_on_headlines": {
+      "vocab_size": 11889,
+      "test_tokens": 219855,
+      "unk_tokens": 88383,
+      "oov_rate": 0.4020058675035819
+    }
+  },
+  "dataloader": {
+    "max_length": 32,
+    "stride": 32,
+    "batch_size": 8,
+    "n_windows": 2541,
+    "batch_shape": [
+      8,
+      32
+    ],
+    "first_input_text": "Energy Earnings Calls: Insights And Outlook <|endoftext|> Stock Market Indexes Rally To New Highs; Apple, Microsoft Boost Dow <|endoftext|> Stock And Commod",
+    "first_target_text": " Earnings Calls: Insights And Outlook <|endoftext|> Stock Market Indexes Rally To New Highs; Apple, Microsoft Boost Dow <|endoftext|> Stock And Commodity",
+    "targets_are_inputs_shifted_by_one": true
+  },
+  "figures": [
+    "results/figures/ch02_tokens_per_word.png",
+    "results/figures/ch02_term_fragmentation.png"
+  ],
+  "meta": {
+    "timestamp_utc": "2026-10-15 17:11:40",
+    "git_commit": "2c0c7bb",
+    "python": "3.12.10",
+    "torch": "2.11.0+cu128",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "seed": 123
+  }
+}
