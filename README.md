@@ -58,7 +58,7 @@ A single Sharpe ratio isn't enough evidence, so the backtest also reports Newey-
 
 ## Engineering notes
 
-The model code in `src/finllm/` has no `transformers` dependency. `gpt2_weights.py` maps OpenAI's released GPT-2 weights into it, and a test checks the mapping round-trips. The 49 unit tests take about 15 seconds on a CPU. They cover the causal mask, explicit vs fused attention, the exact GPT-2 parameter counts, LoRA starting out as an identity, prompt masking, dynamic padding, the look-ahead check and the portfolio arithmetic.
+The model code in `src/finllm/` has no `transformers` dependency. `gpt2_weights.py` maps OpenAI's released GPT-2 weights into it, and a test checks the mapping round-trips. The 52 unit tests take about 15 seconds on a CPU. They cover the causal mask, explicit vs fused attention, the exact GPT-2 parameter counts, LoRA starting out as an identity, prompt masking, dynamic padding, the look-ahead check and the portfolio arithmetic.
 
 `--smoke` runs the full pipeline on synthetic data in about two minutes, with no downloads. The fake news contains a planted signal, and the backtest has to recover it.
 
@@ -83,6 +83,24 @@ pip install -r requirements.txt
 
 Each step also runs on its own, e.g. `python scripts/sentiment_classifier.py --help`.
 
+## Try the models in a browser
+
+Once the pipeline has written its checkpoints, a small Streamlit app runs them locally:
+
+```bash
+pip install -r requirements.txt
+streamlit run app.py          # opens http://localhost:8501
+```
+
+It has four tabs:
+
+- **Headline sentiment** scores headlines with the fine-tuned GPT-2 and the TF-IDF baseline side by side, including the P(positive) − P(negative) score the backtest trades on.
+- **Finance assistant** asks the LoRA-tuned GPT-2 medium a question, with controls for length, temperature and top-k.
+- **Text generation** continues a prompt with either the domain-adapted GPT-2 or the 49M model trained from scratch.
+- **Attention viewer** draws the attention pattern of any layer and head for a headline you type.
+
+The models load from `checkpoints/` and run on the GPU if there is one, or the CPU otherwise. `FINLLM_SMOKE=1 streamlit run app.py` uses the tiny smoke-test checkpoints instead.
+
 ## Repository layout
 
 ```
@@ -95,9 +113,11 @@ src/finllm/            the library
   instruct.py lora.py           instruction tuning, LoRA
   backtest/                     prices, signal alignment, portfolio, diagnostics
   stats.py                      bootstrap, McNemar, Newey-West, Sharpe CI
+  inference.py                  checkpoint loaders and inference used by the app
   data_sources.py synthetic.py  real datasets / synthetic stand-ins for tests
 scripts/               one script per experiment, plus check_setup.py and build_report.py
 tests/                 pytest suite
+app.py                 Streamlit app for trying the trained models
 results/               JSON results and figures
 reports/               RESULTS.md (generated), METHODOLOGY.md
 data/ checkpoints/     downloads and weights (not in git)
