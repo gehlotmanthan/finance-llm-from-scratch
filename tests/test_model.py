@@ -1,4 +1,4 @@
-"""Chapters 2-4: tokenizer, dataloader, attention, GPT model."""
+"""Tokenizer, dataloader, attention and the GPT model."""
 
 import pytest
 import torch
@@ -14,14 +14,14 @@ from finllm.tokenizer import (SimpleTokenizerV1, SimpleTokenizerV2, bpe_stats, b
                               get_gpt2_tokenizer, preprocess_text, word_level_oov_rate, word_pieces)
 
 
-# ----------------------------------------------------------------- Ch 2
+# ----------------------------------------------------------------- tokenizer and data
 def test_preprocess_and_simple_tokenizers_roundtrip():
     text = load_the_verdict()
     vocab = build_vocab(text)
-    assert len(vocab) == 1132                       # 1,130 tokens + 2 specials, as in the book
+    assert len(vocab) == 1132                       # 1,130 tokens + 2 specials
     tok = SimpleTokenizerV1(vocab)
     s = '"It\'s the last he painted, you know," Mrs. Gisburn said with pardonable pride.'
-    # The book's decoder is lossy around quotes/apostrophes (same output as in 2.3)
+    # The simple word-level decoder is lossy around quotes and apostrophes
     assert tok.decode(tok.encode(s)) == '" It\' s the last he painted, you know," Mrs. Gisburn said with pardonable pride.'
     with pytest.raises(KeyError):
         tok.encode("EBITDA")
@@ -54,7 +54,7 @@ def test_join_documents_uses_eos():
     assert join_documents(["a", " ", "b"]) == "a <|endoftext|> b"
 
 
-# ----------------------------------------------------------------- Ch 3
+# ----------------------------------------------------------------- attention
 def test_simplified_attention_rows_are_convex_combinations():
     x = torch.tensor([[0.43, 0.15, 0.89], [0.55, 0.87, 0.66]])
     out = simplified_self_attention(x)
@@ -96,7 +96,7 @@ def test_single_head_mha_equals_causal_attention():
         assert torch.allclose(ca(x), mha(x), atol=1e-6)
 
 
-# ----------------------------------------------------------------- Ch 4
+# ----------------------------------------------------------------- GPT model
 def test_gpt2_small_parameter_counts():
     model = GPTModel(get_config("small"))
     assert count_parameters(model) == 163_009_536

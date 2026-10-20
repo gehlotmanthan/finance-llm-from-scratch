@@ -1,6 +1,6 @@
-"""Chapter 7 — instruction fine-tuning.
+"""Instruction fine-tuning.
 
-Prompt format (Alpaca, 7.2)::
+Prompt format (Alpaca style)::
 
     Below is an instruction that describes a task. Write a response that
     appropriately completes the request.
@@ -14,15 +14,15 @@ Prompt format (Alpaca, 7.2)::
     ### Response:
     {output}
 
-Batching (7.3): every example ends with one <|endoftext|>; the batch is padded
+Batching: every example ends with one <|endoftext|>; the batch is padded
 with more <|endoftext|> tokens, and every padding position *after the first*
-gets target -100 so the loss ignores it. Optionally (Exercise 7.2) the prompt
+gets target -100 so the loss ignores it. Optionally the prompt
 tokens are masked too, so the model is only graded on the response.
 
 Finance twist: alongside general finance Q&A (finance-alpaca) the training set
 includes "classify the sentiment of this sentence" instructions built from the
-Ch 6 *training* split, so the instruction-tuned model can be scored on the very
-same PhraseBank test set as the Ch 6 classifier.
+sentiment classifier's *training* split, so the instruction-tuned model can be scored
+on the very same PhraseBank test set as the classifier.
 """
 
 import re

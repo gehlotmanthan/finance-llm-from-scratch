@@ -1,9 +1,9 @@
-"""Chapter 2 — from raw text to token IDs, plus tools to measure how well a
+"""From raw text to token IDs, plus tools to measure how well a
 tokenizer fits *financial* text.
 
-    preprocess_text / build_vocab / SimpleTokenizerV1/V2   word-level tokenizers (2.2-2.4)
-    get_gpt2_tokenizer                                     GPT-2 byte-pair encoding (2.5)
-    bpe_stats, word_pieces, word_level_oov_rate            analysis used in scripts/ch02_*
+    preprocess_text / build_vocab / SimpleTokenizerV1/V2   word-level tokenizers
+    get_gpt2_tokenizer                                     GPT-2 byte-pair encoding
+    bpe_stats, word_pieces, word_level_oov_rate            analysis used in scripts/tokenizer_study.py
 
 Why it matters for finance: a word-level vocabulary built on one corpus breaks
 on the next (new tickers, numbers, "Q3", "y/y"). BPE never fails -- it falls
@@ -23,7 +23,7 @@ EOS_ID = 50256
 
 
 def preprocess_text(text: str) -> list[str]:
-    """Split text into words and punctuation (2.2).
+    """Split text into words and punctuation.
 
     >>> preprocess_text("Hello, world. Is this-- a test?")
     ['Hello', ',', 'world', '.', 'Is', 'this', '--', 'a', 'test', '?']
@@ -32,14 +32,14 @@ def preprocess_text(text: str) -> list[str]:
 
 
 def build_vocab(text: str, special_tokens=(EOS_TOKEN, "<|unk|>")) -> dict[str, int]:
-    """Sorted unique tokens -> integer IDs, special tokens appended last (2.3-2.4)."""
+    """Sorted unique tokens -> integer IDs, special tokens appended last."""
     tokens = sorted(set(preprocess_text(text)))
     tokens.extend(special_tokens)
     return {tok: i for i, tok in enumerate(tokens)}
 
 
 class SimpleTokenizerV1:
-    """Word-level tokenizer (2.3). Raises KeyError on unseen words."""
+    """Word-level tokenizer. Raises KeyError on unseen words."""
 
     def __init__(self, vocab: dict[str, int]):
         self.str_to_int = vocab
@@ -54,7 +54,7 @@ class SimpleTokenizerV1:
 
 
 class SimpleTokenizerV2(SimpleTokenizerV1):
-    """V1 + unknown words mapped to <|unk|> (2.4)."""
+    """V1 + unknown words mapped to <|unk|>."""
 
     def __init__(self, vocab: dict[str, int]):
         if "<|unk|>" not in vocab:
@@ -68,12 +68,12 @@ class SimpleTokenizerV2(SimpleTokenizerV1):
 
 @lru_cache(maxsize=1)
 def get_gpt2_tokenizer():
-    """OpenAI's GPT-2 BPE tokenizer (50,257 tokens) via tiktoken (2.5)."""
+    """OpenAI's GPT-2 BPE tokenizer (50,257 tokens) via tiktoken."""
     return tiktoken.get_encoding("gpt2")
 
 
 # ---------------------------------------------------------------------------
-# Analysis helpers (used by scripts/ch02_tokenization.py)
+# Analysis helpers (used by scripts/tokenizer_study.py)
 # ---------------------------------------------------------------------------
 
 _WORD_RE = re.compile(r"\S+")

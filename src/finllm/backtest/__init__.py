@@ -1,4 +1,4 @@
-"""Capstone: from headline sentiment to a tested daily long/short equity signal.
+"""From headline sentiment to a tested daily long/short equity signal.
 
 prices.py     download + cache daily adjusted OHLC (yfinance), wide price panels
 signal.py     score aggregation and look-ahead-safe alignment to trade dates

@@ -1,12 +1,12 @@
-"""Chapter 7.8 (optional) — score the instruction-tuned model's answers with a
-larger local LLM as judge, exactly as the book does with Ollama.
+"""Optional: score the instruction-tuned model's answers with a larger local
+LLM as judge, via Ollama.
 
 Prerequisites: install Ollama (https://ollama.com), run `ollama pull llama3.1`,
 and keep `ollama serve` running. Then:
 
-    python scripts/ch07_ollama_judge.py --judge llama3.1
+    python scripts/llm_judge.py --judge llama3.1
 
-Reads results/ch07_responses.json, writes results/ch07_judge.json.
+Reads results/instruction_responses.json, writes results/instruction_judge.json.
 LLM-as-judge scores are noisy and biased toward fluent text; treat them as a
 rough quality signal next to the objective sentiment accuracy, not as proof.
 """
@@ -33,7 +33,7 @@ def main():
     p.add_argument("--judge", default="llama3.1")
     p.add_argument("--url", default="http://localhost:11434/api/chat")
     args = p.parse_args()
-    data = load_json(RESULTS_DIR / "ch07_responses.json")
+    data = load_json(RESULTS_DIR / "instruction_responses.json")
     scored = []
     for e in data["responses"]:
         q = e["instruction"] + (f"\n\n{e['input']}" if e["input"] else "")
@@ -53,7 +53,7 @@ def main():
            "median_score": statistics.median(vals) if vals else None,
            "items": scored, "meta": run_metadata()}
     print(f"mean judge score {out['mean_score']}")
-    print("saved", rel(save_json(out, RESULTS_DIR / "ch07_judge.json")))
+    print("saved", rel(save_json(out, RESULTS_DIR / "instruction_judge.json")))
 
 
 if __name__ == "__main__":

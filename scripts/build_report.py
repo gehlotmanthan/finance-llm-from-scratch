@@ -2,7 +2,7 @@
 
 Every number in the README comes from a results file written by a script, so
 the write-up can never drift from what was actually run. Re-run after any
-experiment:  python scripts/make_report.py
+experiment:  python scripts/build_report.py
 """
 
 import argparse
@@ -48,9 +48,9 @@ def load(res_dir, name):
     return load_json(p) if p.exists() else None
 
 
-def sec_ch2(r):
+def sec_tokenizer(r):
     if not r:
-        return "_Not run yet: `python scripts/ch02_tokenization.py`_"
+        return "_Not run yet: `python scripts/tokenizer_study.py`_"
     rows = [[k, f(v["tokens_per_word"], 2), f(v["chars_per_token"], 2), f(v["share_words_split"], pct=True)]
             for k, v in r["bpe_stats"].items()]
     o = r["word_level_oov"]
@@ -64,9 +64,9 @@ def sec_ch2(r):
         img(r["figures"][1], "BPE fragmentation of finance terms")])
 
 
-def sec_ch3(r):
+def sec_attention(r):
     if not r:
-        return "_Not run yet: `python scripts/ch03_attention.py`_"
+        return "_Not run yet: `python scripts/attention_benchmark.py`_"
     rows = [[x["T"], f(x["explicit_ms"], 2), f(x.get("fused_sdpa_ms"), 2),
              f(x["explicit_peak_mb"], 0) if isinstance(x["explicit_peak_mb"], float) else x["explicit_peak_mb"] or "–",
              f(x["fused_sdpa_peak_mb"], 0) if isinstance(x["fused_sdpa_peak_mb"], float) else x["fused_sdpa_peak_mb"] or "–"]
@@ -79,9 +79,9 @@ def sec_ch3(r):
         img(r["figures"][0], "attention scaling")])
 
 
-def sec_ch4(r):
+def sec_memory(r):
     if not r:
-        return "_Not run yet: `python scripts/ch04_model.py`_"
+        return "_Not run yet: `python scripts/memory_profile.py`_"
     rows = [[s["model"], f"{s['params_tied']:,}", f(s["fp32_weights_gb"], 2), f(s["adamw_train_state_gb"], 1)]
             for s in r["sizes"]]
     parts = [table(["Model", "Parameters", "fp32 weights (GB)", "AdamW training state (GB)"], rows)]
@@ -113,7 +113,7 @@ def sec_ch4(r):
     return "\n\n".join(parts)
 
 
-def sec_ch5(pre, dom, dapt):
+def sec_pretraining(pre, dom, dapt):
     parts = []
     if pre:
         parts.append(
@@ -122,7 +122,7 @@ def sec_ch5(pre, dom, dapt):
             f"validation perplexity **{f(pre['final_val_ppl'], 1)}**, against **{f(pre['unigram_val_ppl'], 1)}** for a "
             f"word-frequency baseline. Samples: " + "; ".join(f"_“{x['text'].strip()}”_" for x in pre["samples"][-2:]) + f"\n\n" + img(pre["figures"][0], "pretraining loss"))
     else:
-        parts.append("_From-scratch run not done yet: `python scripts/ch05_pretrain_from_scratch.py`_")
+        parts.append("_From-scratch run not done yet: `python scripts/pretrain_small_gpt.py`_")
     if dom:
         corp = list(next(iter(dom["perplexity"].values())))
         rows = [[m] + [f(d[c]["perplexity"], 1) for c in corp] for m, d in dom["perplexity"].items()]
@@ -134,7 +134,7 @@ def sec_ch5(pre, dom, dapt):
                      f"{min(sink[1:]):.0%}–{max(sink[1:]):.0%} of attention on the first token.\n\n"
                      + img(dom["figures"][0], "domain perplexity") + "\n\n" + img(dom["figures"][1], "attention"))
     else:
-        parts.append("_Domain-gap run not done yet: `python scripts/ch05_gpt2_domain.py`_")
+        parts.append("_Domain-gap run not done yet: `python scripts/domain_gap.py`_")
     if dapt:
         rows = [[c, f(b["perplexity"], 1), f(dapt["perplexity_after"][c]["perplexity"], 1),
                  f(dapt["perplexity_after"][c]["perplexity"] / b["perplexity"] - 1, pct=True, sign=True)]
@@ -143,13 +143,13 @@ def sec_ch5(pre, dom, dapt):
                      f"{dapt['train_seconds'] / 60:.0f} min)\n\n"
                      + table(["Corpus", "GPT-2", "GPT-2 + DAPT", "Change"], rows) + "\n\n" + img(dapt["figures"][0], "DAPT"))
     else:
-        parts.append("_DAPT not run yet: `python scripts/ch05_dapt.py`_")
+        parts.append("_DAPT not run yet: `python scripts/domain_adaptation.py`_")
     return "\n\n".join(parts)
 
 
-def sec_ch6(r):
+def sec_sentiment(r):
     if not r:
-        return "_Not run yet: `python scripts/ch06_sentiment.py`_"
+        return "_Not run yet: `python scripts/sentiment_classifier.py`_"
     rows = []
     for name, m in r["models"].items():
         t = m["test"]
@@ -178,15 +178,15 @@ def sec_ch6(r):
         img(r["figures"][0], "model comparison") + "\n\n" + img(r["figures"][1], "confusion matrix")])
 
 
-def sec_ch7(r, ch6):
+def sec_instruct(r, ch6):
     if not r:
-        return "_Not run yet: `python scripts/ch07_instruct.py`_"
+        return "_Not run yet: `python scripts/instruction_tuning.py`_"
     b, a = r["sentiment_before"], r["sentiment_after"]
     rows = [["Base model, zero-shot", f(b["accuracy"]), f(b["macro_f1"]), f(b["invalid_rate"], pct=True)],
             ["After instruction tuning", f(a["accuracy"]), f(a["macro_f1"]), f(a["invalid_rate"], pct=True)]]
     if ch6:
         s = ch6["models"][ch6["selected_by_validation"]]["test"]
-        rows.append([f"Ch 6 classifier ({ch6['selected_by_validation']})", f(s["accuracy"]), f(s["macro_f1"]), "0.0%"])
+        rows.append([f"Sentiment classifier ({ch6['selected_by_validation']})", f(s["accuracy"]), f(s["macro_f1"]), "0.0%"])
     lora = r.get("lora")
     lora_txt = (f"LoRA rank {lora['rank']}: {lora['trainable_params']:,} trainable parameters "
                 f"({lora['trainable_share']:.2%} of {lora['total_params']:,}). ") if lora else "Full fine-tuning. "
@@ -195,9 +195,9 @@ def sec_ch7(r, ch6):
     ex_txt = "\n".join(f"- “{e['sentence'][:110]}” → **{e['response']}** (label: {e['label']})" for e in ex)
     return "\n\n".join([
         f"{r['model']}, {r['data']['train']:,} training examples, {r['train_seconds'] / 60:.0f} min. {lora_txt}{peak}",
-        "Same PhraseBank test set as Ch 6, answered in free text:",
+        "Same PhraseBank test set as the sentiment classifier, answered in free text:",
         table(["Model", "Accuracy", "Macro-F1", "Unparseable answers"], rows), ex_txt,
-        "Free-form finance answers are in [`results/ch07_responses.json`](../results/ch07_responses.json).",
+        "Free-form finance answers are in [`results/instruction_responses.json`](../results/instruction_responses.json).",
         img(r["figures"][0], "instruction tuning loss")])
 
 
@@ -207,9 +207,9 @@ def breakeven_bps(r):
     return r["gross"]["mean_daily_bps"] / t if t else float("nan")
 
 
-def sec_capstone(sc, bt):
+def sec_backtest(sc, bt):
     if not bt:
-        return "_Not run yet: `python scripts/capstone_score_news.py` then `python scripts/capstone_backtest.py`_"
+        return "_Not run yet: `python scripts/score_headlines.py` then `python scripts/backtest.py`_"
     rows = []
     for m, per in bt["results"].items():
         for p, r in per.items():
@@ -236,39 +236,39 @@ def sec_capstone(sc, bt):
                "IC next day (NW t)", "IC same day (NW t)", "Permutation p", "Daily turnover",
                "Break-even cost (bps/side)"], rows),
         "Caveats: " + " ".join(bt["caveats"]),
-        "\n\n".join(img(p, "capstone") for p in bt["figures"])])
+        "\n\n".join(img(p, "backtest") for p in bt["figures"])])
 
 
 def build(res_dir: Path):
     r = {n: load(res_dir, n + ".json") for n in
-         ["ch02_tokenization", "ch03_attention", "ch04_model", "ch05_pretrain", "ch05_gpt2_domain", "ch05_dapt",
-          "ch06_sentiment", "ch07_instruct", "capstone_scoring", "capstone_backtest"]}
+         ["tokenizer_study", "attention_benchmark", "memory_profile", "pretrain_small_gpt", "domain_gap", "domain_adaptation",
+          "sentiment_classifier", "instruction_tuning", "headline_scoring", "backtest"]}
     full = "\n\n".join([
-        "# Results\n\n_Written by `scripts/make_report.py` from the JSON files in `results/`. Edit the script, not this file._",
-        "## Ch 2: Tokenising financial text\n\n" + sec_ch2(r["ch02_tokenization"]),
-        "## Ch 3: Attention\n\n" + sec_ch3(r["ch03_attention"]),
-        "## Ch 4: Model size and what fits on the GPU\n\n" + sec_ch4(r["ch04_model"]),
-        "## Ch 5: Pretraining, GPT-2 weights, domain adaptation\n\n" + sec_ch5(r["ch05_pretrain"], r["ch05_gpt2_domain"], r["ch05_dapt"]),
-        "## Ch 6: Financial sentiment classifier\n\n" + sec_ch6(r["ch06_sentiment"]),
-        "## Ch 7: Instruction-tuned finance assistant\n\n" + sec_ch7(r["ch07_instruct"], r["ch06_sentiment"]),
-        "## Capstone: Sentiment as a trading signal\n\n" + sec_capstone(r["capstone_scoring"], r["capstone_backtest"]),
+        "# Results\n\n_Written by `scripts/build_report.py` from the JSON files in `results/`. Edit the script, not this file._",
+        "## How GPT-2 tokenises financial text\n\n" + sec_tokenizer(r["tokenizer_study"]),
+        "## Attention: correctness and cost\n\n" + sec_attention(r["attention_benchmark"]),
+        "## Model size and what fits on a 6 GB GPU\n\n" + sec_memory(r["memory_profile"]),
+        "## Pretraining, the domain gap and domain adaptation\n\n" + sec_pretraining(r["pretrain_small_gpt"], r["domain_gap"], r["domain_adaptation"]),
+        "## Financial sentiment classifier\n\n" + sec_sentiment(r["sentiment_classifier"]),
+        "## Instruction-tuned finance assistant\n\n" + sec_instruct(r["instruction_tuning"], r["sentiment_classifier"]),
+        "## Backtest: sentiment as a trading signal\n\n" + sec_backtest(r["headline_scoring"], r["backtest"]),
     ]) + "\n"
     return r, full
 
 
 def sc_model(r):
-    sc = r.get("capstone_scoring")
+    sc = r.get("headline_scoring")
     return sc["model"] if sc else "classifier"
 
 
 def readme_block(r):
     rows = []
-    c6, c7, d, bt = r["ch06_sentiment"], r["ch07_instruct"], r["ch05_dapt"], r["capstone_backtest"]
+    c6, c7, d, bt = r["sentiment_classifier"], r["instruction_tuning"], r["domain_adaptation"], r["backtest"]
     if c6:
         best = c6["models"][c6["selected_by_validation"]]
         tf = c6["models"]["TF-IDF + LogReg"]["test"]
         p = pval(best.get("vs_tfidf_mcnemar", {}).get("p_value", float("nan")))
-        rows.append(["Ch 6, sentiment on held-out PhraseBank",
+        rows.append(["Sentiment on held-out PhraseBank",
                      f"macro-F1 {best['test']['macro_f1']:.3f} {ci(best['test']['macro_f1_ci'])} for "
                      f"{c6['selected_by_validation']}, against {tf['macro_f1']:.3f} for TF-IDF + logistic "
                      f"regression (McNemar p {p})"])
@@ -276,21 +276,21 @@ def readme_block(r):
         k = [c for c in d["perplexity_before"] if "out-of-sample" in c][0]
         g = [c for c in d["perplexity_before"] if "General" in c][0]
         ch = lambda c: d["perplexity_after"][c]["perplexity"] / d["perplexity_before"][c]["perplexity"] - 1
-        rows.append(["Ch 5, domain pretraining",
+        rows.append(["Domain pretraining",
                      f"perplexity on unseen headlines {ch(k):+.0%}, on general English {ch(g):+.0%}"])
     if c7:
         a = c7["sentiment_after"]
         lora = f" with LoRA r={c7['lora']['rank']}" if c7.get("lora") else ""
-        rows.append([f"Ch 7, instruction tuning",
+        rows.append(["Instruction tuning",
                      f"{c7['model']}{lora} answers sentiment questions at {a['accuracy']:.1%} accuracy "
                      f"(untuned: {c7['sentiment_before']['accuracy']:.1%})"])
     if bt:
         m = next(iter(bt["results"]))
         o = bt["results"][m]["out_of_sample"]
-        rows.append(["Capstone, same-day link to returns",
+        rows.append(["Backtest, same-day link to returns",
                      f"rank IC {o['ic']['same_day_close_to_close (not tradable)']['mean_ic']:.3f} "
                      f"(t = {o['ic']['same_day_close_to_close (not tradable)']['nw_tstat']:.1f}, out-of-sample)"])
-        rows.append(["Capstone, next-open long/short",
+        rows.append(["Backtest, next-open long/short",
                      f"next-day IC {o['ic']['open_t_to_open_t+1']['mean_ic']:.3f}, gross Sharpe "
                      f"{o['gross']['sharpe']:.2f}, net Sharpe {o['net']['sharpe']:.2f} {ci(o['net_sharpe_ci'], 2)} "
                      f"at {bt['settings']['cost_bps']:g} bps; break-even about {breakeven_bps(o):.1f} bp per side; "

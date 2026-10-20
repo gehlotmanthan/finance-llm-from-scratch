@@ -1,4 +1,4 @@
-"""Chapter 2.6 — sliding-window (input, target) pairs for next-token prediction.
+"""Sliding-window (input, target) pairs for next-token prediction.
 
 For each window start i (stepping by ``stride``)::
 
@@ -47,11 +47,11 @@ def create_dataloader_v1(txt: str, batch_size: int = 4, max_length: int = 256,
 
 def join_documents(docs: list[str]) -> str:
     """Join independent documents (e.g. headlines) with GPT-2's end-of-text marker,
-    so the model learns where one document stops and the next begins (2.4)."""
+    so the model learns where one document stops and the next begins."""
     return f" {EOS_TOKEN} ".join(d.strip() for d in docs if d and d.strip())
 
 
 def train_val_split_text(text: str, train_ratio: float = 0.9) -> tuple[str, str]:
-    """Split one long text at a character boundary (Ch 5.1.3)."""
+    """Split one long text at a character boundary."""
     split = int(train_ratio * len(text))
     return text[:split], text[split:]

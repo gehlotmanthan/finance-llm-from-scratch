@@ -1,15 +1,15 @@
-"""Capstone step 1 — score every headline in the backtest window and fetch prices.
+"""Step 1 of the backtest: score every headline in the backtest window and fetch prices.
 
 * Universe: the N tickers with the most headlines in the PRETRAINING window
   (chosen before the backtest periods start, so the choice uses no future data).
 * Headlines dated after the pretraining window are scored with
-    - the Ch 6 GPT-2 sentiment classifier selected on validation
-    - the Ch 6 TF-IDF + logistic regression baseline
+    - the GPT-2 sentiment classifier selected on validation (sentiment_classifier.py)
+    - the TF-IDF + logistic regression baseline from the same script
   score = P(positive) - P(negative).
 * Daily adjusted prices for the universe and SPY are downloaded once (yfinance)
   and cached in data/prices/.
 
-Output: data/processed/news_scores.parquet, results/capstone_scoring.json
+Output: data/processed/news_scores.parquet, results/headline_scoring.json
 """
 
 import joblib
@@ -31,7 +31,7 @@ from finllm.utils import Timer, device_name, get_device, run_metadata, save_json
 def load_sentiment_model(device, smoke):
     path = checkpoint_path("sentiment-best.pth", smoke)
     if not path.exists():
-        raise FileNotFoundError(f"{path} not found - run scripts/ch06_sentiment.py first")
+        raise FileNotFoundError(f"{path} not found - run scripts/sentiment_classifier.py first")
     ck = torch.load(path, map_location="cpu", weights_only=False)
     clf = GPTClassifier(GPTModel(ck["cfg"]), len(ck["labels"]))
     clf.load_state_dict(ck["model_state_dict"])
@@ -83,14 +83,14 @@ def main():
                                      periods["end"], PRICES_DIR)
 
     label_share = bt["gpt_label"].value_counts(normalize=True).to_dict()
-    result = {"part": "capstone_scoring", "smoke": args.smoke, "device": device_name(device),
+    result = {"experiment": "headline_scoring", "smoke": args.smoke, "device": device_name(device),
               "model": ck["name"], "universe_size": len(universe), "n_headlines": len(bt),
               "headlines_per_second": len(bt) / max(t.seconds, 1e-9), "gpt_label_share": label_share,
               "corr_gpt_vs_tfidf_score": float(np.corrcoef(bt["gpt_score"], bt["tfidf_score"])[0, 1]),
               "periods": {k: str(v.date()) for k, v in periods.items()},
               "prices": price_info, "scores_file": rel(dest),
               "meta": run_metadata(device, seed=args.seed, args=vars(args))}
-    print("saved", rel(save_json(result, out_dir / "capstone_scoring.json")))
+    print("saved", rel(save_json(result, out_dir / "headline_scoring.json")))
 
 
 if __name__ == "__main__":

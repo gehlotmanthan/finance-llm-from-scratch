@@ -1,5 +1,5 @@
 {
-  "chapter": 2,
+  "experiment": "tokenizer_study",
   "smoke": false,
   "bpe_stats": {
     "General English (The Verdict)": {
@@ -300,8 +300,8 @@
     "targets_are_inputs_shifted_by_one": true
   },
   "figures": [
-    "results/figures/ch02_tokens_per_word.png",
-    "results/figures/ch02_term_fragmentation.png"
+    "results/figures/tokenizer_tokens_per_word.png",
+    "results/figures/tokenizer_term_fragmentation.png"
   ],
   "meta": {
     "timestamp_utc": "2026-10-15 17:11:40",

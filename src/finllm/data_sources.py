@@ -1,14 +1,14 @@
 """Download, clean and split every dataset the project uses.
 
-Dataset                         Used in         Licence
+Dataset                         Used for                 Licence
 ------------------------------  --------------  -------------------------------------------
-Financial PhraseBank v1.0       Ch 2, 6, 7      CC BY-NC-SA 3.0 (Malo et al., 2014)
+Financial PhraseBank v1.0       sentiment, tokenizer     CC BY-NC-SA 3.0 (Malo et al., 2014)
   (takala/financial_phrasebank)
-Financial news headlines        Ch 2, 5, Cap.   not stated on the HF card; mirror of the Kaggle
+Financial news headlines        pretraining, backtest    not stated on the HF card; mirror of the Kaggle
   (ashraq/financial-news)                       "Massive Stock News Analysis DB" raw_partner_headlines
-finance-alpaca                  Ch 7            MIT (Alpaca + FiQA + GPT-3.5 pairs)
+finance-alpaca                  instruction tuning       MIT (Alpaca + FiQA + GPT-3.5 pairs)
   (gbharti/finance-alpaca)
-The Verdict (E. Wharton, 1908)  Ch 2, 5         public domain (kept in data/samples)
+The Verdict (E. Wharton, 1908)  general-English control  public domain (kept in data/samples)
 
 Nothing downloaded is committed to git (see .gitignore); each user downloads
 from the original source.
@@ -95,7 +95,7 @@ def load_phrasebank(raw_dir: Path = RAW_DIR) -> pd.DataFrame:
 
 def split_phrasebank(df: pd.DataFrame, seed: int = 123, val_frac: float = 0.1,
                      test_frac: float = 0.2) -> dict[str, pd.DataFrame]:
-    """Stratified train / validation / test split (same split reused in Ch 6 and Ch 7)."""
+    """Stratified train / validation / test split (the same split is reused by the classifier and the instruction-tuned model)."""
     from sklearn.model_selection import train_test_split
     train_val, test = train_test_split(df, test_size=test_frac, stratify=df["label_id"], random_state=seed)
     rel_val = val_frac / (1 - test_frac)
@@ -107,7 +107,7 @@ def split_phrasebank(df: pd.DataFrame, seed: int = 123, val_frac: float = 0.1,
 
 def phrasebank_splits(seed: int = 123, processed_dir: Path = PROCESSED_DIR,
                       raw_dir: Path = RAW_DIR, df: pd.DataFrame | None = None) -> dict[str, pd.DataFrame]:
-    """Load the persisted split, creating it on first use so every chapter sees the same test set."""
+    """Load the persisted split, creating it on first use so every experiment sees the same test set."""
     processed_dir = Path(processed_dir)
     files = {k: processed_dir / f"phrasebank_{k}.csv" for k in ("train", "val", "test")}
     if all(p.exists() for p in files.values()) and df is None:
@@ -166,7 +166,7 @@ def load_news_cached(raw_dir: Path = RAW_DIR, processed_dir: Path = PROCESSED_DI
 def calendar_periods(dates: pd.Series, pretrain_frac: float = 0.4, is_frac: float = 0.3) -> dict:
     """Split the news calendar (not the row count) into three consecutive windows:
 
-        [start, pretrain_end]   domain pretraining text for Ch 5 (never traded)
+        [start, pretrain_end]   domain pretraining text (never traded)
         (pretrain_end, is_end]  in-sample backtest: all design choices made here
         (is_end, end]           out-of-sample backtest: run once, reported as is
     """

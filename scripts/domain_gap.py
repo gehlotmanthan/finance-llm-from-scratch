@@ -1,4 +1,4 @@
-"""Chapter 5.5 — load OpenAI's GPT-2 into our own GPTModel and measure the
+"""Load OpenAI's GPT-2 into our own GPTModel and measure the
 "domain gap" between general English and financial text.
 
 1. Loads GPT-2 weights (Hugging Face safetensors) into finllm.model.GPTModel and
@@ -9,7 +9,7 @@
    each layer puts on the first token (the well-known "attention sink") and the
    pattern of the head that looks most at the content words.
 
-Output: results/ch05_gpt2_domain.json + 2 figures.
+Output: results/domain_gap.json + 2 figures.
 """
 
 import numpy as np
@@ -111,7 +111,7 @@ def main():
     ax.set(ylabel="perplexity (lower = less surprised)", title="How surprised is GPT-2 by each kind of text?")
     ax.grid(axis="x", visible=False)
     ax.legend()
-    savefig(fig, figs, "ch05_domain_perplexity.png")
+    savefig(fig, figs, "domain_perplexity.png")
 
     # Figure 2: attention
     fig, (a1, a2) = plt.subplots(1, 2, figsize=(10.5, 4.2), gridspec_kw={"width_ratios": [1, 1.6]})
@@ -128,14 +128,14 @@ def main():
     a2.grid(False)
     a2.set_title(f"Layer {attention['head_shown']['layer']}, head {attention['head_shown']['head']}: "
                  "rows attend to columns", fontsize=10)
-    savefig(fig, figs, "ch05_attention.png")
+    savefig(fig, figs, "attention_on_headline.png")
 
-    result = {"chapter": 5, "part": "gpt2_domain_gap", "smoke": args.smoke, "device": device_name(device),
+    result = {"experiment": "domain_gap", "smoke": args.smoke, "device": device_name(device),
               "eval_window_tokens": max_len, "perplexity": ppl, "samples": samples, "attention": attention,
               "periods": {k: str(v.date()) for k, v in periods.items()},
-              "figures": [rel(figs / "ch05_domain_perplexity.png"), rel(figs / "ch05_attention.png")],
+              "figures": [rel(figs / "domain_perplexity.png"), rel(figs / "attention_on_headline.png")],
               "meta": run_metadata(device, seed=args.seed, args=vars(args))}
-    print("saved", rel(save_json(result, out_dir / "ch05_gpt2_domain.json")))
+    print("saved", rel(save_json(result, out_dir / "domain_gap.json")))
 
 
 if __name__ == "__main__":

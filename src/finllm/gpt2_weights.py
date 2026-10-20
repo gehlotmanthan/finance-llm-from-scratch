@@ -1,8 +1,7 @@
-"""Chapter 5.5 — loading OpenAI's pretrained GPT-2 weights into our own GPTModel.
+"""Loading OpenAI's pretrained GPT-2 weights into our own GPTModel.
 
-The book downloads the original TensorFlow checkpoint. We use the same weights
-in safetensors format from Hugging Face (openai-community/gpt2*), which needs no
-TensorFlow -- the approach in the book repo's ch05/02_alternative_weight_loading.
+The weights come in safetensors format from Hugging Face (openai-community/gpt2*),
+so no TensorFlow install is needed.
 
 Mapping (HF uses a "Conv1D" layer whose weight is stored (in, out), so every
 matrix is transposed for our nn.Linear, which stores (out, in)):

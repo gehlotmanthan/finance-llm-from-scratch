@@ -1,4 +1,4 @@
-"""Appendix E — Low-Rank Adaptation (LoRA).
+"""Low-Rank Adaptation (LoRA).
 
 Instead of updating a big weight matrix W (d_in x d_out), learn a low-rank
 update ΔW = A·B with A (d_in x r) and B (r x d_out), r << d:

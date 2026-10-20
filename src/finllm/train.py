@@ -1,12 +1,12 @@
-"""Chapter 5 — pretraining: loss, evaluation, and the training loop.
+"""Language-model training: loss, evaluation and the training loop.
 
 Loss: cross-entropy between the model's next-token distribution and the true
-next token, averaged over every position in the batch (5.1.2).
+next token, averaged over every position in the batch.
 Perplexity = exp(loss) -- "the model is as unsure as a uniform choice among
 exp(loss) tokens".
 
-``train_lm`` is the book's ``train_model_simple`` plus the Appendix D upgrades,
-all off by default so the plain book loop is still what runs:
+``train_lm`` is a plain next-token training loop with the usual upgrades,
+all off by default:
 
 * linear warm-up then cosine decay of the learning rate
 * gradient clipping
@@ -89,7 +89,7 @@ def unigram_baseline_loss(train_ids: list[int], val_ids: list[int], vocab_size: 
 
 def lr_at_step(step: int, total_steps: int, max_lr: float, warmup_steps: int = 0,
                min_lr: float = 0.0) -> float:
-    """Appendix D.1-D.2: linear warm-up to ``max_lr`` then cosine decay to ``min_lr``."""
+    """Linear warm-up to ``max_lr`` then cosine decay to ``min_lr``."""
     if warmup_steps > 0 and step < warmup_steps:
         return max_lr * (step + 1) / warmup_steps
     progress = (step - warmup_steps) / max(1, total_steps - warmup_steps)
@@ -162,7 +162,7 @@ def sample_text(model, tokenizer, device, start_context: str, max_new_tokens: in
 
 
 def save_checkpoint(path: Path, model, cfg: dict, optimizer=None, **extra) -> Path:
-    """5.4: save weights (+ optimizer state to resume) and the config needed to rebuild."""
+    """Save weights (+ optimizer state to resume) and the config needed to rebuild."""
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     payload = {"model_state_dict": model.state_dict(), "cfg": cfg, **extra}

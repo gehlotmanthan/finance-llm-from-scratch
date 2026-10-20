@@ -1,7 +1,7 @@
-"""Chapters 4.7 and 5.3 — turning next-token logits into text.
+"""Turning next-token logits into text.
 
-generate_text_simple   greedy decoding (4.7)
-generate               temperature scaling + top-k sampling + early stop on EOS (5.3)
+generate_text_simple   greedy decoding
+generate               temperature scaling + top-k sampling + early stop on EOS
 """
 
 import torch
@@ -30,7 +30,7 @@ def generate_text_simple(model, idx, max_new_tokens: int, context_size: int):
 @torch.no_grad()
 def generate(model, idx, max_new_tokens: int, context_size: int,
              temperature: float = 0.0, top_k: int | None = None, eos_id: int | None = None):
-    """5.3: temperature 0 = greedy; >1 flatter, <1 sharper. ``top_k`` keeps the k best logits."""
+    """Temperature 0 = greedy; >1 flatter, <1 sharper. ``top_k`` keeps the k best logits."""
     for _ in range(max_new_tokens):
         logits = model(idx[:, -context_size:])[:, -1, :]
         if top_k is not None:

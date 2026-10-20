@@ -1,6 +1,5 @@
 {
-  "chapter": 5,
-  "part": "pretrain_from_scratch",
+  "experiment": "pretrain_small_gpt",
   "smoke": false,
   "device": "NVIDIA GeForce RTX 3060 Laptop GPU (6.0 GB)",
   "config": {
@@ -178,7 +177,7 @@
   ],
   "checkpoint": "checkpoints/fin-small-scratch.pth",
   "figures": [
-    "results/figures/ch05_pretrain_loss.png"
+    "results/figures/pretrain_loss.png"
   ],
   "meta": {
     "timestamp_utc": "2026-10-15 17:33:41",

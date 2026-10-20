@@ -1,4 +1,4 @@
-"""Capstone step 2 — does LLM headline sentiment predict next-day stock returns?
+"""Step 2 of the backtest: does LLM headline sentiment predict next-day stock returns?
 
 Design (all fixed before looking at the out-of-sample period):
   * signal: mean headline score per stock, news from day d traded at the
@@ -13,7 +13,7 @@ Design (all fixed before looking at the out-of-sample period):
     price reaction, which shows whether the model reads news the way the market
     does even when that is no longer tradable), cost sensitivity, beta to SPY
 
-Output: results/capstone_backtest.json + 4 figures.
+Output: results/backtest.json + 4 figures.
 """
 
 import numpy as np
@@ -131,7 +131,7 @@ def main():
     ax.text(periods["is_end"], ax.get_ylim()[1], " out-of-sample →", va="top", fontsize=8, color=INK_2)
     ax.set(ylabel=f"growth of 1 (net of {args.cost_bps:g} bps)", title="Sentiment long/short, next-open entry")
     ax.legend(loc="upper left")
-    savefig(fig, figs, "capstone_equity.png")
+    savefig(fig, figs, "backtest_equity.png")
 
     fig, axes = plt.subplots(1, 2, figsize=(10, 3.4), sharey=True)
     hz = ["same-day\n(close d)"] + [f"+{h}d\n(open)" for h in HORIZONS]
@@ -148,7 +148,7 @@ def main():
         ax.grid(axis="x", visible=False)
     axes[0].set_ylabel("mean daily rank IC")
     axes[0].legend(fontsize=8)
-    savefig(fig, figs, "capstone_ic_decay.png")
+    savefig(fig, figs, "backtest_ic_decay.png")
 
     fig, ax = plt.subplots(figsize=(6, 3.2))
     for i, mname in enumerate(models):
@@ -158,7 +158,7 @@ def main():
     ax.set(xlabel="transaction cost (bps per side)", ylabel="out-of-sample Sharpe",
            title="How much of the edge survives costs?")
     ax.legend()
-    savefig(fig, figs, "capstone_costs.png")
+    savefig(fig, figs, "backtest_costs.png")
 
     first = list(models)[0]
     perm = res[first]["out_of_sample"]["permutation"]
@@ -169,22 +169,22 @@ def main():
             f" actual\n p = {perm['p_value_one_sided']:.3f}", va="top", fontsize=8, color=INK_2)
     ax.set(xlabel="mean daily gross return (bps) with scores shuffled within each day",
            ylabel="count", title=f"{first}: out-of-sample permutation test")
-    savefig(fig, figs, "capstone_permutation.png")
+    savefig(fig, figs, "backtest_permutation.png")
 
-    result = {"part": "capstone_backtest", "smoke": args.smoke,
+    result = {"experiment": "backtest", "smoke": args.smoke,
               "settings": {"threshold": args.threshold, "min_names": args.min_names, "cost_bps": args.cost_bps,
                            "min_price": args.min_price, "entry": "open of first trading day after news date",
                            "holding": "1 day open-to-open", "return_clip": 0.4},
               "periods": {k: str(v.date()) for k, v in periods.items()}, "coverage": coverage,
               "results": res,
-              "figures": [rel(figs / f) for f in ("capstone_equity.png", "capstone_ic_decay.png",
-                                                  "capstone_costs.png", "capstone_permutation.png")],
+              "figures": [rel(figs / f) for f in ("backtest_equity.png", "backtest_ic_decay.png",
+                                                  "backtest_costs.png", "backtest_permutation.png")],
               "caveats": ["Prices from Yahoo Finance: delisted companies are missing (survivorship bias).",
                           "Headline timestamps are dates only; entry is delayed to the next open to stay safe.",
                           "Partner-site headlines are not a complete news feed; coverage varies by stock and year.",
                           "Costs are a flat bps charge; no market impact or borrow fees for shorts."],
               "meta": run_metadata(seed=args.seed, args=vars(args))}
-    print("saved", rel(save_json(result, out_dir / "capstone_backtest.json")))
+    print("saved", rel(save_json(result, out_dir / "backtest.json")))
 
 
 if __name__ == "__main__":

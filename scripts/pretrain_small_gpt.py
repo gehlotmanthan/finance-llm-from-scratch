@@ -1,4 +1,4 @@
-"""Chapter 5 — pretrain a small GPT from scratch on financial news headlines.
+"""Pretrain a small GPT from scratch on financial news headlines.
 
 Model: FIN_SMALL_CONFIG (6 layers, 384 wide, 128-token context, ~30M params).
 Data: headlines dated inside the *pretraining window only* (the first 40% of
@@ -7,7 +7,7 @@ the news calendar), so nothing the model reads overlaps the backtest periods.
 Reported: train/val loss curves, validation perplexity, a unigram
 (word-frequency) baseline the model has to beat, and generated samples.
 
-Output: results/ch05_pretrain.json, figure, checkpoints/fin-small-scratch.pth
+Output: results/pretrain_small_gpt.json, figure, checkpoints/fin-small-scratch.pth
 """
 
 import torch
@@ -87,10 +87,10 @@ def main():
     ax.set(xlabel="tokens seen (millions)", ylabel="cross-entropy loss",
            title=f"Pretraining a {n_params / 1e6:.0f}M-parameter GPT on financial headlines")
     ax.legend()
-    savefig(fig, figs, "ch05_pretrain_loss.png")
+    savefig(fig, figs, "pretrain_loss.png")
 
     ckpt = save_checkpoint(checkpoint_path("fin-small-scratch.pth", args.smoke), model, cfg)
-    result = {"chapter": 5, "part": "pretrain_from_scratch", "smoke": args.smoke,
+    result = {"experiment": "pretrain_small_gpt", "smoke": args.smoke,
               "device": device_name(device), "config": cfg, "params": n_params,
               "data": {"headlines": len(heads), "train_tokens": len(train_ids), "val_tokens": len(val_ids),
                        "window_end": str(periods["pretrain_end"].date())},
@@ -98,9 +98,9 @@ def main():
               "final_val_loss": final_val, "final_val_ppl": perplexity(final_val),
               "unigram_val_loss": unigram, "unigram_val_ppl": perplexity(unigram),
               "samples": samples, "checkpoint": rel(ckpt),
-              "figures": [rel(figs / "ch05_pretrain_loss.png")],
+              "figures": [rel(figs / "pretrain_loss.png")],
               "meta": run_metadata(device, seed=args.seed, args=vars(args))}
-    print("saved", rel(save_json(result, out_dir / "ch05_pretrain.json")))
+    print("saved", rel(save_json(result, out_dir / "pretrain_small_gpt.json")))
 
 
 if __name__ == "__main__":

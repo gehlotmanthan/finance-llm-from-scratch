@@ -1,4 +1,4 @@
-"""Chapter 2 — How well does GPT-2's tokenizer fit financial text?
+"""How well does GPT-2's tokenizer fit financial text?
 
 Measures, on real data:
   * BPE efficiency (tokens per word, share of words split) on financial news
@@ -7,7 +7,7 @@ Measures, on real data:
   * why a closed word-level vocabulary fails (out-of-vocabulary rate);
   * the sliding-window dataloader's output on the finance corpus.
 
-Output: results/ch02_tokenization.json + 2 figures.
+Output: results/tokenizer_study.json + 2 figures.
 """
 
 from collections import Counter
@@ -58,7 +58,7 @@ def main():
     worst = [{"word": w, "count": c, "tokens": k, "pieces": word_pieces(w, enc)}
              for w, c, k in frag if k >= 3 and w.isalpha()][:15]
 
-    # Closed-vocabulary failure (2.3-2.4)
+    # Closed-vocabulary failure
     oov = {
         "vocab_from_verdict_on_phrasebank": word_level_oov_rate([verdict], pb["text"].tolist()),
         "vocab_from_phrasebank_on_headlines": word_level_oov_rate(pb["text"].tolist(), heads),
@@ -66,7 +66,7 @@ def main():
     for k, v in oov.items():
         print(f"OOV {k}: {v['oov_rate']:.1%} of tokens become <|unk|> (vocab {v['vocab_size']:,})")
 
-    # 2.6 dataloader on the finance corpus
+    # Sliding-window dataloader on the finance corpus
     corpus = join_documents(heads[:5000])
     dl = create_dataloader_v1(corpus, batch_size=8, max_length=32, stride=32, shuffle=False)
     x, y = next(iter(dl))
@@ -86,7 +86,7 @@ def main():
     ax.set_xlabel("GPT-2 BPE tokens per word (lower = more efficient)")
     ax.set_title("GPT-2 tokenizer efficiency by corpus")
     ax.grid(axis="y", visible=False)
-    savefig(fig, figs, "ch02_tokens_per_word.png")
+    savefig(fig, figs, "tokenizer_tokens_per_word.png")
 
     fig, ax = plt.subplots(figsize=(6.4, 4.6))
     items = sorted(terms.items(), key=lambda kv: len(kv[1]))
@@ -98,16 +98,16 @@ def main():
     ax.set_title("How GPT-2 splits finance vocabulary")
     ax.set_xlim(0, max(len(p) for p in terms.values()) + 3)
     ax.grid(axis="y", visible=False)
-    savefig(fig, figs, "ch02_term_fragmentation.png")
+    savefig(fig, figs, "tokenizer_term_fragmentation.png")
 
     result = {
-        "chapter": 2, "smoke": args.smoke,
+        "experiment": "tokenizer_study", "smoke": args.smoke,
         "bpe_stats": stats, "finance_terms": terms, "most_fragmented_headline_words": worst,
         "word_level_oov": oov, "dataloader": loader,
-        "figures": [rel(figs / "ch02_tokens_per_word.png"), rel(figs / "ch02_term_fragmentation.png")],
+        "figures": [rel(figs / "tokenizer_tokens_per_word.png"), rel(figs / "tokenizer_term_fragmentation.png")],
         "meta": run_metadata(seed=args.seed),
     }
-    print("saved", rel(save_json(result, out_dir / "ch02_tokenization.json")))
+    print("saved", rel(save_json(result, out_dir / "tokenizer_study.json")))
 
 
 if __name__ == "__main__":

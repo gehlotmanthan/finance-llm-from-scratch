@@ -1,8 +1,8 @@
 # Results
 
-_Written by `scripts/make_report.py` from the JSON files in `results/`. Edit the script, not this file._
+_Written by `scripts/build_report.py` from the JSON files in `results/`. Edit the script, not this file._
 
-## Ch 2: Tokenising financial text
+## How GPT-2 tokenises financial text
 
 | Corpus | Tokens / word | Chars / token | Words split into 2+ tokens |
 |---|---|---|---|
@@ -12,9 +12,9 @@ _Written by `scripts/make_report.py` from the JSON files in `results/`. Edit the
 
 A word-level vocabulary built on general English maps 53.8% of PhraseBank tokens to `<|unk|>`; one built on PhraseBank still loses 40.2% of headline tokens. BPE never fails, but it fragments finance vocabulary: `EBITDA` → 3, `EPS` → 1, `y/y` → 3, `bps` → 2, `guidance` → 1, `dividend` → 1, `buyback` → 2, `downgrade` → 1, `AAPL` → 2, `NVDA` → 2.
 
-![BPE fragmentation of finance terms](../results/figures/ch02_term_fragmentation.png)
+![BPE fragmentation of finance terms](../results/figures/tokenizer_term_fragmentation.png)
 
-## Ch 3: Attention
+## Attention: correctness and cost
 
 Device: NVIDIA GeForce RTX 3060 Laptop GPU (6.0 GB). Explicit attention equals PyTorch's fused kernel to 3.6e-07; editing future tokens changes past outputs by 0.0e+00 (no look-ahead).
 
@@ -25,9 +25,9 @@ Device: NVIDIA GeForce RTX 3060 Laptop GPU (6.0 GB). Explicit attention equals P
 | 512 | 16.24 | 10.51 | 528 | 225 |
 | 1024 | 50.87 | 27.52 | 1734 | 351 |
 
-![attention scaling](../results/figures/ch03_attention_scaling.png)
+![attention scaling](../results/figures/attention_scaling.png)
 
-## Ch 4: Model size and what fits on the GPU
+## Model size and what fits on a 6 GB GPU
 
 | Model | Parameters | fp32 weights (GB) | AdamW training state (GB) |
 |---|---|---|---|
@@ -49,13 +49,13 @@ Measured on **NVIDIA GeForce RTX 3060 Laptop GPU (6.0 GB)** (sequence length 256
 | gpt2-small (124M) | fused | bf16 | 8 | 9,869 |
 | gpt2-small (124M) | fused | fp32 | 8 | 6,116 |
 
-![GPU memory fit](../results/figures/ch04_memory_fit.png)
+![GPU memory fit](../results/figures/gpu_memory_fit.png)
 
-## Ch 5: Pretraining, GPT-2 weights, domain adaptation
+## Pretraining, the domain gap and domain adaptation
 
 A 49M-parameter GPT trained from scratch on 1,699,738 tokens of headlines (≤ 2014-03-23) in 3.3 min reaches validation perplexity **25.9**, against **829.7** for a word-frequency baseline. Samples: _“Oil prices, 2012 - Corporate Summary”_; _“Tesla stock falls as Stocks to Watch: AAPL, CSC, OXY, TIF, PNC”_
 
-![pretraining loss](../results/figures/ch05_pretrain_loss.png)
+![pretraining loss](../results/figures/pretrain_loss.png)
 
 OpenAI's GPT-2 weights loaded into this code, perplexity by domain (256-token windows):
 
@@ -68,9 +68,9 @@ Greedy sample (gpt2-medium (355M)): _“The Federal Reserve said on Wednesday th
 
 Attention sink: averaged over heads, layers 2–12 put 36%–85% of attention on the first token.
 
-![domain perplexity](../results/figures/ch05_domain_perplexity.png)
+![domain perplexity](../results/figures/domain_perplexity.png)
 
-![attention](../results/figures/ch05_attention.png)
+![attention](../results/figures/attention_on_headline.png)
 
 Domain-adaptive pretraining (12.3M tokens, 23 min)
 
@@ -80,9 +80,9 @@ Domain-adaptive pretraining (12.3M tokens, 23 min)
 | Financial PhraseBank (test) | 138.7 | 660.6 | +376.2% |
 | News headlines (out-of-sample window) | 604.1 | 149.7 | -75.2% |
 
-![DAPT](../results/figures/ch05_dapt.png)
+![DAPT](../results/figures/domain_adaptation.png)
 
-## Ch 6: Financial sentiment classifier
+## Financial sentiment classifier
 
 Test set: 968 PhraseBank sentences (never used for training or model selection). The model in bold was picked on validation macro-F1.
 
@@ -97,31 +97,31 @@ Test set: 968 PhraseBank sentences (never used for training or model selection).
 
 Accuracy of the selected model by annotator agreement: 50% agreement: 0.675 (n=123), 66% agreement: 0.778 (n=158), 75% agreement: 0.848 (n=237), 100% agreement: 0.960 (n=450). Domain pretraining before fine-tuning changed test macro-F1 by +0.002 (0.845 → 0.847); the confidence intervals overlap almost completely.
 
-![model comparison](../results/figures/ch06_model_comparison.png)
+![model comparison](../results/figures/sentiment_model_comparison.png)
 
-![confusion matrix](../results/figures/ch06_confusion.png)
+![confusion matrix](../results/figures/sentiment_confusion.png)
 
-## Ch 7: Instruction-tuned finance assistant
+## Instruction-tuned finance assistant
 
 gpt2-medium (355M), 8,000 training examples, 13 min. LoRA rank 16: 7,077,888 trainable parameters (1.71% of 413,364,224). Peak GPU memory 5.1 GB. 
 
-Same PhraseBank test set as Ch 6, answered in free text:
+Same PhraseBank test set as the sentiment classifier, answered in free text:
 
 | Model | Accuracy | Macro-F1 | Unparseable answers |
 |---|---|---|---|
 | Base model, zero-shot | 0.001 | 0.001 | 99.7% |
 | After instruction tuning | 0.840 | 0.826 | 0.0% |
-| Ch 6 classifier (GPT-2 small + DAPT (all)) | 0.867 | 0.847 | 0.0% |
+| Sentiment classifier (GPT-2 small + DAPT (all)) | 0.867 | 0.847 | 0.0% |
 
 - “As a result of the cancellation , the maximum increase of Citycon 's share capital on the basis of the convert” → **negative** (label: neutral)
 - “Precedex is approved for IV sedation of initially intubated and mechanically ventilated patients in intensive ” → **neutral** (label: positive)
 - “Currently more than 100 of Global Fortune 500 companies are using SSH security solutions .” → **neutral** (label: neutral)
 
-Free-form finance answers are in [`results/ch07_responses.json`](../results/ch07_responses.json).
+Free-form finance answers are in [`results/instruction_responses.json`](../results/instruction_responses.json).
 
-![instruction tuning loss](../results/figures/ch07_loss.png)
+![instruction tuning loss](../results/figures/instruction_tuning_loss.png)
 
-## Capstone: Sentiment as a trading signal
+## Backtest: sentiment as a trading signal
 
 In-sample 2014-03-23 → 2017-04-28, out-of-sample 2017-04-28 → 2020-06-04. 478,528 headlines on 750 stocks scored with GPT-2 small + DAPT (all) (3,026 headlines/s). Price coverage 66% of headlines. Rules: enter at the open after the news date, hold one day, ±0.25 score threshold, ≥3 names per side, price ≥ $5, 10 bps per side.
 
@@ -134,10 +134,10 @@ In-sample 2014-03-23 → 2017-04-28, out-of-sample 2017-04-28 → 2020-06-04. 47
 
 Caveats: Prices from Yahoo Finance: delisted companies are missing (survivorship bias). Headline timestamps are dates only; entry is delayed to the next open to stay safe. Partner-site headlines are not a complete news feed; coverage varies by stock and year. Costs are a flat bps charge; no market impact or borrow fees for shorts.
 
-![capstone](../results/figures/capstone_equity.png)
+![backtest](../results/figures/backtest_equity.png)
 
-![capstone](../results/figures/capstone_ic_decay.png)
+![backtest](../results/figures/backtest_ic_decay.png)
 
-![capstone](../results/figures/capstone_costs.png)
+![backtest](../results/figures/backtest_costs.png)
 
-![capstone](../results/figures/capstone_permutation.png)
+![backtest](../results/figures/backtest_permutation.png)

@@ -1,4 +1,4 @@
-"""Small helpers shared by every chapter: seeding, device choice, result files."""
+"""Small helpers shared by every experiment: seeding, device choice, result files."""
 
 import json
 import platform

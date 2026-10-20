@@ -1,4 +1,4 @@
-"""Capstone: look-ahead-safe alignment, portfolio maths, trading statistics."""
+"""Backtest: look-ahead-safe alignment, portfolio maths, trading statistics."""
 
 import numpy as np
 import pandas as pd

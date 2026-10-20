@@ -1,19 +1,19 @@
-"""Chapter 3 — attention, built up in four steps.
+"""Attention, built up in four steps.
 
-    3.3  simplified_self_attention   no trainable weights
-    3.4  SelfAttention_v2            trainable W_q, W_k, W_v
-    3.5  CausalAttention             + causal mask + dropout
-    3.6  MultiHeadAttention          h heads in one batched matmul (used by GPTModel)
+    simplified_self_attention   no trainable weights
+    SelfAttention_v2            trainable W_q, W_k, W_v
+    CausalAttention             + causal mask + dropout
+    MultiHeadAttention          h heads in one batched matmul (used by GPTModel)
 
     context = softmax( Q Kᵀ / sqrt(d_k) + causal_mask ) V
 
-Additions over the book, both switchable and covered by tests:
+Two additions over the textbook version, both switchable and covered by tests:
 
 * ``use_sdpa`` — call ``torch.nn.functional.scaled_dot_product_attention``
   (fused / flash kernels). Mathematically identical, never materialises the
   T x T matrix, so long contexts fit on a small (6-8 GB) GPU.
 * ``store_attn`` — keep the last attention weights for plotting
-  (scripts/ch05_gpt2_domain.py shows what GPT-2 attends to in a headline).
+  (scripts/domain_gap.py shows what GPT-2 attends to in a headline).
 """
 
 import torch
@@ -22,13 +22,13 @@ import torch.nn.functional as F
 
 
 def simplified_self_attention(inputs: torch.Tensor) -> torch.Tensor:
-    """3.3: context vectors as similarity-weighted averages of the inputs. ``(T, d) -> (T, d)``."""
+    """Context vectors as similarity-weighted averages of the inputs. ``(T, d) -> (T, d)``."""
     attn_weights = torch.softmax(inputs @ inputs.T, dim=-1)
     return attn_weights @ inputs
 
 
 class SelfAttention_v2(nn.Module):
-    """3.4: single sequence ``(T, d_in) -> (T, d_out)`` with trainable projections."""
+    """Single sequence ``(T, d_in) -> (T, d_out)`` with trainable projections."""
 
     def __init__(self, d_in, d_out, qkv_bias=False):
         super().__init__()
@@ -43,7 +43,7 @@ class SelfAttention_v2(nn.Module):
 
 
 class CausalAttention(nn.Module):
-    """3.5: batched single-head attention that cannot look at future tokens."""
+    """Batched single-head attention that cannot look at future tokens."""
 
     def __init__(self, d_in, d_out, context_length, dropout, qkv_bias=False):
         super().__init__()
@@ -63,7 +63,7 @@ class CausalAttention(nn.Module):
 
 
 class MultiHeadAttention(nn.Module):
-    """3.6.2: efficient multi-head causal self-attention.
+    """Efficient multi-head causal self-attention.
 
     Shapes (b batch, T tokens, h heads, hd = d_out // h)::
 

@@ -1,4 +1,4 @@
-"""Chapter 5: training loop, perplexity, GPT-2 weight mapping, checkpoints."""
+"""Training loop, perplexity, GPT-2 weight mapping, checkpoints."""
 
 import math
 

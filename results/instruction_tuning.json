@@ -1,5 +1,5 @@
 {
-  "chapter": 7,
+  "experiment": "instruction_tuning",
   "smoke": false,
   "device": "NVIDIA GeForce RTX 3060 Laptop GPU (6.0 GB)",
   "model": "gpt2-medium (355M)",
@@ -292,7 +292,7 @@
     ]
   },
   "figures": [
-    "results/figures/ch07_loss.png"
+    "results/figures/instruction_tuning_loss.png"
   ],
   "meta": {
     "timestamp_utc": "2026-10-15 18:31:47",

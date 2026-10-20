@@ -1,4 +1,4 @@
-"""Chapter 3 — causal multi-head attention: correctness checks and cost scaling.
+"""Causal multi-head attention: correctness checks and how cost scales with context.
 
 1. Equivalence: our MultiHeadAttention (explicit softmax(QKᵀ/√d)V with a mask)
    matches PyTorch's fused scaled_dot_product_attention to float precision.
@@ -8,7 +8,7 @@
    vs fused. The explicit version stores a (b, h, T, T) matrix, so memory grows
    with T²; the fused kernel avoids that.
 
-Output: results/ch03_attention.json + figure.
+Output: results/attention_benchmark.json + figure.
 """
 
 import torch
@@ -92,7 +92,7 @@ def main():
     fig, axes = plt.subplots(1, 2 if device.type == "cuda" else 1, figsize=(9 if device.type == "cuda" else 5, 3.2))
     axes = axes if hasattr(axes, "__len__") else [axes]
     Ts = [r["T"] for r in rows]
-    for i, (name, label) in enumerate([("explicit", "explicit (book)"), ("fused_sdpa", "fused SDPA")]):
+    for i, (name, label) in enumerate([("explicit", "explicit (textbook)"), ("fused_sdpa", "fused SDPA")]):
         axes[0].plot(Ts, [r[f"{name}_ms"] for r in rows], marker="o", ms=5, color=SERIES[i], label=label)
         if device.type == "cuda":
             axes[1].plot(Ts, [r[f"{name}_peak_mb"] if isinstance(r[f"{name}_peak_mb"], float) else None for r in rows],
@@ -101,15 +101,15 @@ def main():
     axes[0].legend()
     if device.type == "cuda":
         axes[1].set(xlabel="sequence length T", ylabel="peak MB", title="Attention memory vs context length")
-    savefig(fig, figs, "ch03_attention_scaling.png")
+    savefig(fig, figs, "attention_scaling.png")
 
-    result = {"chapter": 3, "smoke": args.smoke, "device": device_name(device),
+    result = {"experiment": "attention_benchmark", "smoke": args.smoke, "device": device_name(device),
               "config": {"d_model": d, "heads": heads, "batch": batch},
               "max_abs_diff_explicit_vs_fused": max_diff,
               "causal_leak_max_abs_change": leak, "future_outputs_changed_by": changed,
-              "scaling": rows, "figures": [rel(figs / "ch03_attention_scaling.png")],
+              "scaling": rows, "figures": [rel(figs / "attention_scaling.png")],
               "meta": run_metadata(device, seed=args.seed)}
-    print("saved", rel(save_json(result, out_dir / "ch03_attention.json")))
+    print("saved", rel(save_json(result, out_dir / "attention_benchmark.json")))
 
 
 if __name__ == "__main__":

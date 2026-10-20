@@ -1,6 +1,5 @@
 {
-  "chapter": 5,
-  "part": "gpt2_domain_gap",
+  "experiment": "domain_gap",
   "smoke": false,
   "device": "NVIDIA GeForce RTX 3060 Laptop GPU (6.0 GB)",
   "eval_window_tokens": 256,
@@ -239,8 +238,8 @@
     "end": "2020-06-04"
   },
   "figures": [
-    "results/figures/ch05_domain_perplexity.png",
-    "results/figures/ch05_attention.png"
+    "results/figures/domain_perplexity.png",
+    "results/figures/attention_on_headline.png"
   ],
   "meta": {
     "timestamp_utc": "2026-10-15 17:34:58",

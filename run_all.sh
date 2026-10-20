@@ -5,9 +5,9 @@ cd "$(dirname "$0")"
 PY=${PYTHON:-python}
 EXTRA=("$@")
 $PY -m pytest
-for s in ch02_tokenization ch03_attention ch04_model ch05_pretrain_from_scratch ch05_gpt2_domain \
-         ch05_dapt ch06_sentiment ch07_instruct capstone_score_news capstone_backtest; do
+for s in tokenizer_study attention_benchmark memory_profile pretrain_small_gpt domain_gap \
+         domain_adaptation sentiment_classifier instruction_tuning score_headlines backtest; do
   echo "==== $s ${EXTRA[*]:-}"
   $PY "scripts/$s.py" "${EXTRA[@]}"
 done
-$PY scripts/make_report.py "${EXTRA[@]}"
+$PY scripts/build_report.py "${EXTRA[@]}"

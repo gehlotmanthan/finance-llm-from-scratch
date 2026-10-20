@@ -1,21 +1,21 @@
-"""Chapter 6 — fine-tune GPT-2 as a financial-sentiment classifier.
+"""Fine-tune GPT-2 as a financial-sentiment classifier.
 
 Data: Financial PhraseBank (sentences from financial news labelled
 negative / neutral / positive by 16 annotators), de-duplicated, stratified
-70/10/20 train/val/test split that is fixed and shared with Ch 7.
+70/10/20 train/val/test split that is fixed and shared with instruction_tuning.py.
 
 Compared on the SAME test set, with 95% bootstrap confidence intervals:
   * majority class baseline
   * TF-IDF + logistic regression (C picked on validation)
-  * GPT-2 small, last block trained (the book's recipe)
+  * GPT-2 small, last block trained (the usual recipe)
   * GPT-2 small, all layers trained
-  * GPT-2 small after finance DAPT (Ch 5), all layers trained  [if checkpoint exists]
+  * GPT-2 small after finance DAPT (domain_adaptation.py), all layers trained  [if checkpoint exists]
   * GPT-2 medium, last block trained
 
 Model selection uses validation macro-F1 only; the test set is touched once
-per model. The best model (by validation) is saved for the capstone backtest.
+per model. The best model (by validation) is saved for the backtest.
 
-Output: results/ch06_sentiment.json, 3 figures, checkpoints/sentiment-best.pth, checkpoints/tfidf_lr.joblib
+Output: results/sentiment_classifier.json, 3 figures, checkpoints/sentiment-best.pth, checkpoints/tfidf_lr.joblib
 """
 
 import joblib
@@ -113,7 +113,7 @@ def main():
         set_seed(args.seed)
         gpt, cfg = load_backbone(base, device, args.smoke)
         if gpt is None:
-            print(f"skip {v}: no DAPT checkpoint (run scripts/ch05_dapt.py first)")
+            print(f"skip {v}: no DAPT checkpoint (run scripts/domain_adaptation.py first)")
             continue
         name = f"GPT-2 {base.replace('gpt2-', '')} ({mode.replace('_', ' ')})" if base != "dapt" \
             else f"GPT-2 small + DAPT ({mode.replace('_', ' ')})"
@@ -167,7 +167,7 @@ def main():
     ax.set(xlim=(0, 1.08), xlabel="test macro-F1 (95% bootstrap CI)",
            title="Financial sentiment: fine-tuned GPT-2 vs baselines")
     ax.grid(axis="y", visible=False)
-    savefig(fig, figs, "ch06_model_comparison.png")
+    savefig(fig, figs, "sentiment_model_comparison.png")
 
     # Figure 2: confusion matrix of the selected model
     cm = np.array(models[best_name]["test"]["confusion_matrix"])
@@ -182,7 +182,7 @@ def main():
     ax.set_yticks(range(3), labels)
     ax.set(xlabel="predicted", ylabel="true", title=best_name)
     ax.grid(False)
-    savefig(fig, figs, "ch06_confusion.png")
+    savefig(fig, figs, "sentiment_confusion.png")
 
     # Figure 3: accuracy by annotator agreement
     levels = sorted(models["TF-IDF + LogReg"]["by_agreement"], key=int)
@@ -196,17 +196,17 @@ def main():
            title="Test accuracy by annotator agreement")
     ax.grid(axis="x", visible=False)
     ax.legend(loc="lower right")
-    savefig(fig, figs, "ch06_by_agreement.png")
+    savefig(fig, figs, "sentiment_by_agreement.png")
 
-    result = {"chapter": 6, "smoke": args.smoke, "device": device_name(device), "labels": labels,
+    result = {"experiment": "sentiment_classifier", "smoke": args.smoke, "device": device_name(device), "labels": labels,
               "data": data_info, "max_length_tokens": max_len, "models": models,
               "selected_by_validation": best_name,
               "checkpoints": [rel(checkpoint_path("sentiment-best.pth", args.smoke)),
                               rel(checkpoint_path("tfidf_lr.joblib", args.smoke))],
-              "figures": [rel(figs / f) for f in ("ch06_model_comparison.png", "ch06_confusion.png",
-                                                  "ch06_by_agreement.png")],
+              "figures": [rel(figs / f) for f in ("sentiment_model_comparison.png", "sentiment_confusion.png",
+                                                  "sentiment_by_agreement.png")],
               "meta": run_metadata(device, seed=args.seed, args=vars(args))}
-    print("saved", rel(save_json(result, out_dir / "ch06_sentiment.json")))
+    print("saved", rel(save_json(result, out_dir / "sentiment_classifier.json")))
 
 
 if __name__ == "__main__":

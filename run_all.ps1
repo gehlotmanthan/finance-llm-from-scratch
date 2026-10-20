@@ -1,10 +1,10 @@
 <#
-Runs the whole project on Windows, chapter by chapter, then rebuilds the results report.
+Runs the whole pipeline on Windows, step by step, then rebuilds the results report.
 
   powershell -ExecutionPolicy Bypass -File .\run_all.ps1            # everything (~1.5-2.5 h on an 8 GB GPU)
   powershell -ExecutionPolicy Bypass -File .\run_all.ps1 -Smoke     # 3-minute pipeline check, synthetic data
-  powershell -ExecutionPolicy Bypass -File .\run_all.ps1 -Only ch06,ch07
-  powershell -ExecutionPolicy Bypass -File .\run_all.ps1 -From ch05dapt
+  powershell -ExecutionPolicy Bypass -File .\run_all.ps1 -Only sentiment,instruct
+  powershell -ExecutionPolicy Bypass -File .\run_all.ps1 -From adapt
 
 Uses the virtual environment one folder up (..\.venv) if it exists, else `python` on PATH.
 Each step writes results\<step>.json; a failed step stops the run so you can fix and resume with -From.
@@ -38,16 +38,16 @@ if (-not $SkipTests) {
 
 $steps = [ordered]@{
     "check"       = "scripts\check_setup.py"
-    "ch02"        = "scripts\ch02_tokenization.py"
-    "ch03"        = "scripts\ch03_attention.py"
-    "ch04"        = "scripts\ch04_model.py"
-    "ch05scratch" = "scripts\ch05_pretrain_from_scratch.py"
-    "ch05gpt2"    = "scripts\ch05_gpt2_domain.py"
-    "ch05dapt"    = "scripts\ch05_dapt.py"
-    "ch06"        = "scripts\ch06_sentiment.py"
-    "ch07"        = "scripts\ch07_instruct.py"
-    "score"       = "scripts\capstone_score_news.py"
-    "backtest"    = "scripts\capstone_backtest.py"
+    "tokenizer"   = "scripts\tokenizer_study.py"
+    "attention"   = "scripts\attention_benchmark.py"
+    "memory"      = "scripts\memory_profile.py"
+    "pretrain"    = "scripts\pretrain_small_gpt.py"
+    "domaingap"   = "scripts\domain_gap.py"
+    "adapt"       = "scripts\domain_adaptation.py"
+    "sentiment"   = "scripts\sentiment_classifier.py"
+    "instruct"    = "scripts\instruction_tuning.py"
+    "score"       = "scripts\score_headlines.py"
+    "backtest"    = "scripts\backtest.py"
 }
 
 $started = -not $From
@@ -67,5 +67,5 @@ foreach ($key in $steps.Keys) {
 
 $reportArgs = @()
 if ($Smoke) { $reportArgs += "--smoke" }
-& $Py scripts\make_report.py @reportArgs
+& $Py scripts\build_report.py @reportArgs
 Write-Host "`nDone. Results: reports\RESULTS.md (smoke runs: results\smoke\RESULTS.md)" -ForegroundColor Cyan

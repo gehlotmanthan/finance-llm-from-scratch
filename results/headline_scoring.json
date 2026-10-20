@@ -1,5 +1,5 @@
 {
-  "part": "capstone_scoring",
+  "experiment": "headline_scoring",
   "smoke": false,
   "device": "NVIDIA GeForce RTX 3060 Laptop GPU (6.0 GB)",
   "model": "GPT-2 small + DAPT (all)",

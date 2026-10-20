@@ -1,20 +1,20 @@
-"""Chapter 7 — instruction fine-tuning GPT-2 into a small finance assistant.
+"""Instruction-tune GPT-2 into a small finance assistant.
 
 Training data
   * finance-alpaca (general finance Q&A, MIT licence), examples <= 256 tokens
-  * sentiment instructions built from the Ch 6 PhraseBank TRAINING split
+  * sentiment instructions built from the classifier's PhraseBank TRAINING split
 
 Evaluation
   * objective: the instruction-tuned model answers "positive/negative/neutral"
-    for the Ch 6 PhraseBank TEST sentences -> accuracy and macro-F1 with 95% CIs,
-    before and after tuning, comparable with the Ch 6 classifier
+    for the same PhraseBank TEST sentences as the classifier -> accuracy and macro-F1 with 95% CIs,
+    before and after tuning, comparable with sentiment_classifier.py
   * qualitative: answers to held-out finance-alpaca questions (saved for review
-    and for the optional Ollama judge, scripts/ch07_ollama_judge.py)
+    and for the optional Ollama judge, scripts/llm_judge.py)
 
-Default model: GPT-2 medium (355M) with LoRA rank 16 (Appendix E) so it fits on
-a 6 GB laptop GPU; ``--lora-rank 0`` does full fine-tuning (book setting).
+Default model: GPT-2 medium (355M) with LoRA rank 16 so it fits on
+a 6 GB laptop GPU; ``--lora-rank 0`` does full fine-tuning.
 
-Output: results/ch07_instruct.json, results/ch07_responses.json, figure, checkpoint
+Output: results/instruction_tuning.json, results/instruction_responses.json, figure, checkpoint
 """
 
 import random
@@ -81,7 +81,7 @@ def main():
     p.add_argument("--batch-size", type=int, default=4)
     p.add_argument("--grad-accum", type=int, default=2, help="effective batch = batch-size x grad-accum")
     p.add_argument("--lr", type=float, default=None, help="default 1e-4 with LoRA, 5e-5 full fine-tune")
-    p.add_argument("--mask-prompt", action="store_true", help="Exercise 7.2: no loss on prompt tokens")
+    p.add_argument("--mask-prompt", action="store_true", help="no loss on prompt tokens")
     p.add_argument("--n-sample-responses", type=int, default=25)
     args = p.parse_args()
     set_seed(args.seed)
@@ -166,21 +166,21 @@ def main():
     ax.set(xlabel="tokens seen (millions)", ylabel="loss",
            title=f"Instruction tuning {args.model}" + (f" with LoRA r={args.lora_rank}" if lora_info else ""))
     ax.legend()
-    savefig(fig, figs, "ch07_loss.png")
+    savefig(fig, figs, "instruction_tuning_loss.png")
 
     torch.save({"model_state_dict": model.state_dict(), "cfg": cfg, "lora": lora_info, "base_model": args.model},
                checkpoint_path("instruct.pth", args.smoke))
-    save_json({"model": args.model, "responses": responses}, out_dir / "ch07_responses.json")
-    result = {"chapter": 7, "smoke": args.smoke, "device": device_name(device), "model": args.model,
+    save_json({"model": args.model, "responses": responses}, out_dir / "instruction_responses.json")
+    result = {"experiment": "instruction_tuning", "smoke": args.smoke, "device": device_name(device), "model": args.model,
               "lora": lora_info, "lr": lr, "epochs": epochs,
               "batch_size": args.batch_size, "grad_accum": args.grad_accum, "mask_prompt": args.mask_prompt,
               "data": {"train": len(train_data), "train_alpaca": len(a_train), "train_sentiment": len(s_train),
                        "val": len(val_data), "max_tokens": max_tokens},
               "train_seconds": t.seconds, "peak_gpu_gb": peak_gb, "base_val_loss": base_val_loss,
               "history": hist, "sentiment_before": before, "sentiment_after": after,
-              "figures": [rel(figs / "ch07_loss.png")],
+              "figures": [rel(figs / "instruction_tuning_loss.png")],
               "meta": run_metadata(device, seed=args.seed, args=vars(args))}
-    print("saved", rel(save_json(result, out_dir / "ch07_instruct.json")))
+    print("saved", rel(save_json(result, out_dir / "instruction_tuning.json")))
 
 
 if __name__ == "__main__":

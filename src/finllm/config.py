@@ -1,4 +1,4 @@
-"""Model configurations (Ch 4.1, Exercise 4.2, Ch 5.5).
+"""Model configurations.
 
 A GPT model is fully described by one small dictionary:
 
@@ -52,7 +52,7 @@ _ALIASES = {
 }
 
 # A small model we can pretrain from scratch on a single consumer GPU in minutes
-# (Ch 5). ~30M parameters, about half of them in the token embedding.
+# (~49M parameters with an untied output head; most of them sit in the two embeddings).
 FIN_SMALL_CONFIG = {
     "vocab_size": 50257,
     "context_length": 128,
@@ -94,7 +94,7 @@ def get_config(name: str = "gpt2-small (124M)", **overrides) -> dict:
 
 
 def pretrained_config(name: str = "gpt2-small (124M)", **overrides) -> dict:
-    """Config that matches OpenAI's checkpoints: 1024 context, bias on Q/K/V (Ch 5.5)."""
+    """Config that matches OpenAI's checkpoints: 1024 context, bias on Q/K/V."""
     cfg = get_config(name, context_length=1024, qkv_bias=True)
     cfg.update(overrides)
     return cfg

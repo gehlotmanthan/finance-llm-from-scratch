@@ -1,8 +1,8 @@
 # Finance LLM from Scratch
 
-This is a GPT-2-style language model that I wrote in PyTorch and aimed at financial text. I then tested it the way I would test any trading signal: on data it had never seen, against a plain baseline, and after costs.
+Can a language model that reads financial headlines predict next-day stock returns, once you trade it honestly? This project builds a GPT-2-style model in PyTorch, teaches it financial language, and tests it the way I'd test any trading signal: on data it has never seen, against a plain baseline, and after costs.
 
-I built it while working through Sebastian Raschka's *Build a Large Language Model (From Scratch)*. Each chapter got a finance question attached. The last one is the question I care about most: once you trade it honestly, does headline sentiment read by an LLM predict next-day stock returns?
+Getting there meant answering smaller questions first. How well does an off-the-shelf tokenizer handle tickers and figures? What can a laptop GPU actually train? Does pretraining on finance text help? Can a GPT beat a bag-of-words model at reading sentiment? Each of those has its own script and its own result below.
 
 Everything here ran on an RTX 3060 laptop GPU with 6 GB of memory. That limit shaped a lot of the choices below.
 
@@ -11,16 +11,16 @@ Everything here ran on an RTX 3060 laptop GPU with 6 GB of memory. That limit sh
 <!-- RESULTS:START -->
 | Experiment | Result |
 |---|---|
-| Ch 6, sentiment on held-out PhraseBank | macro-F1 0.847 [0.820, 0.873] for GPT-2 small + DAPT (all), against 0.748 for TF-IDF + logistic regression (McNemar p < 0.0001) |
-| Ch 5, domain pretraining | perplexity on unseen headlines -75%, on general English +311% |
-| Ch 7, instruction tuning | gpt2-medium (355M) with LoRA r=16 answers sentiment questions at 84.0% accuracy (untuned: 0.1%) |
-| Capstone, same-day link to returns | rank IC 0.035 (t = 9.5, out-of-sample) |
-| Capstone, next-open long/short | next-day IC 0.008, gross Sharpe 0.62, net Sharpe -5.62 [-7.10, -4.26] at 10 bps; break-even about 1.0 bp per side; permutation p = 0.10 |
+| Sentiment on held-out PhraseBank | macro-F1 0.847 [0.820, 0.873] for GPT-2 small + DAPT (all), against 0.748 for TF-IDF + logistic regression (McNemar p < 0.0001) |
+| Domain pretraining | perplexity on unseen headlines -75%, on general English +311% |
+| Instruction tuning | gpt2-medium (355M) with LoRA r=16 answers sentiment questions at 84.0% accuracy (untuned: 0.1%) |
+| Backtest, same-day link to returns | rank IC 0.035 (t = 9.5, out-of-sample) |
+| Backtest, next-open long/short | next-day IC 0.008, gross Sharpe 0.62, net Sharpe -5.62 [-7.10, -4.26] at 10 bps; break-even about 1.0 bp per side; permutation p = 0.10 |
 
 Full tables and figures: [reports/RESULTS.md](reports/RESULTS.md).
 <!-- RESULTS:END -->
 
-`scripts/make_report.py` writes the table above from the JSON files in `results/`, so none of the numbers are typed in by hand.
+`scripts/build_report.py` writes the table above from the JSON files in `results/`, so none of the numbers are typed in by hand.
 
 ### Reading the results
 
@@ -32,17 +32,19 @@ The trading test is where the data ran out. Sentiment tracks same-day returns, w
 
 I read that as a data limit more than a model limit. Free Yahoo data had prices for only 412 of the 750 stocks. Date-only headlines also hide the intraday window where news is actually priced. Next I'd try timestamped news, CRSP prices and slower multi-day signals, each tested on a fresh holdout, since I've now looked at this one.
 
-## Chapters
+## What's in the project
 
-| Ch | Book topic | Finance question | Script |
-|---|---|---|---|
-| 2 | Tokenisation, BPE, data loaders | How efficiently does GPT-2's tokenizer encode financial news? How does it split tickers, `EBITDA` or `$1.2bn`? Why does a word-level vocabulary break? | `ch02_tokenization.py` |
-| 3 | Causal multi-head attention | Does the causal mask leak anything? This is the same no-look-ahead rule a backtest needs. How do time and memory grow with context length, and what does the fused kernel save? | `ch03_attention.py` |
-| 4 | GPT-2 architecture | What does each model size cost in memory, and what actually fits on a 6 GB laptop GPU? Measured, not estimated. | `ch04_model.py` |
-| 5 | Pretraining, loading OpenAI weights | A 49M-parameter GPT trained from scratch on headlines, GPT-2's perplexity on finance text vs ordinary English, and domain-adaptive pretraining. | `ch05_*.py` |
-| 6 | Fine-tuning for classification | Three-class financial sentiment on Financial PhraseBank. Does GPT-2 beat TF-IDF + logistic regression by more than noise? Does domain pretraining help? | `ch06_sentiment.py` |
-| 7 | Instruction tuning, plus LoRA (App. E) | A small finance assistant on a 6 GB laptop GPU, scored on the same sentiment test set as Ch 6. | `ch07_instruct.py` |
-| ★ | Capstone | Sentiment turned into a daily dollar-neutral long/short book, with an in-sample/out-of-sample split, costs, IC decay and a permutation test. | `capstone_*.py` |
+| Question | Script | Short answer |
+|---|---|---|
+| How well does GPT-2's tokenizer fit financial text? | `tokenizer_study.py` | Worse on headlines (1.55 tokens per word) than on ordinary prose (1.37), mostly because of Title Case. `EBITDA` and `$1.2bn` split into 3 and 5 pieces. |
+| Is the attention code correct, and what does it cost? | `attention_benchmark.py` | Matches PyTorch's fused kernel to 3.6e-7 with zero look-ahead leak. At 1,024 tokens the fused kernel needs 351 MB against 1,734 MB. |
+| What can a 6 GB laptop GPU train? | `memory_profile.py` | GPT-2 small up to batch 8. GPT-2 medium can't be fully fine-tuned at any batch size. |
+| Can a small GPT learn headline language from scratch? | `pretrain_small_gpt.py` | A 49M-parameter model reaches perplexity 25.9 in 3 minutes, against 830 for a word-frequency baseline. |
+| How far is finance text from what GPT-2 knows? | `domain_gap.py` | Perplexity 42 on a 1908 short story, 604 on 2017–20 headlines. |
+| Does extra pretraining on finance text help? | `domain_adaptation.py` | Headline perplexity falls 75%, general English gets 311% worse, and sentiment accuracy barely moves. |
+| Can GPT-2 read financial sentiment better than TF-IDF? | `sentiment_classifier.py` | Yes: macro-F1 0.85 against 0.75, McNemar p < 0.0001. |
+| Can a laptop-sized model follow finance instructions? | `instruction_tuning.py` | GPT-2 medium with LoRA (1.7% of weights trained) goes from 0.1% to 84% on the same sentiment test. |
+| Does headline sentiment predict next-day returns? | `score_headlines.py`, `backtest.py` | It tracks same-day returns, but by the next open most of it is priced in, and costs take the rest. |
 
 ## How the backtest avoids fooling itself
 
@@ -50,7 +52,7 @@ A story dated day *d* is traded at the open of the next trading day, because a d
 
 The text side follows the same rule. Domain pretraining only reads headlines from the first 40% of the news calendar, a stretch that is never traded. The sentiment model learns from PhraseBank labels and never sees a return.
 
-Thresholds, costs, holding period and the universe rule were fixed in code before I opened the last 30% of the calendar. That window is reported as it came out. The Ch 6 model used in the backtest was chosen on validation macro-F1, and each model saw the test set once.
+Thresholds, costs, holding period and the universe rule were fixed in code before I opened the last 30% of the calendar. That window is reported as it came out. The sentiment model used in the backtest was chosen on validation macro-F1, and each model saw the test set once.
 
 A single Sharpe ratio isn't enough evidence, so the backtest also reports Newey-West t-stats, a block-bootstrap confidence interval for the Sharpe, a within-day permutation test, and IC at several horizons. That includes the same-day reaction, which can't be traded but shows whether the model reads the news correctly. There is also a cost curve. The classification results come with bootstrap intervals, a paired bootstrap against the baseline and McNemar's test. [reports/METHODOLOGY.md](reports/METHODOLOGY.md) has the details.
 
@@ -60,7 +62,7 @@ The model code in `src/finllm/` has no `transformers` dependency. `gpt2_weights.
 
 `--smoke` runs the full pipeline on synthetic data in about two minutes, with no downloads. The fake news contains a planted signal, and the backtest has to recover it.
 
-Fitting into 6 GB took fused attention, bf16, gradient accumulation and LoRA (rank 16, 1.7% of GPT-2 medium's weights trainable). Full fine-tuning of GPT-2 medium doesn't fit at any batch size. On Windows an oversized run doesn't fail. It spills into system RAM and crawls, which is why `ch04_model.py` measures memory instead of trusting the arithmetic.
+Fitting into 6 GB took fused attention, bf16, gradient accumulation and LoRA (rank 16, 1.7% of GPT-2 medium's weights trainable). Full fine-tuning of GPT-2 medium doesn't fit at any batch size. On Windows an oversized run doesn't fail. It spills into system RAM and crawls, which is why `memory_profile.py` measures memory instead of trusting the arithmetic.
 
 Seeds are fixed. Each result file records the git commit, device, library versions and command-line arguments.
 
@@ -70,7 +72,7 @@ Seeds are fixed. Each result file records the git commit, device, library versio
 # Windows. Uses ..\.venv if present; install a CUDA build of PyTorch first.
 powershell -ExecutionPolicy Bypass -File .\run_all.ps1 -Smoke        # 2-3 min pipeline check
 powershell -ExecutionPolicy Bypass -File .\run_all.ps1               # full run, ~1.5 h on an RTX 3060 Laptop (6 GB)
-powershell -ExecutionPolicy Bypass -File .\run_all.ps1 -From ch06    # resume from a step
+powershell -ExecutionPolicy Bypass -File .\run_all.ps1 -From sentiment    # resume from a step
 ```
 
 ```bash
@@ -79,22 +81,22 @@ pip install -r requirements.txt
 ./run_all.sh --smoke && ./run_all.sh
 ```
 
-Each chapter also runs on its own, e.g. `python scripts/ch06_sentiment.py --help`.
+Each step also runs on its own, e.g. `python scripts/sentiment_classifier.py --help`.
 
 ## Repository layout
 
 ```
 src/finllm/            the library
-  tokenizer.py data.py          Ch 2
-  attention.py                  Ch 3
-  model.py generate.py          Ch 4
-  train.py gpt2_weights.py      Ch 5
-  classifier.py baselines.py    Ch 6
-  instruct.py lora.py           Ch 7 / App. E
-  backtest/                     capstone: prices, signal alignment, portfolio, diagnostics
+  tokenizer.py data.py          BPE tokenizer analysis, training windows
+  attention.py                  causal multi-head attention (explicit and fused)
+  model.py generate.py          GPT-2 architecture, decoding
+  train.py gpt2_weights.py      training loop, loading OpenAI's GPT-2 weights
+  classifier.py baselines.py    sentiment classifier, TF-IDF baseline
+  instruct.py lora.py           instruction tuning, LoRA
+  backtest/                     prices, signal alignment, portfolio, diagnostics
   stats.py                      bootstrap, McNemar, Newey-West, Sharpe CI
   data_sources.py synthetic.py  real datasets / synthetic stand-ins for tests
-scripts/               one script per chapter step, plus check_setup.py and make_report.py
+scripts/               one script per experiment, plus check_setup.py and build_report.py
 tests/                 pytest suite
 results/               JSON results and figures
 reports/               RESULTS.md (generated), METHODOLOGY.md
@@ -110,7 +112,7 @@ data/ checkpoints/     downloads and weights (not in git)
 | finance-alpaca | [gbharti/finance-alpaca](https://huggingface.co/datasets/gbharti/finance-alpaca) | MIT |
 | GPT-2 weights | [openai-community/gpt2](https://huggingface.co/openai-community/gpt2) | Modified MIT (OpenAI) |
 | Daily prices | Yahoo Finance via `yfinance` | Personal and research use |
-| *The Verdict* (Edith Wharton, 1908) | book repository | Public domain |
+| *The Verdict* (Edith Wharton, 1908) | Project Gutenberg text, via rasbt/LLMs-from-scratch | Public domain |
 
 The scripts download everything, and no dataset is committed here.
 
@@ -122,6 +124,6 @@ The scripts download everything, and no dataset is committed here.
 - Costs are a flat charge per side. Market impact and short-borrow fees are not modelled.
 - GPT-2 dates from 2019. The point of the project is the pipeline and the evaluation, not state-of-the-art accuracy.
 
-## Acknowledgements
+## Background and credit
 
-The model, training and fine-tuning code follow Sebastian Raschka's *Build a Large Language Model (From Scratch)* (Manning, 2024) and its companion repository [rasbt/LLMs-from-scratch](https://github.com/rasbt/LLMs-from-scratch) (Apache-2.0). The finance questions, experiments, statistics and backtest are my own.
+I learned how GPT-style models are built from Sebastian Raschka's *Build a Large Language Model (From Scratch)* (Manning, 2024). The core model, training and fine-tuning code in `src/finllm/` follows the implementations in that book and its repository [rasbt/LLMs-from-scratch](https://github.com/rasbt/LLMs-from-scratch) (Apache-2.0). The research questions, the finance data pipeline, the experiments, the statistics and the backtest are this project's own.

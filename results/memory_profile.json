@@ -1,5 +1,5 @@
 {
-  "chapter": 4,
+  "experiment": "memory_profile",
   "smoke": false,
   "device": "NVIDIA GeForce RTX 3060 Laptop GPU (6.0 GB)",
   "sizes": [
@@ -423,7 +423,7 @@
     "output": "Apple shares rose afterginiman ByeswickattributeometerDT Dennis Redux Gel"
   },
   "figures": [
-    "results/figures/ch04_memory_fit.png"
+    "results/figures/gpu_memory_fit.png"
   ],
   "meta": {
     "timestamp_utc": "2026-10-15 17:17:35",

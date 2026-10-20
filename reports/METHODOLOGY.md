@@ -8,11 +8,11 @@ The cleaned news file has about 1.8M headlines, each with a ticker and a date. I
 
 | Window | Share of calendar | Used for |
 |---|---|---|
-| Pretraining | first 40% | Ch 5 pretraining from scratch and domain-adaptive pretraining (text only), plus choosing the universe. Never traded. |
+| Pretraining | first 40% | Pretraining the small GPT from scratch and domain-adaptive pretraining (text only), plus choosing the universe. Never traded. |
 | In-sample | next 30% | The first look at the backtest. Any design decision would have been made here. |
 | Out-of-sample | last 30% | Run once with the settings already fixed in code. |
 
-The actual dates are saved in `results/capstone_backtest.json` under `periods`. For the reported run they are Feb 2010 to Mar 2014, Mar 2014 to Apr 2017, and Apr 2017 to Jun 2020.
+The actual dates are saved in `results/backtest.json` under `periods`. For the reported run they are Feb 2010 to Mar 2014, Mar 2014 to Apr 2017, and Apr 2017 to Jun 2020.
 
 One bad row nearly broke this. A single headline dated 1969-12-31 (a "time zero" placeholder) stretched the calendar back by four decades, and the pretraining window ended up holding one headline. The cleaning step now drops dates before 2000, and `calendar_periods` refuses to run if any window holds less than 1% of the data.
 
@@ -22,7 +22,7 @@ The universe is the 750 tickers with the most headlines in the pretraining windo
 
 ## 3. Sentiment model
 
-The signal comes from the Ch 6 GPT-2 classifier fine-tuned on Financial PhraseBank. Of the candidates (the book's recipe, full fine-tuning, a DAPT starting point, GPT-2 medium), it is the one with the best validation macro-F1. It never sees a price or a return.
+The signal comes from the GPT-2 classifier fine-tuned on Financial PhraseBank (`sentiment_classifier.py`). Of the candidates (last block only, full fine-tuning, a DAPT starting point, GPT-2 medium), it is the one with the best validation macro-F1. It never sees a price or a return.
 
 Each headline gets the score `P(positive) − P(negative)`, which runs from −1 to 1. A stock's signal on trade day *t* is the average score of all its headlines that map to *t*.
 
@@ -68,7 +68,7 @@ Survivorship is the big one. Yahoo has no prices for delisted tickers, and only 
 
 Coverage is uneven, because partner-site headlines over-represent some publishers and some stocks.
 
-Several model variants exist, which raises the risk of multiple testing. The capstone uses exactly one, picked on PhraseBank validation data, which limits how far the backtest itself could have been tuned.
+Several model variants exist, which raises the risk of multiple testing. The backtest uses exactly one, picked on PhraseBank validation data, which limits how far the backtest itself could have been tuned.
 
 The cost model is a flat bps charge with no market impact and no borrow fees. Shorting small caps would cost more than this assumes.
 

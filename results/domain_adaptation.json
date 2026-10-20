@@ -1,6 +1,5 @@
 {
-  "chapter": 5,
-  "part": "dapt",
+  "experiment": "domain_adaptation",
   "smoke": false,
   "device": "NVIDIA GeForce RTX 3060 Laptop GPU (6.0 GB)",
   "base_model": "gpt2-small (124M)",
@@ -136,7 +135,7 @@
   },
   "checkpoint": "checkpoints/gpt2-small-dapt.pth",
   "figures": [
-    "results/figures/ch05_dapt.png"
+    "results/figures/domain_adaptation.png"
   ],
   "meta": {
     "timestamp_utc": "2026-10-15 17:58:20",

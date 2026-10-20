@@ -1,4 +1,4 @@
-"""Chapter 5 extension — domain-adaptive pretraining (DAPT).
+"""Domain-adaptive pretraining (DAPT).
 
 Continue GPT-2's next-token training on financial headlines from the
 pretraining window (Gururangan et al., 2020, "Don't Stop Pretraining"), then
@@ -9,15 +9,15 @@ measure:
   * perplexity on general English (how much does it forget?)
 
 The adapted weights are the "dapt" starting point compared against vanilla
-GPT-2 in Ch 6 (does domain pretraining improve sentiment classification?).
+GPT-2 in sentiment_classifier.py (does domain pretraining improve sentiment classification?).
 
-Output: results/ch05_dapt.json, figure, checkpoints/gpt2-small-dapt.pth
+Output: results/domain_adaptation.json, figure, checkpoints/gpt2-small-dapt.pth
 """
 
 import torch
 
 from _common import base_parser, load_base_gpt2, news_and_periods, plt, rel, savefig, SERIES
-from ch05_gpt2_domain import eval_corpora
+from domain_gap import eval_corpora
 from finllm import data_sources as ds
 from finllm.data import create_dataloader_v1, join_documents, train_val_split_text
 from finllm.paths import checkpoint_path, results_dirs
@@ -88,17 +88,17 @@ def main():
     ax.set(ylabel="perplexity", title="Domain-adaptive pretraining: gain vs forgetting")
     ax.grid(axis="x", visible=False)
     ax.legend()
-    savefig(fig, figs, "ch05_dapt.png")
+    savefig(fig, figs, "domain_adaptation.png")
 
     ckpt = save_checkpoint(checkpoint_path("gpt2-small-dapt.pth", args.smoke), model, cfg,
                            base_model=args.model, steps=hist["total_steps"])
-    result = {"chapter": 5, "part": "dapt", "smoke": args.smoke, "device": device_name(device),
+    result = {"experiment": "domain_adaptation", "smoke": args.smoke, "device": device_name(device),
               "base_model": args.model, "train_seconds": t.seconds, "tokens_trained": hist["total_tokens"],
               "data": {"headlines": len(heads), "window_end": str(periods["pretrain_end"].date())},
               "perplexity_before": before, "perplexity_after": after, "history": hist,
-              "checkpoint": rel(ckpt), "figures": [rel(figs / "ch05_dapt.png")],
+              "checkpoint": rel(ckpt), "figures": [rel(figs / "domain_adaptation.png")],
               "meta": run_metadata(device, seed=args.seed, args=vars(args))}
-    print("saved", rel(save_json(result, out_dir / "ch05_dapt.json")))
+    print("saved", rel(save_json(result, out_dir / "domain_adaptation.json")))
 
 
 if __name__ == "__main__":

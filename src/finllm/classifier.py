@@ -1,17 +1,17 @@
-"""Chapter 6 — fine-tuning GPT for classification (financial sentiment).
+"""Fine-tuning GPT for classification (financial sentiment).
 
-The book's recipe, applied to 3-class financial sentiment instead of spam:
+The standard recipe for turning a GPT into a classifier, applied to 3-class financial sentiment:
 
     1. replace the 50,257-way output head with a 3-way head (negative/neutral/positive);
-    2. freeze most of the network, train the last block + final LayerNorm + head (6.5);
+    2. freeze most of the network, train the last block + final LayerNorm + head;
     3. classify from the output at the *last* token -- with causal attention it is
-       the only position that has seen the whole sentence (6.6).
+       the only position that has seen the whole sentence.
 
-One change from the book: the book pads every text to the same length and
+One change from the usual tutorial version, which pads every text to the same length and
 reads position -1, which for short texts is a padding token. Here the head
 reads the last *real* token (``pool="last_real"``), and ``predict_proba`` pads
 each batch only to its own longest text, which makes scoring a million
-headlines in the capstone fast.
+headlines in the backtest fast.
 """
 
 import copy
@@ -60,7 +60,7 @@ class GPTClassifier(nn.Module):
 
 
 def set_trainable(clf: GPTClassifier, mode: str = "last_block") -> int:
-    """'head' | 'last_block' (book default) | 'all'. Returns # trainable parameters."""
+    """'head' | 'last_block' (the usual default) | 'all'. Returns # trainable parameters."""
     g = clf.gpt
     for p in g.parameters():
         p.requires_grad = mode == "all"

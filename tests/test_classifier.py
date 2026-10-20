@@ -1,4 +1,4 @@
-"""Chapter 6: data parsing/splitting, classifier pooling, scoring, baselines, statistics."""
+"""Sentiment classifier: data parsing/splitting, classifier pooling, scoring, baselines, statistics."""
 
 import io
 import zipfile

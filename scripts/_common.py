@@ -1,4 +1,4 @@
-"""Shared setup for the chapter scripts: import path, CLI flags, plot style."""
+"""Shared setup for the experiment scripts: import path, CLI flags, plot style."""
 
 import argparse
 import os

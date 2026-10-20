@@ -1,4 +1,4 @@
-"""Chapter 7 + Appendix E: prompt format, collate masking, label parsing, LoRA."""
+"""Instruction tuning and LoRA: prompt format, collate masking, label parsing, LoRA."""
 
 import torch
 

@@ -1,5 +1,5 @@
 {
-  "chapter": 3,
+  "experiment": "attention_benchmark",
   "smoke": false,
   "device": "NVIDIA GeForce RTX 3060 Laptop GPU (6.0 GB)",
   "config": {
@@ -41,7 +41,7 @@
     }
   ],
   "figures": [
-    "results/figures/ch03_attention_scaling.png"
+    "results/figures/attention_scaling.png"
   ],
   "meta": {
     "timestamp_utc": "2026-10-15 17:11:47",

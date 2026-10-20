@@ -1,4 +1,4 @@
-"""Classical baselines the LLM has to beat (Ch 6).
+"""Classical baselines the LLM has to beat.
 
 majority     always predict the most common training class
 tfidf_lr     TF-IDF word 1-2 grams + multinomial logistic regression; the

@@ -1,5 +1,5 @@
 {
-  "part": "capstone_backtest",
+  "experiment": "backtest",
   "smoke": false,
   "settings": {
     "threshold": 0.25,
@@ -2400,10 +2400,10 @@
     }
   },
   "figures": [
-    "results/figures/capstone_equity.png",
-    "results/figures/capstone_ic_decay.png",
-    "results/figures/capstone_costs.png",
-    "results/figures/capstone_permutation.png"
+    "results/figures/backtest_equity.png",
+    "results/figures/backtest_ic_decay.png",
+    "results/figures/backtest_costs.png",
+    "results/figures/backtest_permutation.png"
   ],
   "caveats": [
     "Prices from Yahoo Finance: delisted companies are missing (survivorship bias).",

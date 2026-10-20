@@ -1,14 +1,14 @@
-"""Chapter 4 — the GPT model: size accounting and "what fits on my GPU".
+"""Model size accounting and "what fits on my GPU".
 
 1. Parameter counts for the four GPT-2 sizes, built on PyTorch's 'meta' device
    (no memory used), checked against a closed-form formula.
 2. Measured peak GPU memory and throughput of one full training step
    (forward + backward + AdamW) for GPT-2 small/medium at several batch sizes,
    fp32 vs bf16-autocast, explicit vs fused attention. This decides the batch
-   sizes used in Ch 5-7 on a 6 GB laptop GPU.
-3. Text from an untrained model (gibberish -- the reason for Ch 5).
+   sizes used for every training run on a 6 GB laptop GPU.
+3. Text from an untrained model (gibberish, which is why pretraining matters).
 
-Output: results/ch04_model.json + figure.
+Output: results/memory_profile.json + figure.
 """
 
 import torch
@@ -95,7 +95,7 @@ def main():
     else:
         print("No CUDA device: skipping GPU memory probes (run on your GPU for the real table).")
 
-    # Untrained generation (4.7)
+    # Untrained generation
     tok = get_gpt2_tokenizer()
     cfg = TINY_CONFIG if args.smoke else get_config("small")
     torch.manual_seed(args.seed)
@@ -123,13 +123,13 @@ def main():
             ax.set_xticks([1, 2, 4, 8, 16], ["1", "2", "4", "8", "16"])
         axes[0].set_ylabel("peak memory, one AdamW step (GB)")
         axes[0].legend(loc="upper left", fontsize=8)
-        figs_out.append(rel(savefig(fig, figs, "ch04_memory_fit.png")))
+        figs_out.append(rel(savefig(fig, figs, "gpu_memory_fit.png")))
 
-    result = {"chapter": 4, "smoke": args.smoke, "device": device_name(device),
+    result = {"experiment": "memory_profile", "smoke": args.smoke, "device": device_name(device),
               "sizes": sizes, "train_step_probes": probes,
               "untrained_generation": {"prompt": prompt, "output": untrained},
               "figures": figs_out, "meta": run_metadata(device, seed=args.seed)}
-    print("saved", rel(save_json(result, out_dir / "ch04_model.json")))
+    print("saved", rel(save_json(result, out_dir / "memory_profile.json")))
 
 
 if __name__ == "__main__":

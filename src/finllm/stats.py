@@ -1,12 +1,12 @@
 """Statistics used to judge results honestly.
 
-Classification (Ch 6-7)
+Classification (sentiment models)
     classification_metrics       accuracy, macro-F1, per-class P/R/F1, confusion matrix
     bootstrap_ci                 percentile bootstrap CI for any metric on a test set
     paired_bootstrap_diff        CI and p-value for "model A beats model B" on the same test set
     mcnemar_exact                exact McNemar test on disagreeing predictions
 
-Trading (capstone)
+Trading (backtest)
     perf_summary                 annualised return / vol / Sharpe, max drawdown, hit rate
     newey_west_tstat             t-stat of a mean robust to autocorrelation & heteroskedasticity
     block_bootstrap_sharpe_ci    circular block bootstrap CI for the Sharpe ratio

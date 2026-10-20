@@ -1,4 +1,4 @@
-"""Chapter 4 — the GPT-2 architecture.
+"""The GPT-2 architecture.
 
     token IDs (b,T)
       -> tok_emb + pos_emb -> dropout                      (b,T,D)
@@ -7,8 +7,8 @@
            x = x + Drop(FFN(LN(x)))      # feed-forward sub-layer
       -> final LayerNorm -> out_head (D -> V)              (b,T,V) logits
 
-Parameter names match the author's reference implementation, so weights and
-checkpoints are interchangeable with the book's code.
+Parameter names follow the common from-scratch GPT-2 layout (tok_emb, trf_blocks,
+out_head, ...), which keeps checkpoints simple to map to and from OpenAI's weights.
 """
 
 import torch
@@ -18,7 +18,7 @@ from .attention import MultiHeadAttention
 
 
 class LayerNorm(nn.Module):
-    """4.2: per-token normalisation with trainable scale/shift.
+    """per-token normalisation with trainable scale/shift.
     ``unbiased=False`` matches GPT-2's TensorFlow original (needed for its weights)."""
 
     def __init__(self, emb_dim, eps=1e-5):
@@ -34,7 +34,7 @@ class LayerNorm(nn.Module):
 
 
 class GELU(nn.Module):
-    """4.3: tanh-approximated GELU, as used by GPT-2."""
+    """tanh-approximated GELU, as used by GPT-2."""
 
     def forward(self, x):
         return 0.5 * x * (1 + torch.tanh(
@@ -42,7 +42,7 @@ class GELU(nn.Module):
 
 
 class FeedForward(nn.Module):
-    """4.3: position-wise MLP D -> 4D -> D."""
+    """position-wise MLP D -> 4D -> D."""
 
     def __init__(self, cfg):
         super().__init__()
@@ -57,7 +57,7 @@ class FeedForward(nn.Module):
 
 
 class TransformerBlock(nn.Module):
-    """4.5: pre-LN block with two residual ("shortcut") connections (4.4)."""
+    """pre-LN block with two residual ("shortcut") connections."""
 
     def __init__(self, cfg):
         super().__init__()
@@ -77,7 +77,7 @@ class TransformerBlock(nn.Module):
 
 
 class GPTModel(nn.Module):
-    """4.6: full GPT. ``forward(in_idx (b,T)) -> logits (b,T,vocab)``.
+    """full GPT. ``forward(in_idx (b,T)) -> logits (b,T,vocab)``.
 
     GPT_CONFIG_124M: 163,009,536 parameters, or 124,412,160 with the output
     head tied to the token embedding (how OpenAI shipped GPT-2).
@@ -103,7 +103,7 @@ class GPTModel(nn.Module):
 
 
 # ---------------------------------------------------------------------------
-# Accounting helpers (Ch 4.6, Exercise 4.1/4.2)
+# Accounting helpers
 # ---------------------------------------------------------------------------
 
 def count_parameters(model: nn.Module, tied: bool = False, trainable_only: bool = False) -> int:

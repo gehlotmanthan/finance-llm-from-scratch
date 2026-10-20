@@ -1,5 +1,5 @@
 {
-  "chapter": 6,
+  "experiment": "sentiment_classifier",
   "smoke": false,
   "device": "NVIDIA GeForce RTX 3060 Laptop GPU (6.0 GB)",
   "labels": [
@@ -662,9 +662,9 @@
     "checkpoints/tfidf_lr.joblib"
   ],
   "figures": [
-    "results/figures/ch06_model_comparison.png",
-    "results/figures/ch06_confusion.png",
-    "results/figures/ch06_by_agreement.png"
+    "results/figures/sentiment_model_comparison.png",
+    "results/figures/sentiment_confusion.png",
+    "results/figures/sentiment_by_agreement.png"
   ],
   "meta": {
     "timestamp_utc": "2026-10-15 18:12:33",
