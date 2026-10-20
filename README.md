@@ -6,6 +6,9 @@ Getting there meant answering smaller questions first. How well does an off-the-
 
 Everything here ran on an RTX 3060 laptop GPU with 6 GB of memory. That limit shaped a lot of the choices below.
 
+<p align="center"><img src="docs/app.png" width="760" alt="Opening screen of the project's web app: the title, how the ten years of headlines were split, and the main results"></p>
+<p align="center"><em>The opening screen of the web app. Its numbers are read from <code>results/</code>, and the tabs below it run the trained models (<a href="#try-the-models-in-a-browser">how to run it</a>).</em></p>
+
 ## Results
 
 <!-- RESULTS:START -->
@@ -125,6 +128,7 @@ static/fonts/          self-hosted fonts for the app, with their licences
 .streamlit/            app theme
 results/               JSON results and figures
 reports/               RESULTS.md (generated), METHODOLOGY.md
+docs/                  screenshot of the app for this README
 data/ checkpoints/     downloads and weights (not in git)
 ```
 
