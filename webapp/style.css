@@ -1,0 +1,560 @@
+/* Finance LLM from Scratch: web app styles.
+   Black and white only, serif type, square corners, lines instead of fills.
+   Emphasis comes from inversion (white on black) and rule weight, never colour.
+   Fonts are declared in .streamlit/config.toml and served from static/fonts. */
+
+/* ------------------------------------------------------------------ tokens */
+:root {
+  --paper: #FFFFFF;
+  --ink: #000000;
+  --muted: #F5F5F5;
+  --ink-2: #525252;          /* secondary text only */
+  --hairline: #E5E5E5;       /* quiet dividers only */
+
+  --font-display: PlayfairDisplay, Georgia, "Times New Roman", serif;
+  --font-body: SourceSerif4, Georgia, "Times New Roman", serif;
+  --font-mono: JetBrainsMono, ui-monospace, Menlo, Consolas, monospace;
+
+  --rule-hair: 1px solid var(--hairline);
+  --rule-thin: 1px solid var(--ink);
+  --rule-medium: 2px solid var(--ink);
+  --rule-thick: 4px solid var(--ink);
+  --rule-ultra: 8px solid var(--ink);
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 2rem;
+  --text-4xl: 2.5rem;
+
+  --square: 0.875rem;        /* the bordered square used as a marker throughout */
+}
+
+/* ------------------------------------------------------------- page surface */
+.stApp {
+  background: var(--paper);
+  color: var(--ink);
+  isolation: isolate;
+}
+/* Paper texture: fine horizontal lines plus a little noise, barely visible. */
+.stApp::before,
+.stApp::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.stApp::before {
+  background-image: repeating-linear-gradient(0deg, transparent 0 3px, var(--ink) 3px 4px);
+  opacity: 0.018;
+}
+.stApp::after {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.025;
+}
+
+[data-testid="stHeader"] { background: transparent; }
+[data-testid="stDecoration"] { display: none; }
+
+[data-testid="stMainBlockContainer"] {
+  max-width: 72rem;
+  padding: 1.25rem 1rem 6rem;
+}
+@media (min-width: 768px) {
+  [data-testid="stMainBlockContainer"] { padding: 1.5rem 2rem 8rem; }
+}
+@media (min-width: 1024px) {
+  [data-testid="stMainBlockContainer"] { padding: 1.5rem 3rem 8rem; }
+}
+
+/* ---------------------------------------------------------- Streamlit widgets */
+[data-testid="stWidgetLabel"] p {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* Text inputs: a 2px underline that doubles on focus. The extra 2px is drawn
+   inside the box so the layout doesn't jump. */
+[data-testid="stTextInputRootElement"],
+[data-testid="stTextAreaRootElement"],
+[data-testid="stSelectbox"] [role="group"] {
+  background: var(--paper) !important;
+  border: 0 !important;
+  border-bottom: var(--rule-medium) !important;
+  border-radius: 0 !important;
+}
+[data-testid="stTextInputRootElement"]:focus-within,
+[data-testid="stTextAreaRootElement"]:focus-within,
+[data-testid="stSelectbox"] [role="group"]:focus-within {
+  box-shadow: inset 0 -2px 0 var(--ink) !important;
+}
+[data-testid="stTextInputField"],
+[data-testid="stTextAreaRootElement"] textarea,
+[data-testid="stSelectbox"] input {
+  background: var(--paper) !important;
+  color: var(--ink) !important;
+  font-family: var(--font-body) !important;
+  font-size: var(--text-lg) !important;
+  line-height: 1.55 !important;
+  caret-color: var(--ink);
+  padding-left: 0 !important;
+}
+[data-testid="stTextAreaRootElement"] textarea { resize: vertical; }
+[data-testid="stTextInputField"]:focus,
+[data-testid="stTextAreaRootElement"] textarea:focus,
+[data-testid="stSelectbox"] input:focus { outline: none !important; }
+input::placeholder,
+textarea::placeholder { color: var(--ink-2) !important; font-style: italic; opacity: 1; }
+
+/* Buttons: black rectangles that invert on hover, instantly. */
+[data-testid="stBaseButton-primary"],
+[data-testid="stBaseButton-secondary"] {
+  border-radius: 0 !important;
+  min-height: 3rem;
+  padding: 0.875rem 2rem !important;
+  transition: none !important;
+  box-shadow: none !important;
+}
+[data-testid="stBaseButton-primary"] {
+  background: var(--ink) !important;
+  color: var(--paper) !important;
+  border: var(--rule-medium) !important;
+}
+[data-testid="stBaseButton-primary"]:hover,
+[data-testid="stBaseButton-primary"]:active {
+  background: var(--paper) !important;
+  color: var(--ink) !important;
+}
+[data-testid="stBaseButton-secondary"] {
+  background: transparent !important;
+  color: var(--ink) !important;
+  border: var(--rule-medium) !important;
+}
+[data-testid="stBaseButton-secondary"]:hover {
+  background: var(--ink) !important;
+  color: var(--paper) !important;
+}
+[data-testid="stBaseButton-primary"] p,
+[data-testid="stBaseButton-secondary"] p {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: inherit;
+}
+[data-testid="stBaseButton-primary"]:focus-visible,
+[data-testid="stBaseButton-secondary"]:focus-visible {
+  outline: 3px solid var(--ink) !important;
+  outline-offset: 3px;
+}
+
+/* Tabs: display serif, grey until chosen, a 4px black rule under the open one. */
+[data-testid="stTabs"] [role="tablist"] { gap: 2.25rem; }
+[data-testid="stTabs"] [role="tablist"]::after {
+  background: var(--ink) !important;
+  height: 1px !important;
+}
+[data-testid="stTab"] { padding: 0 0 0.875rem !important; height: auto !important; }
+[data-testid="stTab"] [data-testid="stMarkdownContainer"] p {
+  font-family: var(--font-display) !important;
+  font-size: var(--text-xl) !important;
+  font-weight: 400 !important;
+  color: var(--ink-2) !important;
+}
+[data-testid="stTab"]:hover [data-testid="stMarkdownContainer"] p,
+[data-testid="stTab"][aria-selected="true"] [data-testid="stMarkdownContainer"] p { color: var(--ink) !important; }
+[data-testid="stTabs"] .react-aria-SelectionIndicator {
+  background: var(--ink) !important;
+  height: 4px !important;
+  border-radius: 0 !important;
+}
+[data-testid="stTab"]:focus-visible {
+  outline: 3px solid var(--ink) !important;
+  outline-offset: 2px;
+}
+[data-testid="stTabPanel"] { padding-top: 2.5rem !important; }
+
+/* Sliders: square thumbs, monospace values. */
+[data-testid="stSlider"] [style*="translate(-50%, -50%)"] {
+  border-radius: 0 !important;
+  background: var(--ink) !important;
+  box-shadow: none !important;
+}
+[data-testid="stSlider"] [style*="translate(-50%, -50%)"]:focus-within {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}
+[data-testid="stSliderThumbValue"],
+[data-testid="stSliderTickBarMin"],
+[data-testid="stSliderTickBarMax"] {
+  font-family: var(--font-mono) !important;
+  font-size: var(--text-xs) !important;
+  color: var(--ink) !important;
+}
+[data-testid="stSliderTickBarMin"],
+[data-testid="stSliderTickBarMax"] { color: var(--ink-2) !important; }
+
+[data-testid="stRadio"] label p { font-size: var(--text-base); }
+[data-testid="stSpinner"] { font-style: italic; }
+
+/* ------------------------------------------------------- page components (fl-) */
+.fl { font-family: var(--font-body); color: var(--ink); }
+.fl a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--ink); }
+.fl a:hover { border-bottom-width: 2px; }
+.fl a:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.fl code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: none;
+  color: var(--ink);
+  padding: 0;
+}
+.fl-sr {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+.fl-square {
+  display: inline-block;
+  width: 0.6em; height: 0.6em;
+  border: 1.5px solid var(--ink);
+  vertical-align: 0.06em;
+}
+.fl-square.is-filled { background: var(--ink); }
+
+/* Masthead */
+.fl-masthead {
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline;
+  gap: 0.5rem 2rem;
+  padding-bottom: 0.875rem;
+  border-bottom: var(--rule-thin);
+  font-size: var(--text-sm);
+}
+.fl-masthead-side { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; }
+.fl-masthead .fl-quiet { color: var(--ink-2); }
+
+.fl-smoke {
+  background: var(--ink); color: var(--paper);
+  padding: 0.75rem 1rem;
+  font-size: var(--text-base);
+}
+
+/* Hero: the title is the image. */
+.fl-hero { padding: clamp(3rem, 8vw, 6.5rem) 0 clamp(2.5rem, 5vw, 4rem); }
+.fl h1.fl-title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(3.25rem, 12.4vw, 10rem);
+  line-height: 0.86;
+  letter-spacing: -0.045em;
+  margin: 0;
+  padding: 0;
+  color: var(--ink);
+}
+.fl-title span { display: block; }
+.fl p.fl-lead {
+  font-size: clamp(var(--text-lg), 1.7vw, 1.4rem);
+  line-height: 1.55;
+  max-width: 34em;
+  margin: clamp(2rem, 4vw, 3rem) 0 0;
+}
+
+/* Calendar: the thick hero rule is the news timeline. Squares mark the two cuts. */
+.fl-cal { margin: clamp(3rem, 6vw, 4.5rem) 0 0; }
+.fl-cal-caption {
+  font-size: var(--text-sm);
+  color: var(--ink-2);
+  margin: 0 0 1rem;
+}
+.fl-cal-track { display: grid; }
+.fl-cal-seg {
+  position: relative;
+  border-top: var(--rule-thick);
+  padding: 1.125rem 1.5rem 0 0;
+}
+.fl-cal-seg + .fl-cal-seg::before {
+  content: "";
+  position: absolute;
+  top: calc(-2px - var(--square) / 2);
+  left: calc(var(--square) / -2);
+  width: var(--square); height: var(--square);
+  box-sizing: border-box;
+  background: var(--paper);
+  border: var(--rule-medium);
+}
+.fl-cal-seg + .fl-cal-seg { padding-left: 1.125rem; }
+.fl-cal-name { display: block; font-weight: 600; font-size: var(--text-base); }
+.fl-cal-dates {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  margin-top: 0.25rem;
+}
+.fl-cal-use { display: block; font-size: var(--text-sm); color: var(--ink-2); margin-top: 0.375rem; line-height: 1.45; }
+@media (max-width: 640px) {
+  .fl-cal-track { grid-template-columns: 1fr !important; row-gap: 1.75rem; }
+  .fl-cal-seg + .fl-cal-seg { padding-left: 0; }
+  .fl-cal-seg + .fl-cal-seg::before { left: 0; }
+}
+
+/* Results band: the one inverted block on the page. Full-bleed without
+   widening the page: the shadow paints the margins, clip-path trims it. */
+.fl-band {
+  position: relative;
+  background: var(--ink);
+  color: var(--paper);
+  box-shadow: 0 0 0 100vmax var(--ink);
+  clip-path: inset(0 -100vmax);
+  padding: clamp(3.5rem, 7vw, 5.5rem) 0;
+}
+.fl-band::before {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0; left: -100vmax; right: -100vmax;
+  background-image: repeating-linear-gradient(90deg, transparent 0 3px, var(--paper) 3px 4px);
+  opacity: 0.035;
+  pointer-events: none;
+}
+.fl-band > * { position: relative; }
+.fl-band-title {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 400;
+  margin: 0 0 2.5rem;
+  color: var(--paper);
+}
+.fl-band-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.fl-stat { padding: 0 1.5rem; border-left: 1px solid var(--ink-2); }
+.fl-stat:first-child { padding-left: 0; border-left: 0; }
+.fl p.fl-stat-num {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.75rem, 5.2vw, 4.5rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: lining-nums tabular-nums;
+  margin: 0;
+  color: var(--paper);
+  white-space: nowrap;
+}
+.fl p.fl-stat-text {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  margin: 1rem 0 0;
+  max-width: 17em;
+  color: var(--paper);
+}
+.fl p.fl-band-finding {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.5rem, 3.1vw, 2.375rem);
+  line-height: 1.22;
+  letter-spacing: -0.01em;
+  max-width: 26em;
+  margin: clamp(3rem, 6vw, 4.5rem) 0 0;
+  padding-top: 2rem;
+  border-top: 1px solid var(--paper);
+  color: var(--paper);
+}
+@media (max-width: 900px) {
+  .fl-band-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 2.5rem; }
+  .fl-stat:nth-child(odd) { padding-left: 0; border-left: 0; }
+}
+@media (max-width: 520px) {
+  .fl-band-grid { grid-template-columns: 1fr; row-gap: 0; }
+  .fl-stat { padding: 1.5rem 0; border-left: 0; border-top: 1px solid var(--ink-2); }
+  .fl-stat:first-child { padding-top: 0; border-top: 0; }
+}
+
+/* Sections */
+.fl-section {
+  border-top: var(--rule-thick);
+  padding: 1.5rem 0 1.25rem;
+  margin-top: clamp(3.5rem, 7vw, 5.5rem);
+}
+.fl h2.fl-h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(var(--text-3xl), 4.4vw, 3.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin: 0;
+  padding: 0;
+}
+.fl p.fl-intro { font-size: var(--text-lg); line-height: 1.6; max-width: 38em; margin: 1rem 0 0; }
+.fl h3.fl-h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-3xl);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0;
+  padding: 0;
+}
+.fl p.fl-desc { font-size: 1.0625rem; line-height: 1.65; max-width: 40em; margin: 0.75rem 0 0; }
+.fl p.fl-caption { font-size: var(--text-sm); color: var(--ink-2); line-height: 1.5; margin: 1rem 0 0; max-width: 46em; }
+
+.fl-note {
+  border: var(--rule-thin);
+  padding: 1rem 1.25rem;
+  font-size: var(--text-base);
+  line-height: 1.55;
+  max-width: 44em;
+}
+
+/* Sentiment table: scores drawn as bars from a centre line, so the
+   direction shows without colour. */
+.fl-table-wrap { overflow-x: auto; margin-top: 0.5rem; }
+.fl-table { width: 100%; border-collapse: collapse; font-size: var(--text-base); }
+.fl-table th, .fl-table td {
+  text-align: left;
+  vertical-align: middle;
+  padding: 0.875rem 1.5rem 0.875rem 0;
+  border-bottom: var(--rule-hair);
+}
+.fl-table thead th {
+  font-weight: 600;
+  font-size: var(--text-sm);
+  border-bottom: var(--rule-medium);
+  padding-top: 0;
+  white-space: nowrap;
+}
+.fl-table tbody th { font-weight: 400; line-height: 1.45; min-width: 16rem; }
+.fl-table tbody tr:last-child > * { border-bottom: var(--rule-thin); }
+.fl-verdict { display: flex; align-items: center; gap: 0.75rem; white-space: nowrap; }
+.fl-verdict-label { width: 4.75rem; }
+.fl-verdict-score {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  width: 3.25rem;
+  text-align: right;
+}
+.fl-bar { position: relative; width: 7rem; height: 1rem; flex: none; }
+.fl-bar::before {        /* the -1 to +1 axis */
+  content: ""; position: absolute; left: 0; right: 0; top: 50%;
+  border-top: var(--rule-hair);
+}
+.fl-bar::after {         /* zero */
+  content: ""; position: absolute; left: 50%; top: 0; bottom: 0;
+  border-left: var(--rule-thin);
+}
+.fl-bar > span { position: absolute; top: 0.25rem; bottom: 0.25rem; background: var(--ink); }
+.fl-flag {
+  display: inline-block;
+  width: 0.55em; height: 0.55em;
+  background: var(--ink);
+  margin-left: 0.5em;
+  vertical-align: 0.1em;
+}
+
+/* Generated text */
+.fl p.fl-answer,
+.fl p.fl-continuation {
+  font-size: clamp(var(--text-lg), 1.8vw, 1.3125rem);
+  line-height: 1.65;
+  max-width: 36em;
+  margin: 0;
+  padding-top: 1.5rem;
+  border-top: var(--rule-thin);
+}
+.fl p.fl-answer::after { content: ""; display: block; clear: both; }
+.fl-dropcap {
+  float: left;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 3.4em;
+  line-height: 0.8;
+  padding: 0.12em 0.16em 0.1em;
+  margin: 0.1em 0.22em 0 0;
+  border: var(--rule-thin);
+}
+.fl-seam { margin: 0 0.4em; }
+
+/* Attention grid: drawn in HTML so it uses the page's type.
+   Hatching marks the future tokens the causal mask hides. */
+.fl-att-wrap { overflow-x: auto; padding: 0.5rem 0 0.25rem; }
+.fl-att {
+  --cell: var(--cell-size, 1.75rem);
+  display: grid;
+  grid-template-columns: max-content repeat(var(--n), var(--cell));
+  gap: 2px;
+  width: max-content;
+}
+.fl-att-col {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  justify-self: center;
+  align-self: end;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  white-space: nowrap;
+  max-height: 8rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-top: 0.5rem;
+}
+.fl-att-row {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  text-align: right;
+  white-space: nowrap;
+  padding-right: 0.75rem;
+  align-self: center;
+}
+.fl-att-cell { width: var(--cell); height: var(--cell); background: rgba(0, 0, 0, var(--a)); }
+.fl-att-cell.is-light { box-shadow: inset 0 0 0 1px var(--hairline); }
+.fl-att-cell.is-masked {
+  background: repeating-linear-gradient(45deg, transparent 0 4px, var(--hairline) 4px 5px);
+}
+.fl-att-legend {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1.5rem;
+  margin-top: 1.25rem;
+  font-size: var(--text-sm);
+  color: var(--ink-2);
+}
+.fl-att-scale { display: inline-flex; align-items: center; gap: 2px; }
+.fl-att-scale .fl-att-cell { --cell: 1rem; }
+.fl-att-scale-label { margin: 0 0.5rem; }
+
+/* Colophon */
+.fl-colophon-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 3rem; margin-top: 1.75rem; }
+.fl-colophon-grid .fl-table td,
+.fl-colophon-grid .fl-table th { font-size: 0.9375rem; padding-right: 1rem; }
+.fl-colophon-grid .fl-table tbody th { min-width: 0; }
+.fl-colophon p { font-size: 0.9375rem; line-height: 1.6; margin: 0 0 0.875rem; max-width: 30em; }
+@media (max-width: 860px) {
+  .fl-colophon-grid { grid-template-columns: 1fr; gap: 2rem; }
+}
+
+@media (max-width: 640px) {
+  /* The sentiment table stacks: headline first, then one line per model. */
+  .fl-table.is-stack thead {
+    position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);
+  }
+  .fl-table.is-stack tr { display: block; padding: 1rem 0; border-bottom: var(--rule-hair); }
+  .fl-table.is-stack tbody tr:last-child { border-bottom: var(--rule-thin); }
+  .fl-table.is-stack th,
+  .fl-table.is-stack td { display: block; border: 0 !important; padding: 0; }
+  .fl-table.is-stack tbody th { min-width: 0; margin-bottom: 0.5rem; }
+  .fl-table.is-stack td { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.25rem; }
+  .fl-table.is-stack td::before {
+    content: attr(data-label);
+    flex: none;
+    width: 3.75rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+  }
+  .fl-table.is-stack .fl-verdict { gap: 0.5rem; }
+  .fl-att { --cell: 1.375rem; }
+  [data-testid="stTabs"] [role="tablist"] { gap: 1.5rem; }
+  [data-testid="stTab"] [data-testid="stMarkdownContainer"] p { font-size: var(--text-lg) !important; }
+  .fl-table tbody th { min-width: 12rem; }
+  .fl-bar { width: 5rem; }
+}

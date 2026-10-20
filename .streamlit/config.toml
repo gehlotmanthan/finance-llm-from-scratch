@@ -1,0 +1,57 @@
+# Theme for app.py: black and white, serif type, square corners.
+# The fonts are served from static/fonts, so the app looks the same offline.
+
+[server]
+enableStaticServing = true
+
+[client]
+toolbarMode = "minimal"
+
+[browser]
+gatherUsageStats = false
+
+[theme]
+base = "light"
+primaryColor = "#000000"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F5F5F5"
+textColor = "#000000"
+linkColor = "#000000"
+borderColor = "#000000"
+showWidgetBorder = true
+baseRadius = "none"
+buttonRadius = "none"
+baseFontSize = 17
+font = "SourceSerif4, Georgia, serif"
+headingFont = "PlayfairDisplay, Georgia, serif"
+codeFont = "JetBrainsMono, monospace"
+
+[[theme.fontFaces]]
+family = "SourceSerif4"
+url = "app/static/fonts/source-serif-4-latin-opsz-normal.woff2"
+weight = "200 900"
+style = "normal"
+
+[[theme.fontFaces]]
+family = "SourceSerif4"
+url = "app/static/fonts/source-serif-4-latin-opsz-italic.woff2"
+weight = "200 900"
+style = "italic"
+
+[[theme.fontFaces]]
+family = "PlayfairDisplay"
+url = "app/static/fonts/playfair-display-latin-wght-normal.woff2"
+weight = "400 900"
+style = "normal"
+
+[[theme.fontFaces]]
+family = "PlayfairDisplay"
+url = "app/static/fonts/playfair-display-latin-wght-italic.woff2"
+weight = "400 900"
+style = "italic"
+
+[[theme.fontFaces]]
+family = "JetBrainsMono"
+url = "app/static/fonts/jetbrains-mono-latin-wght-normal.woff2"
+weight = "100 800"
+style = "normal"

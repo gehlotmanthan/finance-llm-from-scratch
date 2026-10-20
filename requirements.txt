@@ -12,4 +12,4 @@ tqdm>=4.66
 requests>=2.31
 yfinance>=0.2.40
 pytest>=8
-streamlit>=1.50
+streamlit>=1.66

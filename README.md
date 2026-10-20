@@ -58,7 +58,7 @@ A single Sharpe ratio isn't enough evidence, so the backtest also reports Newey-
 
 ## Engineering notes
 
-The model code in `src/finllm/` has no `transformers` dependency. `gpt2_weights.py` maps OpenAI's released GPT-2 weights into it, and a test checks the mapping round-trips. The 52 unit tests take about 15 seconds on a CPU. They cover the causal mask, explicit vs fused attention, the exact GPT-2 parameter counts, LoRA starting out as an identity, prompt masking, dynamic padding, the look-ahead check and the portfolio arithmetic.
+The model code in `src/finllm/` has no `transformers` dependency. `gpt2_weights.py` maps OpenAI's released GPT-2 weights into it, and a test checks the mapping round-trips. The 58 unit tests take about 15 seconds on a CPU. They cover the causal mask, explicit vs fused attention, the exact GPT-2 parameter counts, LoRA starting out as an identity, prompt masking, dynamic padding, the look-ahead check and the portfolio arithmetic.
 
 `--smoke` runs the full pipeline on synthetic data in about two minutes, with no downloads. The fake news contains a planted signal, and the backtest has to recover it.
 
@@ -92,14 +92,16 @@ pip install -r requirements.txt
 streamlit run app.py          # opens http://localhost:8501
 ```
 
-It has four tabs:
+The page opens with the project's main results, read straight from `results/`, and then has four tabs:
 
-- **Headline sentiment** scores headlines with the fine-tuned GPT-2 and the TF-IDF baseline side by side, including the P(positive) − P(negative) score the backtest trades on.
+- **Headline sentiment** scores headlines with the fine-tuned GPT-2 and the TF-IDF baseline side by side, including the P(positive) − P(negative) score the backtest trades on. Rows where the two models disagree are marked.
 - **Finance assistant** asks the LoRA-tuned GPT-2 medium a question, with controls for length, temperature and top-k.
 - **Text generation** continues a prompt with either the domain-adapted GPT-2 or the 49M model trained from scratch.
-- **Attention viewer** draws the attention pattern of any layer and head for a headline you type.
+- **Attention** draws the attention pattern of any layer and head for a headline you type, with the causal mask shown.
 
 The models load from `checkpoints/` and run on the GPU if there is one, or the CPU otherwise. `FINLLM_SMOKE=1 streamlit run app.py` uses the tiny smoke-test checkpoints instead.
+
+The design is black and white only, with serif type (Playfair Display, Source Serif 4, JetBrains Mono) and square corners. Emphasis comes from rule weight and inversion, not colour. The fonts ship in `static/fonts/` under the SIL Open Font License, so the app looks the same offline.
 
 ## Repository layout
 
@@ -118,6 +120,9 @@ src/finllm/            the library
 scripts/               one script per experiment, plus check_setup.py and build_report.py
 tests/                 pytest suite
 app.py                 Streamlit app for trying the trained models
+webapp/                its page components (ui.py) and styles (style.css)
+static/fonts/          self-hosted fonts for the app, with their licences
+.streamlit/            app theme
 results/               JSON results and figures
 reports/               RESULTS.md (generated), METHODOLOGY.md
 data/ checkpoints/     downloads and weights (not in git)
